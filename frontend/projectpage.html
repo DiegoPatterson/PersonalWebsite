@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects | Personal Website</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background-color: #1a1a1a;
+            font-size: 16px;
+        }
+        
+        /* Fluid Typography */
+        html {
+            font-size: 16px;
+        }
+        
+        @media screen and (min-width: 320px) {
+            html {
+                font-size: calc(16px + 4 * ((100vw - 320px) / 680));
+            }
+        }
+        
+        @media screen and (min-width: 1000px) {
+            html {
+                font-size: 20px;
+            }
+        }
+        
+        /* Container */
+        .container {
+            width: 92%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        /* Header */
+        header {
+            background-color: #0a1f44;
+            color: #e0e0e0;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        
+        /* Navigation */
+        nav ul {
+            display: flex;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        nav ul li {
+            margin-left: 1.2rem;
+        }
+        
+        nav ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        nav ul li a:hover {
+            color: #00d4ff;
+        }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Page Header */
+        .page-header {
+            padding: 3rem 0;
+            background-color: #0a1f44;
+            color: #e0e0e0;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .page-header p {
+            font-size: 1rem;
+            max-width: 38rem;
+            margin: 0 auto;
+        }
+        
+        /* Projects Section */
+        .projects {
+            padding: 3rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            color: #00d4ff;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .project-card {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            overflow: show;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 212, 255, 0.8); /* Neon blue shadow */
+        }
+        
+        .project-image {
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .project-content {
+            padding: 1.2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .project-content h3 {
+            margin-bottom: 0.6rem;
+            color: #00d4ff;
+            font-size: 1.2rem;
+        }
+        
+        .project-content p {
+            color: #7f8d83;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            flex-grow: 1;
+        }
+        
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tag {
+            background-color: #00ff22;
+            color: #1a1a1a;
+            padding: 0.25rem 0.5rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+        }
+        
+        .project-links {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+        
+        .project-btn {
+            display: inline-block;
+            padding: 0.4rem 0.75rem;
+            background-color: #00d4ff;
+            color: #1a1a1a;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            transition: background-color 0.3s;
+            position: relative;
+        }
+        
+        .project-btn:hover {
+            background-color: #00a3cc;
+        }
+        
+        .project-btn:hover .popup {
+            display: block;
+        }
+        
+        .popup {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            transform: translateY(-92%);
+            width: 500px;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            border: 1px solid #00d4ff;
+            border-radius: 5px;
+            padding: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+        
+        .popup video {
+            width: 100%;
+            border-radius: 5px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #0a1f44;
+            color: #e0e0e0;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .footer-content p {
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+        }
+        
+        .social-links a {
+            color: #e0e0e0;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: #00d4ff;
+        }
+        
+        /* Responsive Design - Improved */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+                padding: 1rem 0;
+            }
+            
+            nav ul.show {
+                display: flex;
+            }
+            
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+            
+            .header-content {
+                flex-direction: column;
+            }
+            
+            .logo {
+                margin-bottom: 0.5rem;
+            }
+            
+            .page-header {
+                padding: 3rem 0;
+            }
+            
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .page-header p {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-header {
+                padding: 3rem 0;
+            }
+            
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                display: block;
+                width: 80%;
+                margin: 0 auto;
+                text-align: center;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">Diego Patterson</div>
+            <button class="mobile-menu-btn">☰</button>
+            <nav>
+                <ul id="menu">
+                    <li><a href="frontpage.html">Home</a></li>
+                    <li><a href="aboutpage.html">About</a></li>
+                    <li><a href="projectpage.html"><b>Projects</b></a></li>
+                    <li><a href="contactpage.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>My Projects</h1>
+            <p>Here are some of my most noteworthy projects that I have worked on.</p>
+        </div>
+    </section>
+    
+    <!-- Projects Section -->
+    <section class="projects">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                <!-- Single Project Card -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="..\assets\images\dummyPic.png" alt="Project Image">
+                    </div>
+                    <div class="project-content">
+                        <h3>Time Wasting Ransomware</h3>
+                        <p>Brief description of the project. This project involves...</p>
+                        <div class="project-tags">
+                            <span class="tag">Bash</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-btn">Show Demo
+                                <div class="popup">
+                                    <video autoplay loop muted>
+                                        <source src="..\assets\Demos\dummyDemo.mp4" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                            </a>
+                            <a href="#" class="project-btn">Source Code</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="..\assets\images\showcase\VirusScannerImage.png" alt="Virus Scanner Image">
+                    </div>
+                    <div class="project-content">
+                        <h3>Virus Scanner Script</h3>
+                        <p>This script scans your system for known malware by comparing file hashes against a database of known threats. </p>
+                        <div class="project-tags">
+                            <span class="tag">Bash</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-btn">Show Demo
+                                <div class="popup">
+                                    <video autoplay loop muted>
+                                        <source src="..\assets\Demos\VirusScannerDemo.mp4" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                            </a>
+                            <a href="SourceCode\VirusScannerSC.html" class="project-btn">Source Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="social-links">
+                <!-- Add your social media links here -->
+                <a href="https://www.linkedin.com/in/dcpat">LinkedIn</a>
+                <a href="https://github.com/DiegoPatterson">GitHub</a>
+            </div>
+            <p>&copy; 2025 Diego Patterson. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            const menu = document.getElementById('menu');
+            
+            menuBtn.addEventListener('click', function() {
+                menu.classList.toggle('show');
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('nav') && !event.target.closest('.mobile-menu-btn')) {
+                    menu.classList.remove('show');
+                }
+            });
+            
+            // Adjust menu visibility on window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    menu.classList.remove('show');
+                }
+            });
+
+            // Ensure video cannot be paused or unmuted
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                video.addEventListener('play', () => {
+                    video.muted = true;
+                });
+                video.addEventListener('pause', () => {
+                    video.play();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
