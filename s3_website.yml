@@ -1,0 +1,6 @@
+s3_id: YOUR_AWS_ACCESS_KEY_ID
+s3_secret: YOUR_AWS_SECRET_ACCESS_KEY
+s3_bucket: your-s3-bucket-name
+max_age: 86400
+gzip: true
+cloudfront_invalidate_root: true

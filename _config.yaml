@@ -1,7 +1,7 @@
 site:
   title: Diego Patterson Personal Portfolio
   description: This is a collection of my code and projects that I can share as well as a way to contact me.
-  url: https://www.diegopattersonCode.com
+  url: https://www.diegopattersonportfolio.com
   baseurl: /frontend/
   homepage: frontpage.html  # Define the starting page
 
@@ -32,9 +32,6 @@ seo:
 
 # Google Analytics
 google_analytics: UA-XXXXXXXXX-X
-
-# # Disqus Comments
-# disqus_shortname: diegopatterson
 
 # Plugins
 plugins:
