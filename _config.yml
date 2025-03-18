@@ -1,6 +1,0 @@
-site:
-  title: Diego Patterson Personal Portfolio
-  description: This is a collection of my code and projects that I can share as well as a way to contact me.
-  url: https://www.diegopattersonCode.com
-  baseurl: /frontend/
-  homepage: frontpage.html  # Define the starting page

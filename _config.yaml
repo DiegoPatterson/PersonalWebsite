@@ -1,0 +1,80 @@
+site:
+  title: Diego Patterson Personal Portfolio
+  description: This is a collection of my code and projects that I can share as well as a way to contact me.
+  url: https://www.diegopattersonCode.com
+  baseurl: /frontend/
+  homepage: frontpage.html  # Define the starting page
+
+# Author Information
+author:
+  name: Diego Patterson
+  email: diego@example.com
+  social:
+    linkedin: https://www.linkedin.com/in/dcpat
+    github: https://github.com/DiegoPatterson
+
+# Navigation
+navigation:
+  - name: Home
+    link: frontpage.html
+  - name: About
+    link: aboutpage.html
+  - name: Projects
+    link: projectpage.html
+  - name: Contact
+    link: contactpage.html
+
+# SEO Settings
+seo:
+  title: Diego Patterson Personal Portfolio
+  description: A showcase of Diego Patterson's projects and skills in cybersecurity and software development.
+  keywords: Diego Patterson, cybersecurity, software development, portfolio, projects
+
+# Google Analytics
+google_analytics: UA-XXXXXXXXX-X
+
+# # Disqus Comments
+# disqus_shortname: diegopatterson
+
+# Plugins
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
+
+# Exclude from Processing
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/
+
+# Markdown Configuration
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true
+
+# Permalinks
+permalink: pretty
+
+# Collections
+collections:
+  projects:
+    output: true
+    permalink: /projects/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Diego Patterson"
+
+# Build Settings
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
