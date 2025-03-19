@@ -5,422 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Personal Website</title>
-    <style>
-        /* Reset and Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html,
-        body {
-            height: 100%;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #e0e0e0;
-            background-color: #1a1a1a;
-            font-size: 16px;
-        }
-
-        /* Fluid Typography */
-        html {
-            font-size: 16px;
-        }
-
-        @media screen and (min-width: 320px) {
-            html {
-                font-size: calc(16px + 4 * ((100vw - 320px) / 680));
-            }
-        }
-
-        @media screen and (min-width: 1000px) {
-            html {
-                font-size: 20px;
-            }
-        }
-
-        /* Container */
-        .container {
-            width: 92%;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        /* Header */
-        header {
-            background-color: #0a1f44;
-            color: #e0e0e0;
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .logo {
-            font-size: 1.3rem;
-            font-weight: bold;
-        }
-
-        /* Navigation */
-        nav ul {
-            display: flex;
-            list-style: none;
-            flex-wrap: wrap;
-        }
-
-        nav ul li {
-            margin-left: 1.2rem;
-        }
-
-        nav ul li a {
-            color: #e0e0e0;
-            text-decoration: none;
-            transition: color 0.3s;
-            font-size: 0.9rem;
-        }
-
-        nav ul li a:hover {
-            color: #00d4ff;
-        }
-
-        /* Mobile Menu Button */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: #e0e0e0;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 5rem 0;
-            background-color: #0a1f44;
-            color: #e0e0e0;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            font-size: 1rem;
-            max-width: 38rem;
-            margin: 0 auto 1.5rem;
-        }
-
-        .btn {
-            display: inline-block;
-            background: #00d4ff;
-            color: #1a1a1a;
-            padding: 0.75rem 1.5rem;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s;
-            font-size: 0.8rem;
-        }
-
-        .btn:hover {
-            background: #00a3cc;
-        }
-
-        /* Main Content */
-        main {
-            flex: 1;
-            padding: 3rem 0;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            color: #00d4ff;
-        }
-
-        /* About Section */
-        .about {
-            background-color: #1a1a1a;
-            padding: 3rem 0;
-        }
-
-        .about-content {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .about-img {
-            flex: 1 1 300px;
-            min-width: 250px;
-        }
-
-        .about-img img {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .about-text {
-            flex: 2 1 400px;
-        }
-
-        .about-text p {
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-        }
-
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .project-card {
-            background-color: #1a1a1a;
-            border-radius: 10px;
-            overflow: show;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            height: 100%;
-            width: 200%;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .project-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0, 212, 255, 0.8);
-            /* Neon blue shadow */
-        }
-
-        .project-image {
-            height: 0;
-            padding-bottom: 56.25%;
-            /* 16:9 aspect ratio */
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-image img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .project-content {
-            padding: 1.2rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .project-content h3 {
-            margin-bottom: 0.6rem;
-            color: #00d4ff;
-            font-size: 1.2rem;
-        }
-
-        .project-content p {
-            color: #7f8d83;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-            flex-grow: 1;
-        }
-
-        .project-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            margin-bottom: 1rem;
-        }
-
-        .tag {
-            background-color: #00ff22;
-            color: #1a1a1a;
-            padding: 0.25rem 0.5rem;
-            border-radius: 50px;
-            font-size: 0.7rem;
-        }
-
-        .project-links {
-            display: flex;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
-
-        .project-btn {
-            display: inline-block;
-            padding: 0.4rem 0.75rem;
-            background-color: #00d4ff;
-            color: #1a1a1a;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            transition: background-color 0.3s;
-            position: relative;
-        }
-
-        .project-btn:hover {
-            background-color: #00a3cc;
-        }
-
-        .project-btn:hover .popup {
-            display: block;
-        }
-
-        .popup {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 100%;
-            transform: translateY(-95%);
-            width: 800px;
-            background-color: #1a1a1a;
-            color: #e0e0e0;
-            border: 1px solid #00d4ff;
-            border-radius: 5px;
-            padding: 1rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-        }
-
-        .popup video {
-            width: 100%;
-            border-radius: 5px;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #0a1f44;
-            color: #e0e0e0;
-            padding: 2rem 0;
-            text-align: center;
-        }
-
-        .footer-content p {
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.2rem;
-            margin-bottom: 1.2rem;
-            flex-wrap: wrap;
-        }
-
-        .social-links a {
-            color: #e0e0e0;
-            font-size: 1rem;
-            transition: color 0.3s;
-        }
-
-        .social-links a:hover {
-            color: #00d4ff;
-        }
-
-        /* Responsive Design - Improved */
-        @media (max-width: 768px) {
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            nav ul {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                text-align: center;
-                padding: 1rem 0;
-            }
-
-            nav ul.show {
-                display: flex;
-            }
-
-            nav ul li {
-                margin: 0.5rem 0;
-            }
-
-            .header-content {
-                flex-direction: column;
-            }
-
-            .logo {
-                margin-bottom: 0.5rem;
-            }
-
-            .hero {
-                padding: 3rem 0;
-            }
-
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-
-            .hero p {
-                font-size: 0.9rem;
-            }
-
-            .about-content {
-                flex-direction: column;
-            }
-
-            .about-img {
-                order: 1;
-                margin-bottom: 1.5rem;
-            }
-
-            .about-text {
-                order: 2;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero {
-                padding: 3rem 0;
-            }
-
-            .hero h1 {
-                font-size: 1.5rem;
-            }
-
-            .btn {
-                display: block;
-                width: 80%;
-                margin: 0 auto;
-                text-align: center;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../backend/style.css">
 </head>
 
 <body>
@@ -432,25 +17,16 @@
             <nav>
                 <ul id="menu">
                     <li><a href="frontpage.html"><b>Home</b></a></li>
-                    <li><a href="aboutpage.html">About</a></li>
-                    <li><a href="projectpage.html">Projects</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
                     <li><a href="contactpage.html">Contact</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Welcome to My Portfolio</h1>
-            <p>I'm a passionate Computer Science student with a strong interest in cybersecurity, eager to make a name for myself in the field.</p>
-            <a href="projectpage.html" class="btn">View My Work</a>
-        </div>
-    </section>
-
     <!-- About Section -->
-    <section class="about">
+    <section class="about" id="about">
         <div class="container">
             <h2 class="section-title">About Me</h2>
             <div class="about-content">
@@ -458,92 +34,200 @@
                     <img src="\assets\images\self\pfp.jpg" alt="Profile Image">
                 </div>
                 <div class="about-text">
-                    <p>Hello! I'm Diego Patterson, a Computer Science student based in Riverside, California. I specialize 
-                        in Bash scripting and have a strong passion for cybersecurity, particularly in both blue-team and 
-                        red-team operations. My journey into tech started with game development in JavaScript, but I truly 
-                        found my calling in cybersecurity, where I can put my problem solving to the test.</p>
+                    <p>Hello! I'm Diego Patterson, a Computer Science student based in Riverside, California. I
+                        specialize in Bash Scripting and am a junior.</p>
+                    <p>My journey into technology began when I was around 12. I wasn’t the sharpest tool in the shed and
+                        fell for a free Robux scam.
+                        Later, as a freshman in high school, my sister returned from a camp at Rose-Hulman Institute of
+                        Technology and taught me a bit
+                        of Python. However, it never really took off for me until COVID.</p>
 
-                    <p>When I’m not coding, you’ll find me playing video games, snowboarding, or building penetration testing tools.
-                        I'm always exploring new ways to push my skills further in ethical hacking and scripting.</p>
+                    <p>Due to the quarantine, my teacher needed a less resource-intensive way to teach game design, so
+                        he settled on JavaScript. This
+                        is where I discovered my passion.</p>
+
+                    <p>In college, as my interest in computer science deepened, it became part of my everyday life. I
+                        found a game called Hacknet,
+                        where you play as a gray-hat hacker in a group reminiscent of Anonymous. Though not entirely
+                        realistic, it sparked my desire
+                        to pursue cybersecurity as a career, pushing me to immerse myself in the craft.
+                    </p>
+                    <p>Since then, I've worked on various projects and have continuously expanded my skills in both
+                        blue-team and red-team scripting.</p>
+                    <p>When I'm not working, you can find me playing video games with my friends, snowboarding, or
+                        building penetration testing tools.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <main class="container">
-        <h2 class="section-title">Featured Projects</h2>
-        <p style="text-align: center; margin-bottom: 1.5rem; font-size: 0.85rem;">Here are some of my recent works.
-            Visit the projects page to see my complete portfolio.</p>
-
-        <!-- Featured projects would go here -->
-        <div class="projects-grid">
-            <!-- Single Project Card -->
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="..\assets\images\dummyPic.png" alt="Project Image">
-                </div>
-                <div class="project-content">
-                    <h3>Time Wasting Ransomware</h3>
-                    <p>Brief description of the project. This project involves...</p>
-                    <div class="project-tags">
-                        <span class="tag">Bash</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="#" class="project-btn">Show Demo
-                            <div class="popup">
-                                <video autoplay loop muted>
-                                    <source src="..\assets\Demos\dummyDemo.mp4" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                            </div>
-                        </a>
-                        <a href="#" class="project-btn">Source Code</a>
-                    </div>
-                </div>
-            </div>
+    <!-- Education Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Education</h2>
+            <ul>
+                <li>
+                    <h3>Highschool Diploma</h3>
+                    <p>Etiwanda Highschool, 2022</p>
+                </li>
+                <li>
+                    <h3>Bachelors of Science</h3>
+                    <p>California Baptist University, Expected: 2026</p>
+                </li>
+            </ul>
         </div>
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Education</h2>
+                <ul>
+                    <li>
+                        <h3>Highschool Diploma</h3>
+                        <p>Etiwanda Highschool, 2022</p>
+                    </li>
+                    <li>
+                        <h3>Bachelors of Science</h3>
+                        <p>California Baptist University, Expected: 2026</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Experience</h2>
+                <ul>
+                    <li>
+                        <h3>[Job Title]</h3>
+                        <p>[Company], [Year] - [Year]</p>
+                    </li>
+                    <li>
+                        <h3>[Job Title]</h3>
+                        <p>[Company], [Year] - [Year]</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Accomplishments Section -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Accomplishments</h2>
+                <ul>
+                    <li>
+                        <h3>[Accomplishment]</h3>
+                        <p>[Description]</p>
+                    </li>
+                    <li>
+                        <h3>[Accomplishment]</h3>
+                        <p>[Description]</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <h2 class="section-title">Skills</h2>
+                <ul>
+                    <li>
+                        <h3>Programming Languages</h3>
+                        <p>Python, Java, C++, HTML, Bash</p>
+                    </li>
+                    <li>
+                        <h3>Operating Systems</h3>
+                        <p>Linux, Windows 10 and 11</p>
+                    </li>
+                    <li>
+                        <h3>Tools</h3>
+                        <p>Git, Powershell, Bash</p>
+                    </li>
+                </ul>
+                <br>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <main class="container" >
+            <h2 class="section-title" id="projects">Projects I've worked on</h2>
+            <p style="text-align: center; margin-bottom: 1.5rem; font-size: 0.85rem;">Here are some noteworthy projects I have participated in</p>
+            <!-- Projects Section -->
+            <section class="projects">
+                <div class="carousel-container">
+                    <div class="carousel">
+                        <!-- Single Project Card -->
+                        <div class="carousel-item">
+                            <div class="project-card">
+                                <div class="project-image">
+                                    <img src="..\assets\images\showcase\VirusScannerImage.png" alt="Virus Scanner Image">
+                                </div>
+                                <div class="project-content">
+                                    <h3>Virus Scanner Script</h3>
+                                    <p>This script scans your system for known malware by comparing file hashes against a database of known threats.</p>
+                                    <div class="project-tags">
+                                        <span class="tag">Bash</span>
+                                    </div>
+                                    <div class="project-links">
+                                        <a class="project-btn">Show Demo
+                                            <div class="popup">
+                                                <video autoplay loop muted>
+                                                    <source src="..\assets\Demos\VirusScannerDemo.mp4" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </div>
+                                        </a>
+                                        <a href="SourceCode\sourcecodepage.html?file=virus_scanner.txt" class="project-btn">Source Code</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="project-card">
+                                <div class="project-image">
+                                    <img src="..\assets\images\dummyPic.png" alt="Project Image">
+                                </div>
+                                <div class="project-content">
+                                    <h3>Dummy</h3>
+                                    <p>Brief description of the project. This project involves...</p>
+                                    <div class="project-tags">
+                                        <span class="tag">Bash</span>
+                                    </div>
+                                    <div class="project-links">
+                                        <a class="project-btn">Show Demo
+                                            <div class="popup">
+                                                <video autoplay loop muted>
+                                                    <source src="..\assets\Demos\dummyDemo.mp4" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="project-btn">Source Code</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Add more carousel items as needed -->
+                    </div>
+                </div>
+            </section>
+        </main>
         <br>
 
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container footer-content">
-            <div class="social-links">
-                <!-- Add your social media links here -->
-                <a href="https://www.linkedin.com/in/dcpat">LinkedIn</a>
-                <a href="https://github.com/DiegoPatterson">GitHub</a>
+        <!-- Footer -->
+        <footer>
+            <div class="container footer-content">
+                <div class="social-links">
+                    <!-- Add your social media links here -->
+                    <a href="https://www.linkedin.com/in/dcpat">LinkedIn</a>
+                    <a href="https://github.com/DiegoPatterson">GitHub</a>
+                </div>
+                <p>&copy; 2025 Diego Patterson. All Rights Reserved.</p>
             </div>
-            <p>&copy; 2025 Diego Patterson. All Rights Reserved.</p>
-        </div>
-    </footer>
+        </footer>
 
-    <!-- JavaScript for Mobile Menu Toggle -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const menuBtn = document.querySelector('.mobile-menu-btn');
-            const menu = document.getElementById('menu');
-
-            menuBtn.addEventListener('click', function () {
-                menu.classList.toggle('show');
-            });
-
-            // Close menu when clicking outside
-            document.addEventListener('click', function (event) {
-                if (!event.target.closest('nav') && !event.target.closest('.mobile-menu-btn')) {
-                    menu.classList.remove('show');
-                }
-            });
-
-            // Adjust menu visibility on window resize
-            window.addEventListener('resize', function () {
-                if (window.innerWidth > 768) {
-                    menu.classList.remove('show');
-                }
-            });
-        });
-    </script>
+        <!-- JavaScript for Mobile Menu Toggle -->
+        <script src="../backend/mobileScript.js"></script>
+        <script src="../backend/popupScript.js"></script>
 </body>
 
 </html>
