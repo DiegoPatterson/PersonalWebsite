@@ -1,0 +1,126 @@
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import Terminal from './components/Terminal'
+import Background from './components/Background'
+import StatusBar from './components/StatusBar'
+import Scanline from './components/Scanline'
+import AudioController from './components/AudioController'
+
+function App() {
+  const [isBooting, setIsBooting] = useState(true)
+  const [bootSequence, setBootSequence] = useState([])
+  const [darkMode, setDarkMode] = useState(false)
+
+  const bootMessages = [
+    'INITIALIZING NEXUS SYSTEMS...',
+    'LOADING NEURAL NETWORKS...',
+    'ESTABLISHING SECURE CONNECTION...',
+    'DECRYPTING MEMORY BANKS...',
+    'CALIBRATING CONSCIOUSNESS MATRIX...',
+    'VERIFYING IDENTITY PROTOCOLS...',
+    'SYSTEM STATUS: ONLINE',
+    'WELCOME TO NEXUS v3.7.2',
+  ]
+
+  useEffect(() => {
+    let currentIndex = 0
+    const interval = setInterval(() => {
+      if (currentIndex < bootMessages.length) {
+        setBootSequence(prev => [...prev, bootMessages[currentIndex]])
+        currentIndex++
+      } else {
+        clearInterval(interval)
+        setTimeout(() => setIsBooting(false), 1000)
+      }
+    }, 300)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <div className={`min-h-screen relative overflow-hidden ${darkMode ? 'dark-mode' : ''}`}>
+      <Background />
+      <Scanline />
+      <AudioController />
+      
+      <AnimatePresence mode="wait">
+        {isBooting ? (
+          <motion.div
+            key="boot"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 flex items-center justify-center z-50 bg-cyber-darker"
+          >
+            <div className="max-w-2xl w-full px-8">
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="mb-8 text-center"
+              >
+                <h1 className="text-6xl font-bold glow-text mb-4 glitch" data-text="NEXUS">
+                  NEXUS
+                </h1>
+                <p className="text-cyber-violet text-sm">Neural EXecution and Understanding System</p>
+              </motion.div>
+
+              <div className="space-y-2 font-mono text-sm">
+                {bootSequence.map((message, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-cyber-cyan flex items-center"
+                  >
+                    <span className="text-green-500 mr-2">{'>'}</span>
+                    {message}
+                    {index === bootSequence.length - 1 && (
+                      <motion.span
+                        animate={{ opacity: [1, 0, 1] }}
+                        transition={{ duration: 0.8, repeat: Infinity }}
+                        className="ml-1"
+                      >
+                        ▊
+                      </motion.span>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 2 }}
+                className="mt-8"
+              >
+                <div className="w-full bg-cyber-dark h-2 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-cyber-cyan via-cyber-violet to-cyber-pink"
+                    initial={{ width: '0%' }}
+                    animate={{ width: '100%' }}
+                    transition={{ duration: 2.5, ease: 'easeInOut' }}
+                  />
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="main"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="relative z-10"
+          >
+            <StatusBar darkMode={darkMode} setDarkMode={setDarkMode} />
+            <Terminal darkMode={darkMode} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
+export default App
