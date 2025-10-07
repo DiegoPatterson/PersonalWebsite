@@ -4,7 +4,9 @@
     "title": "Computer Science Student",
     "specialization": ["Artificial Intelligence", "Cybersecurity"],
     "status": "ACTIVE",
-    "clearanceLevel": "ARCHITECT"
+    "clearanceLevel": "ARCHITECT",
+    "profileImage": "/images/profile.jpg",
+    "bio": "Computer Science student specializing in Artificial Intelligence and Cybersecurity. Passionate about building intelligent systems that are secure, ethical, and push the boundaries of what's possible. Currently researching adversarial machine learning and developing security tools for next-generation threats."
   },
   "experience": [
     {
@@ -12,6 +14,7 @@
       "title": "AI Research Intern",
       "company": "Neural Dynamics Lab",
       "duration": "Summer 2024",
+      "category": "AI",
       "description": "Developed neural network architectures for real-time threat detection. Implemented adversarial training protocols to improve model robustness.",
       "technologies": ["Python", "TensorFlow", "PyTorch", "Neural Networks"]
     },
@@ -20,6 +23,7 @@
       "title": "Cybersecurity Analyst Intern",
       "company": "SecureNet Solutions",
       "duration": "Spring 2024",
+      "category": "CYBER",
       "description": "Conducted penetration testing and vulnerability assessments. Automated security audit processes using custom Python scripts.",
       "technologies": ["Python", "Kali Linux", "Wireshark", "Metasploit"]
     },
@@ -28,6 +32,7 @@
       "title": "Software Development Intern",
       "company": "Tech Innovations Inc",
       "duration": "Fall 2023",
+      "category": "AI",
       "description": "Built full-stack web applications with focus on secure authentication systems. Implemented OAuth 2.0 and JWT-based security protocols.",
       "technologies": ["React", "Node.js", "MongoDB", "AWS"]
     }
@@ -67,6 +72,7 @@
       "name": "Cybersecurity Research Lab",
       "role": "Lead Researcher",
       "duration": "2023 - Present",
+      "category": "CYBER",
       "description": "Leading research on AI-powered intrusion detection systems. Published 2 papers on adversarial machine learning in security contexts."
     },
     {
@@ -74,6 +80,7 @@
       "name": "University CTF Team",
       "role": "Captain",
       "duration": "2023 - Present",
+      "category": "CYBER",
       "description": "Leading competitive cybersecurity team in Capture The Flag competitions. Ranked Top 10 nationally in 2024."
     },
     {
@@ -81,6 +88,7 @@
       "name": "AI Ethics Committee",
       "role": "Student Representative",
       "duration": "2024 - Present",
+      "category": "AI",
       "description": "Advocating for responsible AI development and implementation across campus research projects."
     },
     {
@@ -88,6 +96,7 @@
       "name": "ACM Student Chapter",
       "role": "Vice President",
       "duration": "2023 - Present",
+      "category": "AI",
       "description": "Organizing technical workshops, hackathons, and guest speaker events for 200+ members."
     }
   ],
@@ -96,6 +105,7 @@
       "id": "proj001",
       "name": "SENTINEL",
       "tagline": "AI-Powered Network Intrusion Detection",
+      "category": "CYBER",
       "description": "Real-time threat detection system using deep learning to identify anomalous network behavior. Achieved 98.7% accuracy with minimal false positives.",
       "technologies": ["Python", "TensorFlow", "Scikit-learn", "Flask", "Docker"],
       "github": "https://github.com/diegopatterson/sentinel-ids",
@@ -106,6 +116,7 @@
       "id": "proj002",
       "name": "CipherChat",
       "tagline": "End-to-End Encrypted Messaging Platform",
+      "category": "CYBER",
       "description": "Secure messaging application with military-grade encryption. Features include perfect forward secrecy, zero-knowledge architecture, and secure key exchange.",
       "technologies": ["React", "Node.js", "WebSockets", "AES-256", "RSA"],
       "github": "https://github.com/diegopatterson/cipherchat",
@@ -116,6 +127,7 @@
       "id": "proj003",
       "name": "DeepFake Detector",
       "tagline": "CNN-Based Media Authentication System",
+      "category": "AI",
       "description": "Neural network model for detecting AI-generated faces and deepfake videos. Trained on 100K+ samples with 96% detection accuracy.",
       "technologies": ["Python", "PyTorch", "OpenCV", "FastAPI"],
       "github": "https://github.com/diegopatterson/deepfake-detector",
@@ -126,6 +138,7 @@
       "id": "proj004",
       "name": "QuantumShield",
       "tagline": "Post-Quantum Cryptography Library",
+      "category": "CYBER",
       "description": "Implementation of quantum-resistant encryption algorithms preparing for the post-quantum era. Focus on lattice-based cryptography.",
       "technologies": ["Rust", "C++", "Cryptography", "Number Theory"],
       "github": "https://github.com/diegopatterson/quantum-shield",
@@ -136,6 +149,7 @@
       "id": "proj005",
       "name": "Neural Adversary",
       "tagline": "Adversarial Attack Framework",
+      "category": "AI",
       "description": "Research toolkit for testing ML model robustness against adversarial attacks. Includes FGSM, PGD, and novel attack methods.",
       "technologies": ["Python", "PyTorch", "NumPy", "Jupyter"],
       "github": "https://github.com/diegopatterson/neural-adversary",
@@ -148,6 +162,7 @@
       "id": "vibe001",
       "name": "AI Dreamscape Generator",
       "vibe": "✨ Surreal & Trippy",
+      "category": "AI",
       "description": "Late-night experiment where I fed an AI my random thoughts and it generated abstract visual landscapes. No purpose, pure vibes. Sometimes it creates beauty, sometimes chaos.",
       "builtWith": ["Stable Diffusion", "Python", "Vibes"],
       "github": "https://github.com/diegopatterson/ai-dreamscape",
@@ -157,6 +172,7 @@
       "id": "vibe002",
       "name": "Neural Haiku Bot",
       "vibe": "🎭 Poetic & Philosophical",
+      "category": "AI",
       "description": "Trained a small model on thousands of haikus and philosophy texts. It generates surprisingly deep 5-7-5 poems about existence, technology, and the human condition. Accidentally created digital poetry.",
       "builtWith": ["GPT-2", "Fine-tuning", "Existential Dread"],
       "github": "https://github.com/diegopatterson/neural-haiku",
@@ -166,6 +182,7 @@
       "id": "vibe003",
       "name": "Emotion Color Mapper",
       "vibe": "🎨 Synesthetic",
+      "category": "AI",
       "description": "An AI that analyzes text sentiment and generates corresponding color palettes. Fed it song lyrics, movie scripts, and diary entries. The results are weirdly accurate and beautiful.",
       "builtWith": ["Sentiment Analysis", "Color Theory", "Magic"],
       "github": "https://github.com/diegopatterson/emotion-colors",
@@ -175,6 +192,7 @@
       "id": "vibe004",
       "name": "Midnight Chatbot Therapist",
       "vibe": "🌙 3AM Energy",
+      "category": "AI",
       "description": "A chatbot trained on motivational quotes, stoic philosophy, and wholesome memes. Built during finals week. It's surprisingly good at talking you through procrastination spirals.",
       "builtWith": ["DialoGPT", "Therapy", "Coffee"],
       "github": "https://github.com/diegopatterson/midnight-therapist",
@@ -184,6 +202,7 @@
       "id": "vibe005",
       "name": "Glitch Art Generator",
       "vibe": "⚡ Chaotic Digital",
+      "category": "AI",
       "description": "Corrupts images with controlled randomness using neural style transfer gone wrong. Turns photos into digital artifacts that look like memories from a broken simulation.",
       "builtWith": ["Neural Style Transfer", "Chaos Theory", "Accidents"],
       "github": "https://github.com/diegopatterson/glitch-art",
@@ -193,6 +212,7 @@
       "id": "vibe006",
       "name": "Lofi Code Generator",
       "vibe": "🎵 Chill Study Vibes",
+      "category": "AI",
       "description": "AI that generates ambient background music while you code. Trained on lofi hip-hop beats. Adjusts tempo based on your typing speed. Actually helps me focus.",
       "builtWith": ["MusicGen", "Audio ML", "Procrastination"],
       "github": "https://github.com/diegopatterson/lofi-code",
@@ -202,6 +222,7 @@
       "id": "vibe007",
       "name": "Dream Journal Analyzer",
       "vibe": "🔮 Mystical & Weird",
+      "category": "AI",
       "description": "Logs your dreams and finds patterns using NLP. Started as a joke, but it actually found recurring themes in my subconscious. Kinda freaky, kinda cool.",
       "builtWith": ["NLP", "Pattern Recognition", "Sleep Deprivation"],
       "github": "https://github.com/diegopatterson/dream-analyzer",
@@ -211,6 +232,7 @@
       "id": "vibe008",
       "name": "Vibe Check AI",
       "vibe": "✌️ Meta & Self-Aware",
+      "category": "AI",
       "description": "An AI that rates the 'vibe' of any text, image, or situation on a scale of 'immaculate' to 'off'. Trained on Gen Z slang and internet culture. It's disturbingly accurate.",
       "builtWith": ["CLIP", "Sentiment Analysis", "Internet Culture"],
       "github": "https://github.com/diegopatterson/vibe-check",

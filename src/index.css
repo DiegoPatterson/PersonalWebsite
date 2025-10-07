@@ -43,9 +43,163 @@
     scrollbar-width: thin;
     scrollbar-color: #00FFFF #050814;
   }
+
+  /* Dark AI mode scrollbar */
+  .dark-ai-mode::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #EF4444 0%, #8B5CF6 100%);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.8), 0 0 20px rgba(139, 92, 246, 0.5);
+  }
+
+  .dark-ai-mode::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #DC2626 0%, #7C3AED 100%);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 1), 0 0 40px rgba(139, 92, 246, 0.8);
+  }
+
+  .dark-ai-mode * {
+    scrollbar-color: #EF4444 #000000;
+  }
 }
 
 @layer components {
+  /* Gradient animation for Dark AI mode */
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animate-gradient {
+    animation: gradient-shift 3s ease infinite;
+  }
+
+  /* Glitch effect for Dark AI mode */
+  @keyframes glitch {
+    0%, 100% {
+      text-shadow: 
+        2px 2px 0 rgba(239, 68, 68, 0.7),
+        -2px -2px 0 rgba(139, 92, 246, 0.7);
+    }
+    25% {
+      text-shadow: 
+        -2px 2px 0 rgba(239, 68, 68, 0.7),
+        2px -2px 0 rgba(139, 92, 246, 0.7);
+    }
+    50% {
+      text-shadow: 
+        2px -2px 0 rgba(239, 68, 68, 0.7),
+        -2px 2px 0 rgba(139, 92, 246, 0.7);
+    }
+    75% {
+      text-shadow: 
+        -2px -2px 0 rgba(239, 68, 68, 0.7),
+        2px 2px 0 rgba(139, 92, 246, 0.7);
+    }
+  }
+
+  .glitch-dark {
+    animation: glitch 5s infinite;
+  }
+
+  /* Grid shift animation for Dark AI mode */
+  @keyframes grid-shift {
+    0%, 100% {
+      transform: translateX(0) translateY(0);
+    }
+    50% {
+      transform: translateX(15px) translateY(15px);
+    }
+  }
+
+  /* Screen shake REMOVED - causes headaches */
+  .dark-ai-mode {
+    /* No animation - just corruption vibes */
+  }
+
+  .dark-ai-mode:hover {
+    animation-play-state: running;
+  }
+
+  /* Flickering effect for Dark AI mode */
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    41%, 43% { opacity: 0.8; }
+    45%, 49% { opacity: 0.9; }
+    50% { opacity: 1; }
+    55% { opacity: 0.95; }
+    57% { opacity: 0.85; }
+    60%, 70% { opacity: 1; }
+  }
+
+  .flicker-dark {
+    animation: flicker 8s infinite;
+  }
+
+  /* Scanline effect for Dark AI mode */
+  @keyframes scanline {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(100vh);
+    }
+  }
+
+  .scanline-overlay {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scanline-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(239, 68, 68, 0.5),
+      transparent
+    );
+    animation: scanline 6s linear infinite;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* Static/noise effect */
+  @keyframes static-noise {
+    0%, 100% { 
+      background-position: 0% 0%;
+      opacity: 0.03;
+    }
+    50% { 
+      background-position: 100% 100%;
+      opacity: 0.05;
+    }
+  }
+
+  .static-noise {
+    position: relative;
+  }
+
+  .static-noise::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    animation: static-noise 0.5s infinite;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
   .terminal-text {
     @apply font-mono text-cyber-cyan;
   }

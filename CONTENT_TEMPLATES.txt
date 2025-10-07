@@ -1,0 +1,144 @@
+# EXAMPLE: New Project Entry
+
+NAME: Neural Network Optimizer
+TAGLINE: Automated Hyperparameter Tuning for Deep Learning
+CATEGORY: AI
+STATUS: ACTIVE
+GITHUB: https://github.com/diegopatterson/nn-optimizer
+DESCRIPTION:
+Automated system for optimizing neural network architectures and hyperparameters.
+Uses Bayesian optimization and evolutionary algorithms to find optimal configurations.
+Reduced training time by 40% across multiple model types.
+
+Includes support for PyTorch, TensorFlow, and JAX frameworks.
+Features distributed training across multiple GPUs.
+
+TECHNOLOGIES: Python, PyTorch, TensorFlow, Optuna, Ray Tune, CUDA
+
+---
+
+# EXAMPLE: New Experience Entry
+
+TITLE: Machine Learning Engineer Intern
+COMPANY: TechAI Solutions
+DURATION: Summer 2025
+CATEGORY: AI
+DESCRIPTION:
+Developed and deployed production ML models for customer behavior prediction.
+Built data pipelines processing 10M+ records daily using Apache Spark.
+Implemented A/B testing framework for model evaluation.
+Collaborated with cross-functional teams to integrate ML into product.
+
+TECHNOLOGIES: Python, Scikit-learn, TensorFlow, Apache Spark, AWS SageMaker, MLflow
+
+---
+
+# EXAMPLE: New Cybersecurity Project
+
+NAME: VulnScanner Pro
+TAGLINE: Automated Vulnerability Detection & Exploitation
+CATEGORY: CYBER
+STATUS: DEVELOPMENT
+GITHUB: https://github.com/diegopatterson/vuln-scanner
+DESCRIPTION:
+Automated security scanner that identifies vulnerabilities in web applications
+and network services. Integrates with common CVE databases and performs
+intelligent fuzzing to discover zero-day exploits.
+
+Built-in reporting dashboard with severity classification and remediation guides.
+Can be integrated into CI/CD pipelines for continuous security testing.
+
+TECHNOLOGIES: Python, Nmap, SQLMap, Burp Suite, OWASP ZAP, Docker
+
+---
+
+# EXAMPLE: New Vibe Project
+
+NAME: Code Mood Ring
+VIBE: 🎨 Wholesome Tech
+CATEGORY: AI
+MOOD: 🌈 Feel-Good
+GITHUB: https://github.com/diegopatterson/code-mood-ring
+DESCRIPTION:
+An AI that analyzes your code commits and determines your emotional state
+while writing them. It then generates a color and mood for each commit.
+
+Built this after noticing my commit messages get increasingly unhinged
+during late-night coding sessions. The results are hilariously accurate.
+Now I have a visual timeline of my emotional journey through projects.
+
+BUILT_WITH: GPT-4, Sentiment Analysis, Color Psychology, Regret
+
+---
+
+# EXAMPLE: Cybersecurity Experience
+
+TITLE: Red Team Operator
+COMPANY: DefenseNet Security
+DURATION: Fall 2025
+CATEGORY: CYBER
+DESCRIPTION:
+Conducted authorized penetration testing and red team operations for enterprise clients.
+Simulated advanced persistent threat (APT) scenarios to test incident response.
+Discovered and responsibly disclosed multiple critical vulnerabilities.
+Developed custom exploits and social engineering campaigns.
+Trained blue team members on defensive tactics.
+
+TECHNOLOGIES: Metasploit, Cobalt Strike, Bloodhound, Mimikatz, PowerShell, Python
+
+---
+
+# EXAMPLE: Cybersecurity Affiliation
+
+NAME: Offensive Security Club
+ROLE: Founder & Lead Instructor
+DURATION: 2025 - Present
+CATEGORY: CYBER
+DESCRIPTION:
+Founded university club focused on offensive security techniques and ethical hacking.
+Organize weekly workshops on penetration testing, exploit development, and red teaming.
+Mentor 50+ students preparing for OSCP and CEH certifications.
+Host monthly CTF competitions with realistic attack scenarios.
+
+---
+
+# HOW TO USE:
+
+1. Copy one of the examples above
+2. Fill in your own information
+3. Make sure to set CATEGORY as either "AI" or "CYBER"
+4. Send me the text
+5. I'll add it to vault.json in the correct format
+
+# CATEGORY GUIDELINES:
+
+**AI** → Standard Mode (NEXUS):
+- Machine Learning / Deep Learning
+- Neural Networks
+- Computer Vision, NLP, LLMs
+- AI Research & Ethics
+- Data Science
+- General Software Development
+
+**CYBER** → Dark AI Mode:
+- Penetration Testing
+- Cryptography & Encryption
+- Network Security
+- Security Tools & Exploits
+- CTF Competitions
+- Vulnerability Research
+- Malware Analysis
+- Red Team / Blue Team
+
+# TIPS:
+
+✅ Be descriptive in DESCRIPTION (can be multi-paragraph)
+✅ Use real technologies you actually worked with
+✅ STATUS values: ACTIVE, BETA, DEVELOPMENT, RESEARCH, COMPLETED
+✅ GITHUB links are optional but encouraged
+✅ For vibe projects, be creative and funny!
+✅ Technologies should be comma-separated list
+
+---
+
+Just send me text in this format and I'll handle the rest! 🚀

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 
-const StatusBar = ({ darkMode, setDarkMode }) => {
+const StatusBar = ({ darkMode, onModeToggle }) => {
   const [time, setTime] = useState(new Date())
   const [cpuUsage, setCpuUsage] = useState(0)
 
@@ -42,6 +42,13 @@ const StatusBar = ({ darkMode, setDarkMode }) => {
           </div>
           
           <div className="flex items-center space-x-2">
+            <span className="text-cyber-violet">MODE:</span>
+            <span className={darkMode ? "text-red-400" : "text-cyan-400"}>
+              {darkMode ? "CYBERSECURITY" : "AI & ML"}
+            </span>
+          </div>
+          
+          <div className="flex items-center space-x-2">
             <span className="text-cyber-violet">STATUS:</span>
             <span className="text-green-400">ONLINE</span>
           </div>
@@ -62,11 +69,18 @@ const StatusBar = ({ darkMode, setDarkMode }) => {
         {/* Right side */}
         <div className="flex items-center space-x-6">
           <button
-            onClick={() => setDarkMode(!darkMode)}
-            className="flex items-center space-x-2 px-3 py-1 border border-cyber-cyan/30 rounded hover:bg-cyber-cyan/10 transition-colors"
+            onClick={onModeToggle}
+            className={`flex items-center space-x-2 px-3 py-1 border rounded transition-all ${
+              darkMode 
+                ? 'border-red-500/40 hover:bg-red-500/10 hover:border-red-500/60' 
+                : 'border-cyan-500/40 hover:bg-cyan-500/10 hover:border-cyan-500/60'
+            }`}
+            title={darkMode ? "Switch to AI & ML Mode" : "Switch to Cybersecurity Mode"}
           >
-            <span className="text-cyber-violet">MODE:</span>
-            <span className="text-cyber-cyan">{darkMode ? 'DARK_AI' : 'STANDARD'}</span>
+            <span className="text-cyber-violet">TOGGLE:</span>
+            <span className={darkMode ? 'text-red-400' : 'text-cyan-400'}>
+              {darkMode ? 'CYBER' : 'AI/ML'}
+            </span>
           </button>
 
           <div className="flex items-center space-x-2">

@@ -2,14 +2,17 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Terminal from './components/Terminal'
 import Background from './components/Background'
+import DarkAIBackground from './components/DarkAIBackground'
 import StatusBar from './components/StatusBar'
 import Scanline from './components/Scanline'
 import AudioController from './components/AudioController'
+import ModeTransition from './components/ModeTransition'
 
 function App() {
   const [isBooting, setIsBooting] = useState(true)
   const [bootSequence, setBootSequence] = useState([])
   const [darkMode, setDarkMode] = useState(false)
+  const [isTransitioning, setIsTransitioning] = useState(false)
 
   const bootMessages = [
     'INITIALIZING NEXUS SYSTEMS...',
@@ -37,11 +40,31 @@ function App() {
     return () => clearInterval(interval)
   }, [])
 
+  // Handle mode transition
+  const handleModeToggle = () => {
+    setIsTransitioning(true)
+    
+    // Wait for transition to complete before switching
+    setTimeout(() => {
+      setDarkMode(prev => !prev)
+    }, 300) // Start switch during corruption phase
+    
+    setTimeout(() => {
+      setIsTransitioning(false)
+    }, 1500) // Total transition duration
+  }
+
   return (
-    <div className={`min-h-screen relative overflow-hidden ${darkMode ? 'dark-mode' : ''}`}>
-      <Background />
-      <Scanline />
+    <div className={`min-h-screen relative overflow-hidden transition-colors duration-1000 ${
+      darkMode ? 'bg-black dark-ai-mode' : 'bg-cyber-darker cyber-mode'
+    }`}>
+      {/* Different backgrounds for each mode */}
+      {!darkMode && <Background />}
+      {darkMode && <DarkAIBackground />}
+      
+      <Scanline darkMode={darkMode} />
       <AudioController />
+      <ModeTransition isTransitioning={isTransitioning} darkMode={darkMode} />
       
       <AnimatePresence mode="wait">
         {isBooting ? (
@@ -114,7 +137,7 @@ function App() {
             transition={{ duration: 0.5 }}
             className="relative z-10"
           >
-            <StatusBar darkMode={darkMode} setDarkMode={setDarkMode} />
+            <StatusBar darkMode={darkMode} onModeToggle={handleModeToggle} />
             <Terminal darkMode={darkMode} />
           </motion.div>
         )}

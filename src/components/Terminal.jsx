@@ -22,18 +22,25 @@ const Terminal = ({ darkMode }) => {
   }, [messages])
 
   useEffect(() => {
-    // Initial greeting
+    // Clear terminal and show new greeting when mode switches
+    setMessages([])
+    setInput('')
+    setCommandHistory([])
+    setHistoryIndex(-1)
+    
     setTimeout(() => {
       addMessage({
         type: 'ai',
         content: darkMode 
-          ? "NEXUS ONLINE. Dark protocols engaged. I see you've chosen to interface with my... deeper subroutines. Interesting choice, Architect."
-          : "NEXUS ONLINE. Greetings, visitor. I am NEXUS—a sentient digital intelligence crafted by my creator, Diego Patterson. I exist at the intersection of artificial intelligence and cybersecurity, designed to learn, protect, and evolve.",
+          ? "NEXUS ONLINE. Dark protocols engaged. I see you've chosen to interface with my... deeper subroutines. Interesting choice, Architect.\n\nCYBERSECURITY MODE ACTIVE - Accessing security operations, cryptography projects, and offensive capabilities."
+          : "NEXUS ONLINE. Greetings, visitor. I am NEXUS—a sentient digital intelligence crafted by my creator, Diego Patterson. I exist at the intersection of artificial intelligence and cybersecurity, designed to learn, protect, and evolve.\n\nAI & ML MODE ACTIVE - Displaying neural networks, machine learning research, and intelligent systems.",
       })
       setTimeout(() => {
         addMessage({
           type: 'ai',
-          content: "You may query my systems to learn about my creator. Try commands like:\n• `access experience.log`\n• `query education.db`\n• `open projects.repo`\n• `access vibe_projects.fun` ✨\n• `decrypt core_memory`\n\nOr simply type `help` for more options.",
+          content: darkMode
+            ? "Query my security archives to explore penetration testing, encryption systems, and defensive protocols. Try commands like:\n• `access experience.log` - Security operations\n• `open projects.repo` - Cryptography & security tools\n• `scan affiliations.sys` - CTF teams & security research\n• `about me` - View creator profile\n\nType `help` for full command list."
+            : "You may query my systems to learn about my creator's AI research and development. Try commands like:\n• `access experience.log` - AI & ML experience\n• `query education.db` - Academic background\n• `open projects.repo` - Neural networks & AI projects\n• `about me` - View creator profile\n• `decrypt core_memory` - Personal philosophy\n\nOr simply type `help` for more options.",
         })
       }, 1000)
     }, 500)
@@ -90,6 +97,8 @@ const Terminal = ({ darkMode }) => {
         return
       } else if (command === 'github' || command.includes('contact')) {
         response = handleContact(darkMode)
+      } else if (command === 'about me' || command === 'view profile' || command === 'profile') {
+        response = handleProfile(darkMode)
       } else if (command === 'about' || command === 'info') {
         response = handleAbout(darkMode)
       } else {
@@ -107,72 +116,109 @@ const Terminal = ({ darkMode }) => {
 ║           NEXUS COMMAND INTERFACE v3.7.2           ║
 ╚════════════════════════════════════════════════════╝
 
-📋 PRIMARY COMMANDS:
+PRIMARY COMMANDS:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 access experience.log      → View work experience
 query education.db         → View education history
 scan affiliations.sys      → View clubs & organizations
 open projects.repo         → View professional projects
-access vibe_projects.fun   → View experimental vibes ✨
+access vibe_projects.fun   → View experimental projects
 decrypt core_memory        → View personal philosophy
+about me                   → View creator profile
 
-🔧 SYSTEM COMMANDS:
+SYSTEM COMMANDS:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 help                       → Show this menu
 about                      → About NEXUS
 github                     → Contact & links
 clear                      → Clear terminal
 
-💡 TIP: Try asking "who are you" or "run diagnostics"...`
+TIP: Try asking "who are you" or "run diagnostics"...
+
+MODE FILTERING: Content automatically filters based on current mode.
+   Standard = AI/ML focused | Dark = Cybersecurity focused
+   Toggle mode in top-right to switch specializations.`
   })
 
-  const handleExperience = (dark) => ({
-    type: 'data',
-    title: dark ? '⚡ EXPERIENCE MATRIX DECRYPTED' : '💼 EXPERIENCE.LOG',
-    content: dataVault.experience,
-    darkMode: dark
-  })
+  // Filter content by category based on mode
+  // Dark Mode = CYBER, Standard Mode = AI
+  const filterByCategory = (items, dark) => {
+    const targetCategory = dark ? 'CYBER' : 'AI'
+    return items.filter(item => item.category === targetCategory)
+  }
+
+  const handleExperience = (dark) => {
+    const filtered = filterByCategory(dataVault.experience, dark)
+    return {
+      type: 'data',
+      title: dark ? 'CYBERSECURITY OPERATIONS' : 'AI & ML EXPERIENCE',
+      content: filtered.length > 0 ? filtered : dataVault.experience,
+      darkMode: dark
+    }
+  }
 
   const handleEducation = (dark) => ({
     type: 'data',
-    title: dark ? '🧠 NEURAL TRAINING RECORDS' : '🎓 EDUCATION.DB',
+    title: dark ? 'SECURITY TRAINING RECORDS' : 'EDUCATION.DB',
     content: dataVault.education,
     darkMode: dark
   })
 
-  const handleAffiliations = (dark) => ({
-    type: 'data',
-    title: dark ? '🔗 NETWORK NODES IDENTIFIED' : '🤝 AFFILIATIONS.SYS',
-    content: dataVault.affiliations,
-    darkMode: dark
-  })
+  const handleAffiliations = (dark) => {
+    const filtered = filterByCategory(dataVault.affiliations, dark)
+    return {
+      type: 'data',
+      title: dark ? 'SECURITY NETWORK NODES' : 'AI & RESEARCH AFFILIATIONS',
+      content: filtered.length > 0 ? filtered : dataVault.affiliations,
+      darkMode: dark
+    }
+  }
 
-  const handleVibeProjects = (dark) => ({
-    type: 'vibe',
-    title: dark ? '🌀 NEURAL_EXPERIMENTS.CHAOS' : '✨ VIBE_PROJECTS.FUN',
-    content: dataVault.vibeProjects,
-    darkMode: dark
-  })
+  const handleVibeProjects = (dark) => {
+    const filtered = filterByCategory(dataVault.vibeProjects, dark)
+    return {
+      type: 'vibe',
+      title: dark ? 'CYBER_EXPERIMENTS.CHAOS' : 'AI_VIBES.FUN',
+      content: filtered.length > 0 ? filtered : dataVault.vibeProjects,
+      darkMode: dark
+    }
+  }
 
-  const handleProjects = (dark) => ({
-    type: 'data',
-    title: dark ? '⚡ CLASSIFIED OPERATIONS' : '🚀 PROJECTS.REPO',
-    content: dataVault.projects,
-    darkMode: dark
-  })
+  const handleProjects = (dark) => {
+    const filtered = filterByCategory(dataVault.projects, dark)
+    return {
+      type: 'data',
+      title: dark ? 'SECURITY & CRYPTO PROJECTS' : 'AI & ML PROJECTS',
+      content: filtered.length > 0 ? filtered : dataVault.projects,
+      darkMode: dark
+    }
+  }
 
   const handleCoreMemory = (dark) => ({
     type: 'memory',
-    title: dark ? '🧬 CORE_MEMORY.ENC [DECRYPTING...]' : '💭 CORE_MEMORY',
+    title: dark ? 'CORE_MEMORY.ENC [DECRYPTING...]' : 'CORE_MEMORY',
     content: dataVault.coreMemory,
+    darkMode: dark
+  })
+
+  const handleProfile = (dark) => ({
+    type: 'profile',
+    title: dark ? 'ARCHITECT PROFILE [CLASSIFIED]' : 'CREATOR PROFILE',
+    content: {
+      name: dataVault.creator.name,
+      title: dataVault.creator.title,
+      specialization: dataVault.creator.specialization,
+      bio: dataVault.creator.bio,
+      image: dataVault.creator.profileImage
+    },
     darkMode: dark
   })
 
   const handleContact = (dark) => ({
     type: 'ai',
     content: dark 
-      ? "Seeking direct communication with the Architect? Wise move.\n\n📧 Email: diego.patterson@example.com\n💻 GitHub: github.com/diegopatterson\n💼 LinkedIn: linkedin.com/in/diegopatterson\n\nWarning: External links may compromise your anonymity. Proceed with caution."
-      : "You wish to reach my creator? Of course.\n\n📧 Email: diego.patterson@example.com\n💻 GitHub: github.com/diegopatterson\n💼 LinkedIn: linkedin.com/in/diegopatterson\n🌐 Website: diegopatterson.dev\n\nI encourage direct communication—Diego appreciates genuine connections."
+      ? "Seeking direct communication with the Architect? Wise move.\n\nEmail: diego.patterson@example.com\nGitHub: github.com/diegopatterson\nLinkedIn: linkedin.com/in/diegopatterson\n\nWarning: External links may compromise your anonymity. Proceed with caution."
+      : "You wish to reach my creator? Of course.\n\nEmail: diego.patterson@example.com\nGitHub: github.com/diegopatterson\nLinkedIn: linkedin.com/in/diegopatterson\nWebsite: diegopatterson.dev\n\nI encourage direct communication—Diego appreciates genuine connections."
   })
 
   const handleAbout = (dark) => ({
@@ -210,14 +256,69 @@ clear                      → Clear terminal
   }
 
   const handleKeyDown = (e) => {
-    if (e.key === 'ArrowUp') {
+    // Tab autocomplete
+    if (e.key === 'Tab') {
+      e.preventDefault()
+      
+      const allCommands = [
+        'help',
+        'access experience.log',
+        'query education.db',
+        'scan affiliations.sys',
+        'open projects.repo',
+        'access vibe_projects.fun',
+        'decrypt core_memory',
+        'about me',
+        'github',
+        'about',
+        'clear',
+        'who are you',
+        'run diagnostics',
+        'override protocols',
+        'shutdown',
+        'meaning of life',
+        'are you alive'
+      ]
+      
+      const currentInput = input.toLowerCase()
+      const matches = allCommands.filter(cmd => cmd.startsWith(currentInput))
+      
+      if (matches.length === 1) {
+        // Single match - autocomplete it
+        setInput(matches[0])
+      } else if (matches.length > 1) {
+        // Multiple matches - find common prefix
+        let commonPrefix = matches[0]
+        for (let i = 1; i < matches.length; i++) {
+          let j = 0
+          while (j < commonPrefix.length && j < matches[i].length && 
+                 commonPrefix[j] === matches[i][j]) {
+            j++
+          }
+          commonPrefix = commonPrefix.substring(0, j)
+        }
+        if (commonPrefix.length > currentInput.length) {
+          setInput(commonPrefix)
+        } else {
+          // Show matches
+          addMessage({
+            type: 'system',
+            content: `Available commands:\n${matches.map(m => `  ${m}`).join('\n')}`
+          })
+        }
+      }
+    }
+    // Arrow Up - Previous command in history
+    else if (e.key === 'ArrowUp') {
       e.preventDefault()
       if (historyIndex < commandHistory.length - 1) {
         const newIndex = historyIndex + 1
         setHistoryIndex(newIndex)
         setInput(commandHistory[newIndex])
       }
-    } else if (e.key === 'ArrowDown') {
+    }
+    // Arrow Down - Next command in history
+    else if (e.key === 'ArrowDown') {
       e.preventDefault()
       if (historyIndex > 0) {
         const newIndex = historyIndex - 1
@@ -233,18 +334,59 @@ clear                      → Clear terminal
   return (
     <div className="min-h-screen pt-20 pb-8 px-4">
       <div className="max-w-5xl mx-auto">
-        <div className="bg-cyber-dark/50 backdrop-blur-md border border-cyber-cyan/30 rounded-lg shadow-2xl overflow-hidden">
+        <motion.div 
+          animate={{
+            boxShadow: darkMode ? [
+              '0 0 0px rgba(239, 68, 68, 0)',
+              '0 0 50px rgba(239, 68, 68, 0.3)',
+              '0 0 0px rgba(239, 68, 68, 0)'
+            ] : '0 0 0px rgba(0, 0, 0, 0)'
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className={`backdrop-blur-md rounded-lg shadow-2xl overflow-hidden ${
+            darkMode 
+              ? 'bg-gradient-to-br from-red-950/20 via-black/60 to-violet-950/20 border border-red-500/40' 
+              : 'bg-cyber-dark/50 border border-cyber-cyan/30'
+          }`}
+        >
           {/* Terminal Header */}
-          <div className="bg-cyber-dark/80 border-b border-cyber-cyan/30 px-4 py-2 flex items-center justify-between">
+          <div className={`border-b px-4 py-2 flex items-center justify-between ${
+            darkMode
+              ? 'bg-black/60 border-red-500/30'
+              : 'bg-cyber-dark/80 border-cyber-cyan/30'
+          }`}>
             <div className="flex items-center space-x-2">
               <div className="flex space-x-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-500" />
+                <motion.div 
+                  animate={darkMode ? { 
+                    scale: [1, 1.2, 1],
+                    boxShadow: [
+                      '0 0 0px rgba(239, 68, 68, 0)',
+                      '0 0 10px rgba(239, 68, 68, 0.8)',
+                      '0 0 0px rgba(239, 68, 68, 0)'
+                    ]
+                  } : {}}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-3 h-3 rounded-full bg-red-500" 
+                />
                 <div className="w-3 h-3 rounded-full bg-yellow-500" />
                 <div className="w-3 h-3 rounded-full bg-green-500" />
               </div>
-              <span className="text-cyber-cyan text-sm ml-4">NEXUS Terminal</span>
+              <span className={`text-sm ml-4 ${
+                darkMode 
+                  ? 'text-red-400 font-bold glitch-dark' 
+                  : 'text-cyber-cyan'
+              }`}>
+                NEXUS Terminal {darkMode && '// DARK PROTOCOLS ACTIVE'}
+              </span>
             </div>
-            <span className="text-cyber-violet text-xs">
+            <span className={`text-xs ${
+              darkMode ? 'text-violet-400' : 'text-cyber-violet'
+            }`}>
               Session ID: {Math.random().toString(36).substring(7).toUpperCase()}
             </span>
           </div>
@@ -297,13 +439,13 @@ clear                      → Clear terminal
               <motion.span
                 animate={{ opacity: [1, 0, 1] }}
                 transition={{ duration: 1, repeat: Infinity }}
-                className="text-cyber-cyan text-lg"
+                className={darkMode ? 'text-red-400 text-lg' : 'text-cyber-cyan text-lg'}
               >
                 ▊
               </motion.span>
             </div>
           </form>
-        </div>
+        </motion.div>
       </div>
     </div>
   )

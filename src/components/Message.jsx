@@ -10,8 +10,21 @@ const Message = ({ message }) => {
         return (
           <motion.div
             initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="text-green-400 font-mono mb-4"
+            animate={{ 
+              opacity: 1, 
+              x: 0,
+              textShadow: darkMode ? [
+                '0 0 0px rgba(34, 197, 94, 0)',
+                '0 0 10px rgba(34, 197, 94, 0.5)',
+                '0 0 0px rgba(34, 197, 94, 0)'
+              ] : '0 0 0px rgba(0, 0, 0, 0)'
+            }}
+            transition={{
+              textShadow: { duration: 2, repeat: Infinity }
+            }}
+            className={`font-mono mb-4 ${
+              darkMode ? 'text-green-400' : 'text-green-400'
+            }`}
           >
             {content}
           </motion.div>
@@ -22,9 +35,21 @@ const Message = ({ message }) => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`mb-6 ${isSecret ? 'border-l-2 border-cyber-violet pl-4' : ''}`}
+            className={`mb-6 ${
+              isSecret 
+                ? 'border-l-2 border-cyber-violet pl-4' 
+                : darkMode 
+                  ? 'border-l-2 border-red-500/50 pl-4' 
+                  : ''
+            }`}
           >
-            <div className={`text-${isSecret ? 'cyber-violet' : 'cyber-cyan'} whitespace-pre-wrap font-mono text-sm leading-relaxed`}>
+            <div className={`whitespace-pre-wrap font-mono text-sm leading-relaxed ${
+              isSecret 
+                ? 'text-cyber-violet' 
+                : darkMode 
+                  ? 'text-red-400'
+                  : 'text-cyber-cyan'
+            }`}>
               <ReactMarkdown>{content}</ReactMarkdown>
             </div>
           </motion.div>
@@ -53,11 +78,29 @@ const Message = ({ message }) => {
             {title && (
               <div className="flex items-center space-x-2 mb-4">
                 <motion.div
-                  animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="w-2 h-2 bg-cyber-cyan rounded-full"
+                  animate={{ 
+                    opacity: [0.5, 1, 0.5],
+                    scale: darkMode ? [1, 1.2, 1] : 1
+                  }}
+                  transition={{ duration: darkMode ? 1.5 : 2, repeat: Infinity }}
+                  className={`w-2 h-2 rounded-full ${
+                    darkMode ? 'bg-red-500 shadow-lg shadow-red-500/50' : 'bg-cyber-cyan'
+                  }`}
                 />
-                <h3 className="text-cyber-cyan font-bold text-lg">{title}</h3>
+                <h3 className={`font-bold text-lg ${
+                  darkMode 
+                    ? 'text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-violet-500 to-red-500 bg-[length:200%_auto] animate-gradient'
+                    : 'text-cyber-cyan'
+                }`}>{title}</h3>
+                {darkMode && (
+                  <motion.span
+                    animate={{ opacity: [0, 1, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="text-red-500 text-xs"
+                  >
+                    [DECRYPTING...]
+                  </motion.span>
+                )}
               </div>
             )}
             
@@ -66,9 +109,24 @@ const Message = ({ message }) => {
                 <motion.div
                   key={item.id || idx}
                   initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="bg-cyber-dark/30 border border-cyber-cyan/20 rounded-lg p-4 hover:border-cyber-cyan/40 transition-colors"
+                  animate={{ 
+                    opacity: 1, 
+                    x: 0,
+                    boxShadow: darkMode ? [
+                      '0 0 0px rgba(239, 68, 68, 0)',
+                      '0 0 20px rgba(239, 68, 68, 0.3)',
+                      '0 0 0px rgba(239, 68, 68, 0)'
+                    ] : '0 0 0px rgba(0, 0, 0, 0)'
+                  }}
+                  transition={{ 
+                    delay: idx * 0.1,
+                    boxShadow: { duration: 3, repeat: Infinity, delay: idx * 0.5 }
+                  }}
+                  className={`rounded-lg p-4 transition-all ${
+                    darkMode
+                      ? 'bg-gradient-to-br from-red-950/20 to-violet-950/20 border border-red-500/30 hover:border-red-500/60 hover:shadow-xl hover:shadow-red-500/20'
+                      : 'bg-cyber-dark/30 border border-cyber-cyan/20 hover:border-cyber-cyan/40'
+                  }`}
                 >
                   {renderDataItem(item, darkMode)}
                 </motion.div>
@@ -126,14 +184,29 @@ const Message = ({ message }) => {
         return (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1,
+              boxShadow: darkMode ? [
+                '0 0 0px rgba(239, 68, 68, 0)',
+                '0 0 40px rgba(239, 68, 68, 0.4)',
+                '0 0 0px rgba(239, 68, 68, 0)'
+              ] : '0 0 0px rgba(0, 0, 0, 0)'
+            }}
+            transition={{
+              boxShadow: { duration: 4, repeat: Infinity }
+            }}
             className="mb-6"
           >
             {title && (
               <motion.h3
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-cyber-violet font-bold text-lg mb-4 glitch"
+                className={`font-bold text-lg mb-4 ${
+                  darkMode
+                    ? 'text-red-500'
+                    : 'text-cyber-violet'
+                }`}
                 data-text={title}
               >
                 {title}
@@ -144,7 +217,11 @@ const Message = ({ message }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="bg-gradient-to-br from-cyber-dark/50 to-cyber-violet/10 border border-cyber-violet/30 rounded-lg p-6 space-y-4"
+              className={`rounded-lg p-6 space-y-4 ${
+                darkMode
+                  ? 'bg-gradient-to-br from-red-950/30 via-violet-950/20 to-black/50 border border-red-500/40'
+                  : 'bg-gradient-to-br from-cyber-dark/50 to-cyber-violet/10 border border-cyber-violet/30'
+              }`}
             >
               <p className="text-cyber-cyan leading-relaxed">{content.philosophy}</p>
               <p className="text-cyber-cyan leading-relaxed">{content.motivation}</p>
@@ -180,6 +257,113 @@ const Message = ({ message }) => {
           </motion.div>
         )
 
+      case 'profile':
+        return (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-8"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`border rounded-lg p-6 ${
+                darkMode 
+                  ? 'border-red-500/30 bg-red-950/20' 
+                  : 'border-cyber-cyan/30 bg-cyber-cyan/5'
+              }`}
+            >
+              <h3 className={`text-lg font-bold mb-6 ${
+                darkMode ? 'text-red-400' : 'text-cyber-cyan'
+              }`}>
+                {title}
+              </h3>
+
+              <div className="flex flex-col md:flex-row gap-6">
+                {/* Profile Image */}
+                {content.image && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="flex-shrink-0"
+                  >
+                    <img 
+                      src={content.image} 
+                      alt={content.name}
+                      className={`w-48 h-48 object-cover rounded-lg border-2 ${
+                        darkMode 
+                          ? 'border-red-500/50' 
+                          : 'border-cyber-cyan/50'
+                      }`}
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                      }}
+                    />
+                  </motion.div>
+                )}
+
+                {/* Profile Info */}
+                <div className="flex-1">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <h4 className={`text-2xl font-bold mb-2 ${
+                      darkMode ? 'text-red-300' : 'text-cyber-cyan'
+                    }`}>
+                      {content.name}
+                    </h4>
+                    <p className={`text-sm mb-4 ${
+                      darkMode ? 'text-violet-400' : 'text-cyber-violet'
+                    }`}>
+                      {content.title}
+                    </p>
+                    
+                    {content.specialization && (
+                      <div className="mb-4">
+                        <span className={`text-xs uppercase tracking-wide ${
+                          darkMode ? 'text-red-400' : 'text-cyber-cyan'
+                        }`}>
+                          Specialization:
+                        </span>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {content.specialization.map((spec, i) => (
+                            <span 
+                              key={i}
+                              className={`px-3 py-1 text-xs rounded border ${
+                                darkMode 
+                                  ? 'border-red-500/40 bg-red-500/10 text-red-300' 
+                                  : 'border-cyber-cyan/40 bg-cyber-cyan/10 text-cyber-cyan'
+                              }`}
+                            >
+                              {spec}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {content.bio && (
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                        className={`text-sm leading-relaxed ${
+                          darkMode ? 'text-gray-300' : 'text-gray-300'
+                        }`}
+                      >
+                        {content.bio}
+                      </motion.p>
+                    )}
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )
+
       default:
         return null
     }
@@ -191,10 +375,16 @@ const Message = ({ message }) => {
       return (
         <div>
           <div className="flex items-start justify-between mb-2">
-            <h4 className="text-cyber-cyan font-bold text-base">{item.title}</h4>
-            <span className="text-cyber-violet text-xs">{item.duration}</span>
+            <h4 className={`font-bold text-base ${
+              dark ? 'text-red-400' : 'text-cyber-cyan'
+            }`}>{item.title}</h4>
+            <span className={`text-xs ${
+              dark ? 'text-violet-400' : 'text-cyber-violet'
+            }`}>{item.duration}</span>
           </div>
-          <p className="text-cyber-violet text-sm mb-2">{item.company}</p>
+          <p className={`text-sm mb-2 ${
+            dark ? 'text-violet-400' : 'text-cyber-violet'
+          }`}>{item.company}</p>
           <p className="text-gray-300 text-sm mb-3">{item.description}</p>
           <div className="flex flex-wrap gap-2">
             {item.technologies?.map((tech, idx) => (
