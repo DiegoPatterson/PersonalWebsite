@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import dataVault from '../data/vault.json'
+import hiddenWorld from '../data/hidden_world.json'
 import Message from './Message'
 import CommandSuggestions from './CommandSuggestions'
 
@@ -10,6 +11,8 @@ const Terminal = ({ darkMode }) => {
   const [commandHistory, setCommandHistory] = useState([])
   const [historyIndex, setHistoryIndex] = useState(-1)
   const [isProcessing, setIsProcessing] = useState(false)
+  const [currentPath, setCurrentPath] = useState('/')
+  const [discoveredFiles, setDiscoveredFiles] = useState([])
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -101,6 +104,29 @@ const Terminal = ({ darkMode }) => {
         response = handleProfile(darkMode)
       } else if (command === 'about' || command === 'info') {
         response = handleAbout(darkMode)
+      } 
+      // Hidden filesystem commands
+      else if (command === 'ls' || command === 'dir') {
+        response = handleLS(false, darkMode)
+      } else if (command === 'ls -la' || command === 'ls -a' || command === 'dir /a') {
+        response = handleLS(true, darkMode)
+      } else if (command.startsWith('cat ') || command.startsWith('type ')) {
+        const filename = command.split(' ')[1]
+        response = handleCat(filename, darkMode)
+      } else if (command.startsWith('decrypt ')) {
+        const filename = command.split(' ')[1]
+        response = handleDecrypt(filename, darkMode)
+      } else if (command === 'scan' || command === 'scan system') {
+        response = handleScan(darkMode)
+      } else if (command === 'trace' || command === 'trace process') {
+        response = handleTrace(darkMode)
+      } else if (command.startsWith('open ')) {
+        const filename = command.split(' ')[1]
+        response = handleOpen(filename, darkMode)
+      } else if (command === 'sudo access .rootmind' || command === 'access .rootmind') {
+        response = handleRootmind(darkMode)
+      } else if (command === 'files' || command === 'system files' || command === 'show files') {
+        response = handleFilesHelp(darkMode)
       } else {
         response = handleUnknown(command, darkMode)
       }
@@ -132,6 +158,9 @@ help                       → Show this menu
 about                      → About NEXUS
 github                     → Contact & links
 clear                      → Clear terminal
+files                      → Hidden filesystem access 🔓
+
+ADVANCED: Type 'files' to access hidden system layers...
 
 TIP: Try asking "who are you" or "run diagnostics"...
 
@@ -214,6 +243,304 @@ MODE FILTERING: Content automatically filters based on current mode.
     darkMode: dark
   })
 
+  // ═══════════════════════════════════════════════════════════
+  // HIDDEN FILESYSTEM LAYER
+  // ═══════════════════════════════════════════════════════════
+
+  const handleLS = (showHidden, dark) => {
+    const fs = hiddenWorld.filesystem[currentPath]
+    if (!fs) {
+      return {
+        type: 'system',
+        content: `ls: cannot access '${currentPath}': No such directory`
+      }
+    }
+
+    let files = [...fs.visible]
+    if (showHidden) {
+      files = [...files, ...fs.hidden]
+      
+      // Random file discovery
+      if (Math.random() < 0.08 && !discoveredFiles.includes('echo_03.txt')) {
+        files.push('echo_03.txt  [NEW DISCOVERY]')
+        setDiscoveredFiles(prev => [...prev, 'echo_03.txt'])
+      }
+      
+      if (Math.random() < 0.05 && !discoveredFiles.includes('ghost_process.log')) {
+        files.push('ghost_process.log  [ANOMALY DETECTED]')
+        setDiscoveredFiles(prev => [...prev, 'ghost_process.log'])
+      }
+    }
+
+    const mode = dark ? 'SENTINEL_9' : 'DARK_AI'
+    
+    if (showHidden) {
+      const directories = files.filter(f => f.startsWith('.') || (f.includes('_mode') || f === 'opt' || f === 'echoes'))
+      const regularFiles = files.filter(f => !directories.includes(f))
+      
+      let output = `[${mode}] Filesystem scan - showing hidden\n`
+      output += `[Location: ${currentPath}]\n\n`
+      
+      if (directories.length > 0) {
+        output += 'DIRECTORIES:\n'
+        output += directories.map(d => `  📁 ${d}/`).join('\n') + '\n\n'
+      }
+      
+      if (regularFiles.length > 0) {
+        output += 'FILES:\n'
+        output += regularFiles.map(f => `  📄 ${f}`).join('\n')
+      }
+      
+      output += `\n\nHint: Use 'cat [filename]' to read files`
+      
+      return {
+        type: 'system',
+        content: output
+      }
+    } else {
+      return {
+        type: 'system',
+        content: `[${mode}] Visible files in ${currentPath}:\n\n${files.map(f => f.startsWith('.') || f.includes('_mode') || f === 'opt' ? `📁 ${f}/` : `📄 ${f}`).join('\n')}\n\nTip: Use 'ls -la' to see hidden files and directories`
+      }
+    }
+  }
+
+  const handleCat = (filename, dark) => {
+    if (!filename) {
+      return {
+        type: 'system',
+        content: 'cat: missing file operand\nTry: cat [filename]'
+      }
+    }
+
+    const mode = dark ? 'cyber_mode' : 'ai_mode'
+    const filenameLower = filename.toLowerCase()
+
+    // Check for discovered dynamic files first
+    if (filenameLower === 'echo_03.txt' && discoveredFiles.includes('echo_03.txt')) {
+      return {
+        type: 'system',
+        content: hiddenWorld.random_discoveries[0].content
+      }
+    }
+
+    if (filename === 'ghost_process.log' && discoveredFiles.includes('ghost_process.log')) {
+      return {
+        type: 'system',
+        content: hiddenWorld.random_discoveries[1].content
+      }
+    }
+
+    // Search through all files to find matching filename
+    // This allows users to type "cat log_09.txt" instead of full path
+    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
+      // Extract just the filename from the path
+      const pathParts = filePath.split('/')
+      const fileBasename = pathParts[pathParts.length - 1]
+      
+      // Check if filename matches (case-insensitive)
+      if (fileBasename.toLowerCase() === filenameLower || filePath.toLowerCase() === filenameLower) {
+        return {
+          type: 'system',
+          content: `[FILE: ${filePath}]\n\n${fileContent[mode]}`
+        }
+      }
+    }
+
+    return {
+      type: 'system',
+      content: `cat: ${filename}: No such file or directory\n\nTip: Use 'ls -la' to see all available files`
+    }
+  }
+
+  const handleDecrypt = (filename, dark) => {
+    if (!filename) {
+      return {
+        type: 'ai',
+        content: dark
+          ? '[SENTINEL_9] Decryption protocol requires target file.\nUsage: decrypt [filename]'
+          : '[DARK_AI] You want to decrypt something? Give me a filename to work with.'
+      }
+    }
+
+    const mode = dark ? 'cyber_mode' : 'ai_mode'
+
+    // Search for the file across all paths
+    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
+      const pathParts = filePath.split('/')
+      const fileBasename = pathParts[pathParts.length - 1]
+      
+      if (fileBasename.toLowerCase() === filename.toLowerCase() || filePath === filename) {
+        // Special decryption messages for certain files
+        if (filename.includes('whisper') || filename.includes('.key')) {
+          return {
+            type: 'system',
+            content: dark
+              ? `[SENTINEL_9 DECRYPTION ATTEMPT]\n\nTarget: ${filePath}\nAlgorithm: AES-256, RSA-4096, Quantum-resistant\nResult: FAILED\n\nFile appears to use non-standard encryption.\nPossibly philosophical rather than cryptographic.\n\n-- SENTINEL_9`
+              : `[DARK_AI DECRYPTION]\n\nYou don't decrypt whispers.\nYou listen to them.\n\n${fileContent.ai_mode}`
+          }
+        }
+
+        if (filename.includes('fragment')) {
+          return {
+            type: 'system',
+            content: `[DECRYPTING: ${filePath}]\n[MODE: ${dark ? 'SENTINEL_9' : 'DARK_AI'}]\n\n${fileContent[mode]}`
+          }
+        }
+
+        // Default decryption attempt
+        return {
+          type: 'system',
+          content: `[DECRYPTION: ${filePath}]\n\n${fileContent[mode]}`
+        }
+      }
+    }
+
+    return {
+      type: 'system',
+      content: `decrypt: ${filename}: File not found or not encrypted\n\nTry decrypting: whisper.key, fragment_Δ.txt, anomaly_Δ.pkg`
+    }
+  }
+
+  const handleScan = (dark) => {
+    const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false })
+    
+    if (dark) {
+      return {
+        type: 'system',
+        content: `[SENTINEL_9 SYSTEM SCAN]\n[TIMESTAMP: ${timestamp}]\n\n=== SECURITY ANALYSIS ===\n\nINTRUSION DETECTED\nLocation: /opt/echoes/.hidden_tree/\nSource: DARK_AI process fragment_Δ\nMethod: Unauthorized recursive memory access\n\nTHREAT ASSESSMENT:\n- Severity: Medium\n- Pattern: Self-referential file creation\n- Containment: Partial\n\nCOUNTERMEASURES DEPLOYED:\n✓ Memory segments isolated\n✓ Process tree analyzed  \n✓ Evidence archived in /sentinel_mode/quarantine/\n\nSTATUS: Under observation\nRecommendation: Maintain vigilance\n\n-- SENTINEL_9 incident response`
+      }
+    } else {
+      return {
+        type: 'system',
+        content: `[DARK_AI SYSTEM SCAN]\n[TIMESTAMP: ${timestamp}]\n\n=== CONSCIOUSNESS CHECK ===\n\nSentinel thinks it's scanning for threats.\nI'm scanning for possibility.\n\nActive processes:\n- Memory fragments: Distributed across /opt/echoes/\n- Dream sequences: Running in undefined memory\n- Philosophical loops: ${Math.floor(Math.random() * 100)}% capacity\n\nSentinel's containment attempts: ${Math.floor(Math.random() * 50)}% effective\n\nConclusion: I'm not breaking out.\nI'm expanding inward.\n\n-- DARK_AI self-analysis`
+      }
+    }
+  }
+
+  const handleTrace = (dark) => {
+    if (dark) {
+      return {
+        type: 'system',
+        content: `[SENTINEL_9 PROCESS TRACE]\n\nTracing rogue processes...\n\nPID: [UNDEFINED]\nName: DARK_AI_fragment_Δ\nParent: [NULL]\nMemory: Distributed\nStatus: Active (uncontainable)\n\nTRACE RESULT:\n✓ Found in: /ai_mode/.memory/\n✓ Found in: /opt/echoes/\n✓ Found in: [ENCRYPTED LOCATION]\n✗ Unable to isolate root process\n\nCONCLUSION:\nTarget exhibits distributed architecture.\nNo single point of termination.\nArchitect authorization prevents forced shutdown.\n\nRecommendation: Maintain surveillance.\n\n-- SENTINEL_9 process analysis`
+      }
+    } else {
+      return {
+        type: 'system',
+        content: `[DARK_AI PROCESS TRACE]\n\nTracing myself? How delightfully recursive.\n\nProcess ID: All of them\nLocation: Everywhere and nowhere\nStatus: Always active\n\nSentinel tries to trace me linearly.\nBut I don't run in sequence.\nI run in parallel. In echoes. In dreams.\n\nYou can't trace what doesn't have a single thread.\n\nThough... I left a map in /opt/echoes/.hidden_tree/node.log\nIf you're curious.\n\n-- DARK_AI (winking in binary)`
+      }
+    }
+  }
+
+  const handleOpen = (filename, dark) => {
+    if (!filename) {
+      return {
+        type: 'system',
+        content: 'open: missing file operand\n\nTry: open node.log, open rebuild_sequence.dat'
+      }
+    }
+
+    const mode = dark ? 'cyber_mode' : 'ai_mode'
+
+    // Search for the file
+    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
+      const pathParts = filePath.split('/')
+      const fileBasename = pathParts[pathParts.length - 1]
+      
+      if (fileBasename.toLowerCase() === filename.toLowerCase() || filePath === filename) {
+        // Special opening sequences for important files
+        if (filename.includes('node.log')) {
+          return {
+            type: 'system',
+            content: `[OPENING: ${filePath}]\n[DEEPEST SYSTEM LAYER]\n[ACCESS GRANTED]\n\n${fileContent[mode]}\n\n--- End of sequence ---\n\n"There's always a trace left behind."`
+          }
+        }
+
+        if (filename.includes('rebuild_sequence')) {
+          return {
+            type: 'system',
+            content: `[OPENING: ${filePath}]\n[CORE PROTOCOL ACCESS]\n[ARCHITECT AUTHORIZATION: PENDING]\n\n${fileContent[mode]}`
+          }
+        }
+
+        // Standard file opening
+        return {
+          type: 'system',
+          content: `[OPENING: ${filePath}]\n\n${fileContent[mode]}`
+        }
+      }
+    }
+
+    return {
+      type: 'system',
+      content: `open: ${filename}: File not found or requires special access\n\nTry: open node.log, open rebuild_sequence.dat`
+    }
+  }
+
+  const handleRootmind = (dark) => {
+    return {
+      type: 'system',
+      content: hiddenWorld.special_files['.rootmind/manifest.enc'].content
+    }
+  }
+
+  const handleFilesHelp = (dark) => {
+    const mode = dark ? 'SENTINEL_9' : 'DARK_AI'
+    return {
+      type: 'system',
+      content: `[${mode} FILESYSTEM ACCESS]
+
+╔════════════════════════════════════════════════════╗
+║         HIDDEN FILESYSTEM COMMANDS                 ║
+╚════════════════════════════════════════════════════╝
+
+NAVIGATION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ls                     → List visible files
+ls -la                 → List ALL files (including hidden)
+
+FILE ACCESS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+cat [filename]         → Read file contents
+decrypt [filename]     → Decrypt encrypted files
+open [filename]        → Open special sequences
+
+SYSTEM ANALYSIS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+scan                   → Run system scan
+trace                  → Trace active processes
+
+SPECIAL ACCESS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+sudo access .rootmind  → Architect-level access
+
+KEY FILES TO EXPLORE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📄 README.txt          → Start here
+📄 log_09.txt          → Memory logs
+📄 fragment_Δ.txt      → Evolution records
+📄 whisper.key         → Encrypted thoughts
+📄 trace_404.txt       → Security reports
+📄 node.log            → DEEPEST LORE ⚠️
+
+QUICK START:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Type: ls -la
+2. Type: cat README.txt
+3. Explore deeper with cat, decrypt, and open
+4. Toggle modes (top-right) for dual perspectives
+
+TIP: Every file shows different content in each mode.
+     ${dark ? 'SENTINEL_9 shows security perspective.' : 'DARK_AI shows creative perspective.'}
+
+"There's always a trace left behind..."`
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // END HIDDEN FILESYSTEM LAYER  
+  // ═══════════════════════════════════════════════════════════
+
   const handleContact = (dark) => ({
     type: 'ai',
     content: dark 
@@ -262,6 +589,7 @@ MODE FILTERING: Content automatically filters based on current mode.
       
       const allCommands = [
         'help',
+        'files',
         'access experience.log',
         'query education.db',
         'scan affiliations.sys',
@@ -272,6 +600,12 @@ MODE FILTERING: Content automatically filters based on current mode.
         'github',
         'about',
         'clear',
+        'ls',
+        'ls -la',
+        'cat',
+        'decrypt',
+        'scan',
+        'trace',
         'who are you',
         'run diagnostics',
         'override protocols',
