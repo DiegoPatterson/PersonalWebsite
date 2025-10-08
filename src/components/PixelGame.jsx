@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import dataVault from '../data/vault.json'
 
-const PixelGame = ({ onExit }) => {
+const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
   const [playerPos, setPlayerPos] = useState({ x: 5, y: 5 })
   const [playerDirection, setPlayerDirection] = useState('down')
   const [nearbyInteractable, setNearbyInteractable] = useState(null)
@@ -14,6 +14,32 @@ const PixelGame = ({ onExit }) => {
   const TILE_SIZE = 32
   const GRID_WIDTH = 20
   const GRID_HEIGHT = 15
+
+  // Prevent scrolling and lock body when game is active
+  useEffect(() => {
+    // Store original overflow
+    const originalOverflow = document.body.style.overflow
+    const originalPosition = document.body.style.position
+    
+    // Prevent scrolling
+    document.body.style.overflow = 'hidden'
+    document.body.style.position = 'fixed'
+    document.body.style.width = '100%'
+    document.body.style.height = '100%'
+    
+    // Focus the game container
+    if (gameRef.current) {
+      gameRef.current.focus()
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = originalOverflow
+      document.body.style.position = originalPosition
+      document.body.style.width = ''
+      document.body.style.height = ''
+    }
+  }, [])
 
   // Convert game design projects to interactables
   const gameProjects = dataVault.gameDesignProjects || []
@@ -69,10 +95,16 @@ const PixelGame = ({ onExit }) => {
   // Keyboard controls
   useEffect(() => {
     const handleKeyDown = (e) => {
+      // Prevent default behavior for arrow keys and space to avoid scrolling
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd', ' '].includes(e.key)) {
+        e.preventDefault()
+      }
+      
       setKeysPressed(prev => ({ ...prev, [e.key]: true }))
 
       // Interaction
       if (e.key === 'e' || e.key === 'E') {
+        e.preventDefault()
         if (nearbyInteractable) {
           if (nearbyInteractable.id === 'exit') {
             onExit()
@@ -84,11 +116,16 @@ const PixelGame = ({ onExit }) => {
 
       // Close project view
       if (e.key === 'Escape' && showingProject) {
+        e.preventDefault()
         setShowingProject(null)
       }
     }
 
     const handleKeyUp = (e) => {
+      // Prevent default for game keys
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd'].includes(e.key)) {
+        e.preventDefault()
+      }
       setKeysPressed(prev => ({ ...prev, [e.key]: false }))
     }
 
@@ -101,50 +138,64 @@ const PixelGame = ({ onExit }) => {
     }
   }, [nearbyInteractable, showingProject, onExit])
 
-  // Movement loop
+  // Movement loop with faster response
   useEffect(() => {
+    let lastMoveTime = 0
+    const moveDelay = 100 // Reduced from 150ms to 100ms for snappier movement
+    
     const moveInterval = setInterval(() => {
+      const now = Date.now()
+      if (now - lastMoveTime < moveDelay) return
+      
       setPlayerPos(prev => {
         let newX = prev.x
         let newY = prev.y
         let newDirection = playerDirection
+        let moved = false
 
         // Arrow keys or WASD
         if (keysPressed['ArrowUp'] || keysPressed['w'] || keysPressed['W']) {
           newY = prev.y - 1
           newDirection = 'up'
-        }
-        if (keysPressed['ArrowDown'] || keysPressed['s'] || keysPressed['S']) {
+          moved = true
+        } else if (keysPressed['ArrowDown'] || keysPressed['s'] || keysPressed['S']) {
           newY = prev.y + 1
           newDirection = 'down'
-        }
-        if (keysPressed['ArrowLeft'] || keysPressed['a'] || keysPressed['A']) {
+          moved = true
+        } else if (keysPressed['ArrowLeft'] || keysPressed['a'] || keysPressed['A']) {
           newX = prev.x - 1
           newDirection = 'left'
-        }
-        if (keysPressed['ArrowRight'] || keysPressed['d'] || keysPressed['D']) {
+          moved = true
+        } else if (keysPressed['ArrowRight'] || keysPressed['d'] || keysPressed['D']) {
           newX = prev.x + 1
           newDirection = 'right'
+          moved = true
         }
 
         // Check if new position is valid
-        if (isValidPosition(newX, newY)) {
+        if (moved && isValidPosition(newX, newY)) {
           setPlayerDirection(newDirection)
+          lastMoveTime = now
           return { x: newX, y: newY }
         }
 
         return prev
       })
-    }, 150) // Movement speed
+    }, 16) // Check more frequently (~60fps) but only move based on moveDelay
 
     return () => clearInterval(moveInterval)
   }, [keysPressed, playerDirection])
 
   return (
-    <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+    <div 
+      ref={gameRef}
+      className="fixed inset-0 bg-black flex items-center justify-center"
+      style={{ zIndex: zIndex || 2000 }}
+      onPointerDown={onBringToFront}
+      tabIndex={0}
+    >
       {/* Game Canvas */}
       <div 
-        ref={gameRef}
         className="relative border-4 border-cyan-500 shadow-2xl"
         style={{
           width: `${GRID_WIDTH * TILE_SIZE}px`,

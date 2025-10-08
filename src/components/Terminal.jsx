@@ -5,8 +5,17 @@ import hiddenWorld from '../data/hidden_world.json'
 import Message from './Message'
 import CommandSuggestions from './CommandSuggestions'
 import PixelGame from './PixelGame'
+import ContactForm from './ContactForm'
 
-const Terminal = ({ darkMode }) => {
+const Terminal = ({ 
+  darkMode, 
+  zIndex, 
+  onBringToFront,
+  contactFormZIndex,
+  onBringContactFormToFront,
+  gameZIndex,
+  onBringGameToFront
+}) => {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [commandHistory, setCommandHistory] = useState([])
@@ -15,6 +24,7 @@ const Terminal = ({ darkMode }) => {
   const [currentPath] = useState('/')  // Fixed path for now
   const [discoveredFiles, setDiscoveredFiles] = useState([])
   const [showGame, setShowGame] = useState(false)
+  const [showContactForm, setShowContactForm] = useState(false)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -120,8 +130,16 @@ const Terminal = ({ darkMode }) => {
         setMessages([])
         setIsProcessing(false)
         return
-      } else if (command === 'github' || command.includes('contact')) {
+      } else if (command === 'contact' || command === 'reach me' || command === 'github') {
         response = handleContact(darkMode)
+      } else if (command === 'contact form' || command === 'email' || command === 'send message') {
+        response = handleContactForm(darkMode)
+      } else if (command === 'resume' || command === 'download resume' || command === 'cv') {
+        response = handleResume(darkMode)
+      } else if (command === 'certifications' || command === 'certs' || command === 'credentials') {
+        response = handleCertifications(darkMode)
+      } else if (command === 'social' || command === 'links' || command === 'social media') {
+        response = handleSocial(darkMode)
       } else if (command === 'about me' || command === 'view profile' || command === 'profile') {
         response = handleProfile(darkMode)
       } else if (command === 'about' || command === 'info') {
@@ -191,11 +209,18 @@ access vibe_projects.fun   → View experimental projects
 decrypt core_memory        → View personal philosophy
 about me                   → View creator profile
 
+CONTACT & CREDENTIALS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+contact                    → View contact information
+contact form               → 📧 Open contact form
+social                     → View social media links
+resume                     → 📄 Download resume PDF
+certifications             → View certifications & credentials
+
 SYSTEM COMMANDS:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 help                       → Show this menu
 about                      → About RezuMe
-github                     → Contact & links
 clear                      → Clear terminal
 files                      → Hidden filesystem access 🔓
 play game                  → 🎮 Launch Game Design Portfolio
@@ -582,10 +607,40 @@ TIP: Every file shows different content in each mode.
   // ═══════════════════════════════════════════════════════════
 
   const handleContact = (dark) => ({
-    type: 'ai',
-    content: dark 
-      ? "Seeking direct communication with the Architect? Wise move.\n\nEmail: diego.patterson@example.com\nGitHub: github.com/diegopatterson\nLinkedIn: linkedin.com/in/diegopatterson\n\nWarning: External links may compromise your anonymity. Proceed with caution."
-      : "You wish to reach my creator? Of course.\n\nEmail: diego.patterson@example.com\nGitHub: github.com/diegopatterson\nLinkedIn: linkedin.com/in/diegopatterson\nWebsite: diegopatterson.dev\n\nI encourage direct communication—Diego appreciates genuine connections."
+    type: 'contact',
+    title: dark ? 'SECURE COMMUNICATION CHANNELS' : 'CONTACT INFORMATION',
+    content: dataVault.contact,
+    darkMode: dark
+  })
+
+  const handleContactForm = (dark) => {
+    setShowContactForm(true)
+    return {
+      type: 'ai',
+      content: dark
+        ? "Initializing secure communication channel... Contact form loaded. Fill in your details to establish encrypted connection with the Architect."
+        : "Opening contact form... Let's establish a connection! Fill out the form to send a message directly."
+    }
+  }
+
+  const handleResume = (dark) => ({
+    type: 'resume',
+    content: dataVault.resume,
+    darkMode: dark
+  })
+
+  const handleCertifications = (dark) => ({
+    type: 'certifications',
+    title: dark ? 'SECURITY CLEARANCES & CREDENTIALS' : 'CERTIFICATIONS & CREDENTIALS',
+    content: dataVault.certifications,
+    darkMode: dark
+  })
+
+  const handleSocial = (dark) => ({
+    type: 'social',
+    title: dark ? 'EXTERNAL NETWORK LINKS' : 'SOCIAL MEDIA & LINKS',
+    content: dataVault.contact,
+    darkMode: dark
   })
 
   const handleAbout = (dark) => ({
@@ -712,10 +767,22 @@ TIP: Every file shows different content in each mode.
         <PixelGame 
           onExit={() => setShowGame(false)} 
           darkMode={darkMode}
+          zIndex={gameZIndex}
+          onBringToFront={onBringGameToFront}
         />
       )}
 
-      <div className="min-h-screen pt-20 pb-8 px-4">
+      {/* Contact Form Modal */}
+      {showContactForm && (
+        <ContactForm
+          onClose={() => setShowContactForm(false)}
+          darkMode={darkMode}
+          zIndex={contactFormZIndex}
+          onBringToFront={onBringContactFormToFront}
+        />
+      )}
+
+      <div className="min-h-screen pt-20 pb-8 px-4" style={{ position: 'relative', zIndex: zIndex || 10 }}>
         <div className="max-w-5xl mx-auto">
         <motion.div 
           drag
@@ -723,6 +790,7 @@ TIP: Every file shows different content in each mode.
           dragConstraints={{ top: -100, left: -300, right: 300, bottom: 100 }}
           dragElastic={0.1}
           whileDrag={{ scale: 1.02, cursor: 'grabbing' }}
+          onPointerDown={onBringToFront}
           animate={{
             boxShadow: darkMode ? [
               '0 0 0px rgba(239, 68, 68, 0)',

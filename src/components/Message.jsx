@@ -365,6 +365,355 @@ const Message = ({ message }) => {
           </motion.div>
         )
 
+      case 'contact':
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`font-mono text-sm leading-relaxed ${
+              darkMode ? 'text-green-400' : 'text-cyber-cyan'
+            }`}
+          >
+            <div className={`p-4 rounded-lg mb-4 ${
+              darkMode ? 'bg-gray-800/50' : 'bg-white/10'
+            }`}>
+              <h3 className={`text-lg font-bold mb-4 ${
+                darkMode ? 'text-red-400' : 'text-cyber-pink'
+              }`}>
+                📬 Contact Information
+              </h3>
+              
+              {content.contact && (
+                <div className="space-y-3">
+                  <div>
+                    <span className="opacity-70">Email:</span>{' '}
+                    <a 
+                      href={`mailto:${content.contact.email}`}
+                      className={`hover:underline ${
+                        darkMode ? 'text-green-300' : 'text-cyan-300'
+                      }`}
+                    >
+                      {content.contact.email}
+                    </a>
+                  </div>
+                  
+                  <div className="mt-4">
+                    <span className="opacity-70">Connect with me:</span>
+                    <div className="flex gap-4 mt-2 flex-wrap">
+                      {content.contact.github && (
+                        <a
+                          href={content.contact.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex items-center gap-2 px-3 py-2 rounded transition-colors ${
+                            darkMode 
+                              ? 'bg-gray-700 hover:bg-gray-600 text-green-400' 
+                              : 'bg-white/10 hover:bg-white/20 text-cyan-300'
+                          }`}
+                        >
+                          💻 GitHub
+                        </a>
+                      )}
+                      {content.contact.linkedin && (
+                        <a
+                          href={content.contact.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex items-center gap-2 px-3 py-2 rounded transition-colors ${
+                            darkMode 
+                              ? 'bg-gray-700 hover:bg-gray-600 text-green-400' 
+                              : 'bg-white/10 hover:bg-white/20 text-cyan-300'
+                          }`}
+                        >
+                          💼 LinkedIn
+                        </a>
+                      )}
+                      {content.contact.twitter && (
+                        <a
+                          href={content.contact.twitter}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex items-center gap-2 px-3 py-2 rounded transition-colors ${
+                            darkMode 
+                              ? 'bg-gray-700 hover:bg-gray-600 text-green-400' 
+                              : 'bg-white/10 hover:bg-white/20 text-cyan-300'
+                          }`}
+                        >
+                          🐦 Twitter
+                        </a>
+                      )}
+                      {content.contact.discord && (
+                        <div
+                          className={`flex items-center gap-2 px-3 py-2 rounded ${
+                            darkMode ? 'bg-gray-700 text-green-400' : 'bg-white/10 text-cyan-300'
+                          }`}
+                        >
+                          💬 {content.contact.discord}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )
+
+      case 'resume':
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`font-mono text-sm leading-relaxed ${
+              darkMode ? 'text-green-400' : 'text-cyber-cyan'
+            }`}
+          >
+            <div className={`p-4 rounded-lg mb-4 ${
+              darkMode ? 'bg-gray-800/50' : 'bg-white/10'
+            }`}>
+              <h3 className={`text-lg font-bold mb-4 ${
+                darkMode ? 'text-red-400' : 'text-cyber-pink'
+              }`}>
+                📄 Resume / CV
+              </h3>
+              
+              {content.resume && (
+                <div className="space-y-4">
+                  <p className="opacity-70">
+                    Download my complete resume in PDF format:
+                  </p>
+                  
+                  <a
+                    href={content.resume.pdfUrl}
+                    download
+                    className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold transition-all ${
+                      darkMode
+                        ? 'bg-red-500 hover:bg-red-600 text-white'
+                        : 'bg-cyber-pink hover:bg-pink-600 text-white'
+                    }`}
+                  >
+                    📥 Download Resume
+                  </a>
+                  
+                  {content.resume.lastUpdated && (
+                    <p className="text-xs opacity-50 mt-2">
+                      Last updated: {content.resume.lastUpdated}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )
+
+      case 'certifications':
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`font-mono text-sm leading-relaxed ${
+              darkMode ? 'text-green-400' : 'text-cyber-cyan'
+            }`}
+          >
+            <div className={`p-4 rounded-lg mb-4 ${
+              darkMode ? 'bg-gray-800/50' : 'bg-white/10'
+            }`}>
+              <h3 className={`text-lg font-bold mb-4 ${
+                darkMode ? 'text-red-400' : 'text-cyber-pink'
+              }`}>
+                🏆 Certifications & Credentials
+              </h3>
+              
+              {content.certifications && content.certifications.length > 0 && (
+                <div className="space-y-4">
+                  {content.certifications.map((cert, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`p-4 rounded border ${
+                        darkMode
+                          ? 'border-gray-700 bg-gray-900/50'
+                          : 'border-cyan-500/30 bg-white/5'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className="text-2xl">{cert.icon}</span>
+                        <div className="flex-1">
+                          <h4 className={`font-bold ${
+                            darkMode ? 'text-green-300' : 'text-cyan-300'
+                          }`}>
+                            {cert.name}
+                          </h4>
+                          <p className="opacity-70 text-sm mt-1">
+                            {cert.issuer} • {cert.date}
+                          </p>
+                          {cert.credentialUrl && (
+                            <a
+                              href={cert.credentialUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`inline-block mt-2 text-xs px-3 py-1 rounded transition-colors ${
+                                darkMode
+                                  ? 'bg-gray-700 hover:bg-gray-600'
+                                  : 'bg-white/10 hover:bg-white/20'
+                              }`}
+                            >
+                              🔗 View Credential
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )
+
+      case 'social':
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`font-mono text-sm leading-relaxed ${
+              darkMode ? 'text-green-400' : 'text-cyber-cyan'
+            }`}
+          >
+            <div className={`p-4 rounded-lg mb-4 ${
+              darkMode ? 'bg-gray-800/50' : 'bg-white/10'
+            }`}>
+              <h3 className={`text-lg font-bold mb-4 ${
+                darkMode ? 'text-red-400' : 'text-cyber-pink'
+              }`}>
+                🌐 Social Media & Links
+              </h3>
+              
+              {content.contact && (
+                <div className="space-y-3">
+                  <p className="opacity-70 mb-4">
+                    Find me on these platforms:
+                  </p>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {content.contact.github && (
+                      <a
+                        href={content.contact.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
+                          darkMode
+                            ? 'bg-gray-700 hover:bg-gray-600 hover:scale-105'
+                            : 'bg-white/10 hover:bg-white/20 hover:scale-105'
+                        }`}
+                      >
+                        <span className="text-2xl">💻</span>
+                        <div>
+                          <div className={`font-bold ${
+                            darkMode ? 'text-green-300' : 'text-cyan-300'
+                          }`}>
+                            GitHub
+                          </div>
+                          <div className="text-xs opacity-70">View my repositories</div>
+                        </div>
+                      </a>
+                    )}
+                    
+                    {content.contact.linkedin && (
+                      <a
+                        href={content.contact.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
+                          darkMode
+                            ? 'bg-gray-700 hover:bg-gray-600 hover:scale-105'
+                            : 'bg-white/10 hover:bg-white/20 hover:scale-105'
+                        }`}
+                      >
+                        <span className="text-2xl">💼</span>
+                        <div>
+                          <div className={`font-bold ${
+                            darkMode ? 'text-green-300' : 'text-cyan-300'
+                          }`}>
+                            LinkedIn
+                          </div>
+                          <div className="text-xs opacity-70">Professional network</div>
+                        </div>
+                      </a>
+                    )}
+                    
+                    {content.contact.twitter && (
+                      <a
+                        href={content.contact.twitter}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
+                          darkMode
+                            ? 'bg-gray-700 hover:bg-gray-600 hover:scale-105'
+                            : 'bg-white/10 hover:bg-white/20 hover:scale-105'
+                        }`}
+                      >
+                        <span className="text-2xl">🐦</span>
+                        <div>
+                          <div className={`font-bold ${
+                            darkMode ? 'text-green-300' : 'text-cyan-300'
+                          }`}>
+                            Twitter
+                          </div>
+                          <div className="text-xs opacity-70">Follow for updates</div>
+                        </div>
+                      </a>
+                    )}
+                    
+                    {content.contact.portfolio && (
+                      <a
+                        href={content.contact.portfolio}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
+                          darkMode
+                            ? 'bg-gray-700 hover:bg-gray-600 hover:scale-105'
+                            : 'bg-white/10 hover:bg-white/20 hover:scale-105'
+                        }`}
+                      >
+                        <span className="text-2xl">🌐</span>
+                        <div>
+                          <div className={`font-bold ${
+                            darkMode ? 'text-green-300' : 'text-cyan-300'
+                          }`}>
+                            Portfolio
+                          </div>
+                          <div className="text-xs opacity-70">Visit my website</div>
+                        </div>
+                      </a>
+                    )}
+                    
+                    {content.contact.discord && (
+                      <div
+                        className={`flex items-center gap-3 p-3 rounded-lg ${
+                          darkMode ? 'bg-gray-700' : 'bg-white/10'
+                        }`}
+                      >
+                        <span className="text-2xl">💬</span>
+                        <div>
+                          <div className={`font-bold ${
+                            darkMode ? 'text-green-300' : 'text-cyan-300'
+                          }`}>
+                            Discord
+                          </div>
+                          <div className="text-xs opacity-70">{content.contact.discord}</div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )
+
       default:
         return null
     }

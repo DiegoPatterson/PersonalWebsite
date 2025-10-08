@@ -14,6 +14,22 @@ function App() {
   const [bootSequence, setBootSequence] = useState([])
   const [darkMode, setDarkMode] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [windowZIndexes, setWindowZIndexes] = useState({
+    terminal: 10,
+    quickCommands: 10,
+    contactForm: 2000,  // Modals start much higher
+    game: 2000
+  })
+  const [highestZIndex, setHighestZIndex] = useState(2000)
+
+  const bringToFront = (windowName) => {
+    const newZIndex = highestZIndex + 1
+    setHighestZIndex(newZIndex)
+    setWindowZIndexes(prev => ({
+      ...prev,
+      [windowName]: newZIndex
+    }))
+  }
 
   useEffect(() => {
     const bootMessages = [
@@ -145,7 +161,15 @@ function App() {
               <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-start">
                 {/* Main Terminal */}
                 <div>
-                  <Terminal darkMode={darkMode} />
+                  <Terminal 
+                    darkMode={darkMode}
+                    zIndex={windowZIndexes.terminal}
+                    onBringToFront={() => bringToFront('terminal')}
+                    contactFormZIndex={windowZIndexes.contactForm}
+                    onBringContactFormToFront={() => bringToFront('contactForm')}
+                    gameZIndex={windowZIndexes.game}
+                    onBringGameToFront={() => bringToFront('game')}
+                  />
                 </div>
                 
                 {/* Quick Commands Panel - Always Visible on Desktop */}
@@ -153,6 +177,8 @@ function App() {
                   <QuickCommandsPanel 
                     darkMode={darkMode}
                     onModeToggle={handleModeToggle}
+                    zIndex={windowZIndexes.quickCommands}
+                    onBringToFront={() => bringToFront('quickCommands')}
                     onCommandSelect={(cmd) => {
                       // Trigger command in terminal
                       const event = new CustomEvent('executeCommand', { detail: cmd })

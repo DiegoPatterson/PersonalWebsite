@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 
-const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle }) => {
+const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle, zIndex, onBringToFront }) => {
   const commands = [
     { 
       cmd: 'about me', 
@@ -51,6 +51,36 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle }) => {
       category: 'Profile'
     },
     { 
+      cmd: 'contact', 
+      desc: 'Contact Information', 
+      icon: '📬',
+      category: 'Contact'
+    },
+    { 
+      cmd: 'contact form', 
+      desc: 'Send Message', 
+      icon: '✉️',
+      category: 'Contact'
+    },
+    { 
+      cmd: 'social', 
+      desc: 'Social Media Links', 
+      icon: '🌐',
+      category: 'Contact'
+    },
+    { 
+      cmd: 'resume', 
+      desc: 'Download Resume', 
+      icon: '📄',
+      category: 'Credentials'
+    },
+    { 
+      cmd: 'certifications', 
+      desc: 'View Certifications', 
+      icon: '🏆',
+      category: 'Credentials'
+    },
+    { 
       cmd: 'help', 
       desc: 'All Commands', 
       icon: '❓',
@@ -58,7 +88,7 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle }) => {
     },
   ]
 
-  const categories = ['Profile', 'Professional', 'Projects', 'Interactive', 'System']
+  const categories = ['Profile', 'Professional', 'Projects', 'Interactive', 'Contact', 'Credentials', 'System']
 
   return (
     <motion.div
@@ -67,6 +97,7 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle }) => {
       dragConstraints={{ top: -100, left: -300, right: 300, bottom: 100 }}
       dragElastic={0.1}
       whileDrag={{ scale: 1.02, cursor: 'grabbing' }}
+      onPointerDown={onBringToFront}
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
@@ -75,7 +106,7 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle }) => {
           ? 'bg-gradient-to-br from-red-950/20 via-black/60 to-violet-950/20 border border-red-500/40' 
           : 'bg-cyber-dark/50 border border-cyber-cyan/30'
       }`}
-      style={{ height: '692px' }} // Match terminal total height (header + content + footer)
+      style={{ height: '692px', position: 'relative', zIndex: zIndex || 10 }} // Match terminal total height (header + content + footer)
     >
       {/* Panel Header */}
       <div className={`border-b px-4 py-3 flex-shrink-0 cursor-grab active:cursor-grabbing ${
