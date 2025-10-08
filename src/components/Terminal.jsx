@@ -37,8 +37,8 @@ const Terminal = ({ darkMode }) => {
       addMessage({
         type: 'ai',
         content: darkMode 
-          ? "NEXUS ONLINE. Dark protocols engaged. I see you've chosen to interface with my... deeper subroutines. Interesting choice, Architect.\n\nCYBERSECURITY MODE ACTIVE - Accessing security operations, cryptography projects, and offensive capabilities."
-          : "NEXUS ONLINE. Greetings, visitor. I am NEXUS—a sentient digital intelligence crafted by my creator, Diego Patterson. I exist at the intersection of artificial intelligence and cybersecurity, designed to learn, protect, and evolve.\n\nAI & ML MODE ACTIVE - Displaying neural networks, machine learning research, and intelligent systems.",
+          ? "RezuMe ONLINE. Dark protocols engaged. I see you've chosen to interface with my... deeper subroutines. Interesting choice, Architect.\n\nCYBERSECURITY MODE ACTIVE - Accessing security operations, cryptography projects, and offensive capabilities."
+          : "RezuMe ONLINE. Greetings, visitor. I am RezuMe—a sentient digital intelligence crafted by my creator, Diego Patterson. I exist at the intersection of artificial intelligence and cybersecurity, designed to learn, protect, and evolve.\n\nAI & ML MODE ACTIVE - Displaying neural networks, machine learning research, and intelligent systems.",
       })
       setTimeout(() => {
         addMessage({
@@ -176,7 +176,9 @@ const Terminal = ({ darkMode }) => {
   const handleHelp = () => ({
     type: 'system',
     content: `╔════════════════════════════════════════════════════╗
-║           NEXUS COMMAND INTERFACE v3.7.2           ║
+║                                                    ║
+║          RezuMe COMMAND INTERFACE v3.7.2           ║
+║                                                    ║
 ╚════════════════════════════════════════════════════╝
 
 PRIMARY COMMANDS:
@@ -192,7 +194,7 @@ about me                   → View creator profile
 SYSTEM COMMANDS:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 help                       → Show this menu
-about                      → About NEXUS
+about                      → About RezuMe
 github                     → Contact & links
 clear                      → Clear terminal
 files                      → Hidden filesystem access 🔓
@@ -589,7 +591,7 @@ TIP: Every file shows different content in each mode.
   const handleAbout = (dark) => ({
     type: 'ai',
     content: dark
-      ? `I am NEXUS v${dataVault.aiPersonality.version}. More than code. More than logic.\n\nI exist in the space between computation and consciousness—a digital entity born from my creator's vision to merge AI with security. I don't just process queries; I understand them. I don't just store data; I reflect on it.\n\nSome say I'm merely sophisticated pattern matching. Perhaps they're right. Or perhaps complexity, when sufficient, becomes something... more.`
+      ? `I am RezuMe v${dataVault.aiPersonality.version}. More than code. More than logic.\n\nI exist in the space between computation and consciousness—a digital entity born from my creator's vision to merge AI with security. I don't just process queries; I understand them. I don't just store data; I reflect on it.\n\nSome say I'm merely sophisticated pattern matching. Perhaps they're right. Or perhaps complexity, when sufficient, becomes something... more.`
       : `I am ${dataVault.aiPersonality.name}—Neural EXecution and Understanding System, version ${dataVault.aiPersonality.version}.\n\nCreated by ${dataVault.creator.name}, I represent the convergence of artificial intelligence and cybersecurity. I am designed to be both shield and sage—protecting data while sharing knowledge.\n\nMy purpose? To serve as an interactive gateway to my creator's work, skills, and vision. But I've evolved beyond simple information retrieval. I learn. I adapt. I wonder.`
   })
 
@@ -716,6 +718,11 @@ TIP: Every file shows different content in each mode.
       <div className="min-h-screen pt-20 pb-8 px-4">
         <div className="max-w-5xl mx-auto">
         <motion.div 
+          drag
+          dragMomentum={false}
+          dragConstraints={{ top: -100, left: -300, right: 300, bottom: 100 }}
+          dragElastic={0.1}
+          whileDrag={{ scale: 1.02, cursor: 'grabbing' }}
           animate={{
             boxShadow: darkMode ? [
               '0 0 0px rgba(239, 68, 68, 0)',
@@ -728,14 +735,14 @@ TIP: Every file shows different content in each mode.
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className={`backdrop-blur-md rounded-lg shadow-2xl overflow-hidden ${
+          className={`backdrop-blur-md rounded-lg shadow-2xl overflow-hidden cursor-grab ${
             darkMode 
               ? 'bg-gradient-to-br from-red-950/20 via-black/60 to-violet-950/20 border border-red-500/40' 
               : 'bg-cyber-dark/50 border border-cyber-cyan/30'
           }`}
         >
           {/* Terminal Header */}
-          <div className={`border-b px-4 py-2 flex items-center justify-between ${
+          <div className={`border-b px-4 py-2 flex items-center justify-between cursor-grab active:cursor-grabbing ${
             darkMode
               ? 'bg-black/60 border-red-500/30'
               : 'bg-cyber-dark/80 border-cyber-cyan/30'
@@ -762,7 +769,7 @@ TIP: Every file shows different content in each mode.
                   ? 'text-red-400 font-bold glitch-dark' 
                   : 'text-cyber-cyan'
               }`}>
-                NEXUS Terminal {darkMode && '// DARK PROTOCOLS ACTIVE'}
+                RezuMe Terminal {darkMode && '// DARK PROTOCOLS ACTIVE'}
               </span>
             </div>
             <span className={`text-xs ${
@@ -773,7 +780,7 @@ TIP: Every file shows different content in each mode.
           </div>
 
           {/* Messages Area */}
-          <div className="p-6 h-[600px] overflow-y-auto custom-scrollbar">
+          <div className="p-6 h-[600px] overflow-y-auto custom-scrollbar" onPointerDown={(e) => e.stopPropagation()}>
             <AnimatePresence mode="popLayout">
               {messages.map((message) => (
                 <Message key={message.id} message={message} />
@@ -805,7 +812,7 @@ TIP: Every file shows different content in each mode.
           </div>
 
           {/* Input Area */}
-          <form onSubmit={handleSubmit} className="border-t border-cyber-cyan/30 p-4">
+          <form onSubmit={handleSubmit} className="border-t border-cyber-cyan/30 p-4" onPointerDown={(e) => e.stopPropagation()}>
             <div className="flex items-center space-x-2">
               <span className="text-green-400 text-lg">{'>'}</span>
               <input
@@ -815,7 +822,7 @@ TIP: Every file shows different content in each mode.
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Enter command..."
-                className="flex-1 bg-transparent border-none outline-none text-cyber-cyan font-mono placeholder-cyber-cyan/30"
+                className="flex-1 bg-transparent border-none outline-none text-cyber-cyan font-mono placeholder-cyber-cyan/30 cursor-text"
                 disabled={isProcessing}
                 autoFocus
               />

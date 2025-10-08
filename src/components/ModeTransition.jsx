@@ -141,7 +141,7 @@ const ModeTransition = ({ isTransitioning, darkMode }) => {
                   }}
                   transition={{ duration: 0.3, repeat: 2 }}
                 >
-                  {darkMode ? 'DARK AI' : 'NEXUS'}
+                  {darkMode ? 'DARK AI' : 'RezuMe'}
                 </motion.div>
                 
                 {/* Cyan glitch layer - offset right */}
@@ -153,7 +153,7 @@ const ModeTransition = ({ isTransitioning, darkMode }) => {
                   }}
                   transition={{ duration: 0.3, repeat: 2 }}
                 >
-                  {darkMode ? 'DARK AI' : 'NEXUS'}
+                  {darkMode ? 'DARK AI' : 'RezuMe'}
                 </motion.div>
                 
                 {/* Main text - center */}
@@ -168,7 +168,7 @@ const ModeTransition = ({ isTransitioning, darkMode }) => {
                   }}
                   transition={{ duration: 0.6 }}
                 >
-                  {darkMode ? 'DARK AI' : 'NEXUS'}
+                  {darkMode ? 'DARK AI' : 'RezuMe'}
                 </motion.div>
               </div>
 

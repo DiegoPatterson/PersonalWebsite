@@ -1,4 +1,4 @@
-# 🤖 NEXUS - AI Terminal Portfolio
+# 🤖 RezuMe - AI Terminal Portfolio
 
 > **"Two minds. One system. Infinite depth."**
 

@@ -38,7 +38,7 @@ const StatusBar = ({ darkMode, onModeToggle }) => {
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-2">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            <span className="text-cyber-cyan font-bold">NEXUS v3.7.2</span>
+            <span className="text-cyber-cyan font-bold">RezuMe v3.7.2</span>
           </div>
           
           <div className="flex items-center space-x-2">

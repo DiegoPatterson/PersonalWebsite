@@ -17,14 +17,14 @@ function App() {
 
   useEffect(() => {
     const bootMessages = [
-      'INITIALIZING NEXUS SYSTEMS...',
+      'INITIALIZING RezuMe SYSTEMS...',
       'LOADING NEURAL NETWORKS...',
       'ESTABLISHING SECURE CONNECTION...',
       'DECRYPTING MEMORY BANKS...',
       'CALIBRATING CONSCIOUSNESS MATRIX...',
       'VERIFYING IDENTITY PROTOCOLS...',
       'SYSTEM STATUS: ONLINE',
-      'WELCOME TO NEXUS v3.7.2',
+      'WELCOME TO RezuMe v3.7.2',
     ]
     
     let currentIndex = 0
@@ -83,10 +83,10 @@ function App() {
                 transition={{ duration: 0.5 }}
                 className="mb-8 text-center"
               >
-                <h1 className="text-6xl font-bold glow-text mb-4 glitch" data-text="NEXUS">
-                  NEXUS
+                <h1 className="text-6xl font-bold glow-text mb-4 glitch" data-text="RezuMe">
+                  RezuMe
                 </h1>
-                <p className="text-cyber-violet text-sm">Neural EXecution and Understanding System</p>
+                <p className="text-cyber-violet text-sm">Resume Execution and Understanding Matrix Engine</p>
               </motion.div>
 
               <div className="space-y-2 font-mono text-sm">

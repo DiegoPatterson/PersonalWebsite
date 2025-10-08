@@ -62,10 +62,15 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect }) => {
 
   return (
     <motion.div
+      drag
+      dragMomentum={false}
+      dragConstraints={{ top: -100, left: -300, right: 300, bottom: 100 }}
+      dragElastic={0.1}
+      whileDrag={{ scale: 1.02, cursor: 'grabbing' }}
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
-      className={`backdrop-blur-md rounded-lg shadow-2xl overflow-hidden flex flex-col ${
+      className={`backdrop-blur-md rounded-lg shadow-2xl overflow-hidden flex flex-col cursor-grab ${
         darkMode 
           ? 'bg-gradient-to-br from-red-950/20 via-black/60 to-violet-950/20 border border-red-500/40' 
           : 'bg-cyber-dark/50 border border-cyber-cyan/30'
@@ -73,7 +78,7 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect }) => {
       style={{ height: '692px' }} // Match terminal total height (header + content + footer)
     >
       {/* Panel Header */}
-      <div className={`border-b px-4 py-3 flex-shrink-0 ${
+      <div className={`border-b px-4 py-3 flex-shrink-0 cursor-grab active:cursor-grabbing ${
         darkMode
           ? 'bg-black/60 border-red-500/30'
           : 'bg-cyber-dark/80 border-cyber-cyan/30'
@@ -93,7 +98,7 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect }) => {
       </div>
 
       {/* Commands List - Scrollable */}
-      <div className="p-4 space-y-4 flex-1 overflow-y-auto custom-scrollbar">
+      <div className="p-4 space-y-4 flex-1 overflow-y-auto custom-scrollbar" onPointerDown={(e) => e.stopPropagation()}>
         {categories.map((category, catIdx) => {
           const categoryCommands = commands.filter(cmd => cmd.category === category)
           if (categoryCommands.length === 0) return null
