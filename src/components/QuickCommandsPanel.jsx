@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 
-const QuickCommandsPanel = ({ darkMode, onCommandSelect }) => {
+const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle }) => {
   const commands = [
     { 
       cmd: 'about me', 
@@ -99,6 +99,102 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect }) => {
 
       {/* Commands List - Scrollable */}
       <div className="p-4 space-y-4 flex-1 overflow-y-auto custom-scrollbar" onPointerDown={(e) => e.stopPropagation()}>
+        {/* Mode Toggle Button - Prominent */}
+        <motion.button
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          onClick={onModeToggle}
+          className={`w-full px-4 py-4 rounded-lg transition-all group relative overflow-hidden ${
+            darkMode
+              ? 'bg-gradient-to-r from-red-900/40 to-violet-900/40 border-2 border-red-500/50 hover:border-red-400 hover:shadow-lg hover:shadow-red-500/20'
+              : 'bg-gradient-to-r from-cyan-900/40 to-violet-900/40 border-2 border-cyber-cyan/50 hover:border-cyber-cyan hover:shadow-lg hover:shadow-cyber-cyan/20'
+          }`}
+        >
+          <div className="flex items-center justify-between relative z-10">
+            <div className="flex items-center space-x-3">
+              <span className="text-2xl">
+                {darkMode ? '🔓' : '🔒'}
+              </span>
+              <div className="text-left">
+                <div className={`text-sm font-bold ${
+                  darkMode ? 'text-red-400' : 'text-cyber-cyan'
+                }`}>
+                  {darkMode ? 'View AI/ML Portfolio' : 'View Cybersecurity Portfolio'}
+                </div>
+                <div className={`text-xs mt-0.5 ${
+                  darkMode ? 'text-violet-400/70' : 'text-gray-400'
+                }`}>
+                  {darkMode ? 'Switch to standard mode' : 'Switch to dark mode'}
+                </div>
+              </div>
+            </div>
+            <motion.span 
+              className={`text-xl ${darkMode ? 'text-red-400' : 'text-cyber-cyan'}`}
+              animate={{ rotate: darkMode ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              ⟲
+            </motion.span>
+          </div>
+          
+          {/* Animated background effect */}
+          <motion.div
+            className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity ${
+              darkMode 
+                ? 'bg-gradient-to-r from-red-500/10 to-violet-500/10' 
+                : 'bg-gradient-to-r from-cyan-500/10 to-violet-500/10'
+            }`}
+          />
+        </motion.button>
+
+        {/* Game Design Portfolio Button - Prominent */}
+        <motion.button
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.15 }}
+          onClick={() => onCommandSelect('play game')}
+          className={`w-full px-4 py-4 rounded-lg transition-all group relative overflow-hidden ${
+            darkMode
+              ? 'bg-gradient-to-r from-violet-900/40 to-pink-900/40 border-2 border-pink-500/50 hover:border-pink-400 hover:shadow-lg hover:shadow-pink-500/20'
+              : 'bg-gradient-to-r from-violet-900/40 to-pink-900/40 border-2 border-pink-500/50 hover:border-pink-400 hover:shadow-lg hover:shadow-pink-500/20'
+          }`}
+        >
+          <div className="flex items-center justify-between relative z-10">
+            <div className="flex items-center space-x-3">
+              <span className="text-2xl">
+                🎮
+              </span>
+              <div className="text-left">
+                <div className={`text-sm font-bold ${
+                  darkMode ? 'text-pink-400' : 'text-pink-400'
+                }`}>
+                  View Game Design Portfolio
+                </div>
+                <div className={`text-xs mt-0.5 ${
+                  darkMode ? 'text-violet-400/70' : 'text-violet-400/70'
+                }`}>
+                  Interactive game projects & design
+                </div>
+              </div>
+            </div>
+            <motion.span 
+              className={`text-xl ${darkMode ? 'text-pink-400' : 'text-pink-400'}`}
+              whileHover={{ scale: 1.2, rotate: 10 }}
+              transition={{ duration: 0.2 }}
+            >
+              🕹️
+            </motion.span>
+          </div>
+          
+          {/* Animated background effect */}
+          <motion.div
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-pink-500/10 to-violet-500/10"
+          />
+        </motion.button>
+
+        <div className={`h-px ${darkMode ? 'bg-red-500/20' : 'bg-cyber-cyan/20'}`} />
+
         {categories.map((category, catIdx) => {
           const categoryCommands = commands.filter(cmd => cmd.category === category)
           if (categoryCommands.length === 0) return null

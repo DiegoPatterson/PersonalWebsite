@@ -291,11 +291,12 @@ const Message = ({ message }) => {
                     <img 
                       src={content.image} 
                       alt={content.name}
-                      className={`w-48 h-48 object-cover rounded-lg border-2 ${
+                      className={`w-48 h-72 object-cover rounded-lg border-2 ${
                         darkMode 
                           ? 'border-red-500/50' 
                           : 'border-cyber-cyan/50'
                       }`}
+                      style={{ objectPosition: 'center top' }}
                       onError={(e) => {
                         e.target.style.display = 'none'
                       }}

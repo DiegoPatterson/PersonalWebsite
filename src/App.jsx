@@ -151,7 +151,8 @@ function App() {
                 {/* Quick Commands Panel - Always Visible on Desktop */}
                 <div className="hidden lg:block pt-20">
                   <QuickCommandsPanel 
-                    darkMode={darkMode} 
+                    darkMode={darkMode}
+                    onModeToggle={handleModeToggle}
                     onCommandSelect={(cmd) => {
                       // Trigger command in terminal
                       const event = new CustomEvent('executeCommand', { detail: cmd })
