@@ -1,0 +1,168 @@
+import { motion } from 'framer-motion'
+
+const QuickCommandsPanel = ({ darkMode, onCommandSelect }) => {
+  const commands = [
+    { 
+      cmd: 'about me', 
+      desc: 'View Creator Profile', 
+      icon: '👤',
+      category: 'Profile'
+    },
+    { 
+      cmd: 'access experience.log', 
+      desc: 'Work Experience', 
+      icon: '💼',
+      category: 'Professional'
+    },
+    { 
+      cmd: 'query education.db', 
+      desc: 'Education Background', 
+      icon: '🎓',
+      category: 'Professional'
+    },
+    { 
+      cmd: 'open projects.repo', 
+      desc: 'Professional Projects', 
+      icon: '🚀',
+      category: 'Projects'
+    },
+    { 
+      cmd: 'access vibe_projects.fun', 
+      desc: 'Fun Experiments', 
+      icon: '✨',
+      category: 'Projects'
+    },
+    { 
+      cmd: 'play game', 
+      desc: 'Game Portfolio', 
+      icon: '🎮',
+      category: 'Interactive'
+    },
+    { 
+      cmd: 'scan affiliations.sys', 
+      desc: 'Professional Groups', 
+      icon: '🤝',
+      category: 'Professional'
+    },
+    { 
+      cmd: 'decrypt core_memory', 
+      desc: 'Personal Philosophy', 
+      icon: '💭',
+      category: 'Profile'
+    },
+    { 
+      cmd: 'help', 
+      desc: 'All Commands', 
+      icon: '❓',
+      category: 'System'
+    },
+  ]
+
+  const categories = ['Profile', 'Professional', 'Projects', 'Interactive', 'System']
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5, delay: 0.3 }}
+      className={`backdrop-blur-md rounded-lg shadow-2xl overflow-hidden flex flex-col ${
+        darkMode 
+          ? 'bg-gradient-to-br from-red-950/20 via-black/60 to-violet-950/20 border border-red-500/40' 
+          : 'bg-cyber-dark/50 border border-cyber-cyan/30'
+      }`}
+      style={{ height: '692px' }} // Match terminal total height (header + content + footer)
+    >
+      {/* Panel Header */}
+      <div className={`border-b px-4 py-3 flex-shrink-0 ${
+        darkMode
+          ? 'bg-black/60 border-red-500/30'
+          : 'bg-cyber-dark/80 border-cyber-cyan/30'
+      }`}>
+        <h2 className={`text-sm font-bold ${
+          darkMode 
+            ? 'text-red-400 glitch-dark' 
+            : 'text-cyber-cyan'
+        }`}>
+          QUICK ACCESS
+        </h2>
+        <p className={`text-xs mt-1 ${
+          darkMode ? 'text-violet-400/70' : 'text-cyber-violet/70'
+        }`}>
+          Click to execute
+        </p>
+      </div>
+
+      {/* Commands List - Scrollable */}
+      <div className="p-4 space-y-4 flex-1 overflow-y-auto custom-scrollbar">
+        {categories.map((category, catIdx) => {
+          const categoryCommands = commands.filter(cmd => cmd.category === category)
+          if (categoryCommands.length === 0) return null
+          
+          return (
+            <div key={category}>
+              <div className={`text-xs font-bold mb-2 px-2 ${
+                darkMode ? 'text-red-400/60' : 'text-cyber-cyan/60'
+              }`}>
+                {category.toUpperCase()}
+              </div>
+              <div className="space-y-2">
+                {categoryCommands.map((command, idx) => (
+                  <motion.button
+                    key={command.cmd}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: catIdx * 0.1 + idx * 0.05 }}
+                    onClick={() => {
+                      if (onCommandSelect) {
+                        onCommandSelect(command.cmd)
+                      }
+                    }}
+                    className={`w-full flex items-start space-x-3 px-3 py-2.5 rounded transition-all text-left group ${
+                      darkMode
+                        ? 'bg-black/40 border border-red-500/20 hover:border-red-500/50 hover:bg-red-900/20'
+                        : 'bg-cyber-dark/50 border border-cyber-cyan/20 hover:border-cyber-cyan/50 hover:bg-cyber-cyan/5'
+                    }`}
+                  >
+                    <span className="text-xl flex-shrink-0">{command.icon}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className={`text-xs font-mono font-semibold truncate ${
+                        darkMode ? 'text-red-400 group-hover:text-red-300' : 'text-cyber-cyan group-hover:text-cyan-300'
+                      }`}>
+                        {command.cmd}
+                      </div>
+                      <div className={`text-xs mt-0.5 ${
+                        darkMode ? 'text-violet-400/70' : 'text-gray-400'
+                      }`}>
+                        {command.desc}
+                      </div>
+                    </div>
+                    <motion.span 
+                      className={`text-xs opacity-0 group-hover:opacity-100 transition-opacity ${
+                        darkMode ? 'text-red-400' : 'text-cyber-cyan'
+                      }`}
+                      initial={{ x: -5 }}
+                      whileHover={{ x: 0 }}
+                    >
+                      →
+                    </motion.span>
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Footer Tip */}
+      <div className={`border-t px-4 py-2 text-xs flex-shrink-0 ${
+        darkMode
+          ? 'bg-black/60 border-red-500/30 text-violet-400/50'
+          : 'bg-cyber-dark/80 border-cyber-cyan/30 text-cyber-violet/50'
+      }`}>
+        💡 Type freely in the terminal for more commands
+      </div>
+    </motion.div>
+  )
+}
+
+export default QuickCommandsPanel

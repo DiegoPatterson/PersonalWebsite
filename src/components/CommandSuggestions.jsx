@@ -1,14 +1,16 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
-const CommandSuggestions = ({ darkMode, onCommandSelect }) => {
+const CommandSuggestions = ({ onCommandSelect }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   const suggestions = [
+    { cmd: 'about me', desc: 'View creator profile', icon: '👤' },
     { cmd: 'access experience.log', desc: 'View work experience', icon: '💼' },
     { cmd: 'query education.db', desc: 'View education', icon: '🎓' },
     { cmd: 'open projects.repo', desc: 'View pro projects', icon: '🚀' },
     { cmd: 'access vibe_projects.fun', desc: 'View vibe experiments', icon: '✨' },
+    { cmd: 'play game', desc: 'Launch game portfolio', icon: '🎮' },
     { cmd: 'scan affiliations.sys', desc: 'View affiliations', icon: '🤝' },
     { cmd: 'decrypt core_memory', desc: 'View philosophy', icon: '💭' },
   ]

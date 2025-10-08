@@ -4,6 +4,7 @@ import dataVault from '../data/vault.json'
 import hiddenWorld from '../data/hidden_world.json'
 import Message from './Message'
 import CommandSuggestions from './CommandSuggestions'
+import PixelGame from './PixelGame'
 
 const Terminal = ({ darkMode }) => {
   const [messages, setMessages] = useState([])
@@ -11,8 +12,9 @@ const Terminal = ({ darkMode }) => {
   const [commandHistory, setCommandHistory] = useState([])
   const [historyIndex, setHistoryIndex] = useState(-1)
   const [isProcessing, setIsProcessing] = useState(false)
-  const [currentPath, setCurrentPath] = useState('/')
+  const [currentPath] = useState('/')  // Fixed path for now
   const [discoveredFiles, setDiscoveredFiles] = useState([])
+  const [showGame, setShowGame] = useState(false)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -42,12 +44,32 @@ const Terminal = ({ darkMode }) => {
         addMessage({
           type: 'ai',
           content: darkMode
-            ? "Query my security archives to explore penetration testing, encryption systems, and defensive protocols. Try commands like:\n• `access experience.log` - Security operations\n• `open projects.repo` - Cryptography & security tools\n• `scan affiliations.sys` - CTF teams & security research\n• `about me` - View creator profile\n\nType `help` for full command list."
-            : "You may query my systems to learn about my creator's AI research and development. Try commands like:\n• `access experience.log` - AI & ML experience\n• `query education.db` - Academic background\n• `open projects.repo` - Neural networks & AI projects\n• `about me` - View creator profile\n• `decrypt core_memory` - Personal philosophy\n\nOr simply type `help` for more options.",
+            ? "Query my security archives to explore penetration testing, encryption systems, and defensive protocols. Try commands like:\n• `access experience.log` - Security operations\n• `open projects.repo` - Cryptography & security tools\n• `scan affiliations.sys` - CTF teams & security research\n• `play game` - Launch game portfolio 🎮\n• `about me` - View creator profile\n\nType `help` for full command list or use the Quick Access panel →"
+            : "You may query my systems to learn about my creator's AI research and development. Try commands like:\n• `access experience.log` - AI & ML experience\n• `query education.db` - Academic background\n• `open projects.repo` - Neural networks & AI projects\n• `play game` - Launch game portfolio 🎮\n• `about me` - View creator profile\n• `decrypt core_memory` - Personal philosophy\n\nOr simply type `help` for more options, or use the Quick Access panel →",
         })
       }, 1000)
     }, 500)
   }, [darkMode])
+
+  // Listen for commands from Quick Commands Panel
+  useEffect(() => {
+    const handleExecuteCommand = (event) => {
+      const command = event.detail
+      if (command) {
+        setInput(command)
+        // Trigger form submit
+        setTimeout(() => {
+          const form = document.querySelector('form')
+          if (form) {
+            form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }))
+          }
+        }, 100)
+      }
+    }
+
+    window.addEventListener('executeCommand', handleExecuteCommand)
+    return () => window.removeEventListener('executeCommand', handleExecuteCommand)
+  }, [])
 
   const addMessage = (message) => {
     setMessages(prev => [...prev, { ...message, id: Date.now() + Math.random() }])
@@ -127,6 +149,21 @@ const Terminal = ({ darkMode }) => {
         response = handleRootmind(darkMode)
       } else if (command === 'files' || command === 'system files' || command === 'show files') {
         response = handleFilesHelp(darkMode)
+      } else if (command === 'play game' || command === 'boot game' || command === 'game' || command === 'game.exe') {
+        response = { 
+          type: 'system', 
+          content: `┌─────────────────────────────────────────┐
+│  🎮 INITIALIZING GAME WORLD...         │
+│                                         │
+│  Loading pixel renderer...       [OK]   │
+│  Initializing player sprite...   [OK]   │
+│  Building game world...          [OK]   │
+│  Loading projects...             [OK]   │
+│                                         │
+│  GAME READY. Launching...               │
+└─────────────────────────────────────────┘`
+        }
+        setTimeout(() => setShowGame(true), 1000)
       } else {
         response = handleUnknown(command, darkMode)
       }
@@ -159,6 +196,7 @@ about                      → About NEXUS
 github                     → Contact & links
 clear                      → Clear terminal
 files                      → Hidden filesystem access 🔓
+play game                  → 🎮 Launch Game Design Portfolio
 
 ADVANCED: Type 'files' to access hidden system layers...
 
@@ -477,7 +515,7 @@ MODE FILTERING: Content automatically filters based on current mode.
     }
   }
 
-  const handleRootmind = (dark) => {
+  const handleRootmind = () => {
     return {
       type: 'system',
       content: hiddenWorld.special_files['.rootmind/manifest.enc'].content
@@ -666,8 +704,17 @@ TIP: Every file shows different content in each mode.
   }
 
   return (
-    <div className="min-h-screen pt-20 pb-8 px-4">
-      <div className="max-w-5xl mx-auto">
+    <>
+      {/* Game Overlay */}
+      {showGame && (
+        <PixelGame 
+          onExit={() => setShowGame(false)} 
+          darkMode={darkMode}
+        />
+      )}
+
+      <div className="min-h-screen pt-20 pb-8 px-4">
+        <div className="max-w-5xl mx-auto">
         <motion.div 
           animate={{
             boxShadow: darkMode ? [
@@ -752,8 +799,10 @@ TIP: Every file shows different content in each mode.
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Command Suggestions */}
-          <CommandSuggestions darkMode={darkMode} onCommandSelect={setInput} />
+          {/* Command Suggestions - Mobile Only */}
+          <div className="lg:hidden">
+            <CommandSuggestions onCommandSelect={setInput} />
+          </div>
 
           {/* Input Area */}
           <form onSubmit={handleSubmit} className="border-t border-cyber-cyan/30 p-4">
@@ -782,6 +831,7 @@ TIP: Every file shows different content in each mode.
         </motion.div>
       </div>
     </div>
+    </>
   )
 }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Terminal from './components/Terminal'
 import Background from './components/Background'
@@ -7,6 +7,7 @@ import StatusBar from './components/StatusBar'
 import Scanline from './components/Scanline'
 import AudioController from './components/AudioController'
 import ModeTransition from './components/ModeTransition'
+import QuickCommandsPanel from './components/QuickCommandsPanel'
 
 function App() {
   const [isBooting, setIsBooting] = useState(true)
@@ -14,18 +15,18 @@ function App() {
   const [darkMode, setDarkMode] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
 
-  const bootMessages = [
-    'INITIALIZING NEXUS SYSTEMS...',
-    'LOADING NEURAL NETWORKS...',
-    'ESTABLISHING SECURE CONNECTION...',
-    'DECRYPTING MEMORY BANKS...',
-    'CALIBRATING CONSCIOUSNESS MATRIX...',
-    'VERIFYING IDENTITY PROTOCOLS...',
-    'SYSTEM STATUS: ONLINE',
-    'WELCOME TO NEXUS v3.7.2',
-  ]
-
   useEffect(() => {
+    const bootMessages = [
+      'INITIALIZING NEXUS SYSTEMS...',
+      'LOADING NEURAL NETWORKS...',
+      'ESTABLISHING SECURE CONNECTION...',
+      'DECRYPTING MEMORY BANKS...',
+      'CALIBRATING CONSCIOUSNESS MATRIX...',
+      'VERIFYING IDENTITY PROTOCOLS...',
+      'SYSTEM STATUS: ONLINE',
+      'WELCOME TO NEXUS v3.7.2',
+    ]
+    
     let currentIndex = 0
     const interval = setInterval(() => {
       if (currentIndex < bootMessages.length) {
@@ -138,7 +139,28 @@ function App() {
             className="relative z-10"
           >
             <StatusBar darkMode={darkMode} onModeToggle={handleModeToggle} />
-            <Terminal darkMode={darkMode} />
+            
+            {/* Two Column Layout: Terminal + Quick Commands */}
+            <div className="container mx-auto px-4 py-8">
+              <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-start">
+                {/* Main Terminal */}
+                <div>
+                  <Terminal darkMode={darkMode} />
+                </div>
+                
+                {/* Quick Commands Panel - Always Visible on Desktop */}
+                <div className="hidden lg:block pt-20">
+                  <QuickCommandsPanel 
+                    darkMode={darkMode} 
+                    onCommandSelect={(cmd) => {
+                      // Trigger command in terminal
+                      const event = new CustomEvent('executeCommand', { detail: cmd })
+                      window.dispatchEvent(event)
+                    }} 
+                  />
+                </div>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
