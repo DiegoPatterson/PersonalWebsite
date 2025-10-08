@@ -2,7 +2,7 @@
  * Portfolio command handlers - Main portfolio commands
  */
 
-export const createPortfolioHandlers = (dataVault, darkMode) => {
+export const createPortfolioHandlers = (dataVault) => {
   // Filter content by category based on mode
   const filterByCategory = (items, dark) => {
     const targetCategory = dark ? 'CYBER' : 'AI';
