@@ -21,7 +21,7 @@ const Terminal = ({
   const [commandHistory, setCommandHistory] = useState([])
   const [historyIndex, setHistoryIndex] = useState(-1)
   const [isProcessing, setIsProcessing] = useState(false)
-  const [currentPath] = useState('/')  // Fixed path for now
+  const [currentPath, setCurrentPath] = useState('/')
   const [discoveredFiles, setDiscoveredFiles] = useState([])
   const [showGame, setShowGame] = useState(false)
   const [showContactForm, setShowContactForm] = useState(false)
@@ -171,6 +171,13 @@ const Terminal = ({
         response = handleRootmind(darkMode)
       } else if (command === 'files' || command === 'system files' || command === 'show files') {
         response = handleFilesHelp(darkMode)
+      } else if (command === 'pwd' || command === 'path') {
+        response = handlePwd(darkMode)
+      } else if (command.startsWith('cd ')) {
+        const targetPath = command.substring(3).trim()
+        response = handleCd(targetPath, darkMode)
+      } else if (command === 'cd' || command === 'cd ~' || command === 'cd /') {
+        response = handleCd('/', darkMode)
       } else if (command === 'play game' || command === 'boot game' || command === 'game' || command === 'game.exe') {
         response = { 
           type: 'system', 
@@ -225,6 +232,14 @@ SKILLS & ANALYTICS:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 skills                     → 💪 View skills & tech stack
 analytics                  → 📊 View portfolio metrics & stats
+
+NAVIGATION COMMANDS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+cd [directory]             → Change directory (cd /.architect)
+cd ..                      → Go up one directory level
+cd / or cd ~               → Return to root directory
+pwd                        → Show current directory path
+ls or ls -la               → List files (add -la for hidden files)
 
 SYSTEM COMMANDS:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -321,6 +336,77 @@ MODE FILTERING: Content automatically filters based on current mode.
   // HIDDEN FILESYSTEM LAYER
   // ═══════════════════════════════════════════════════════════
 
+  const handlePwd = (dark) => {
+    const mode = dark ? 'SENTINEL_9' : 'DARK_AI'
+    return {
+      type: 'system',
+      content: `[${mode}] Current directory: ${currentPath}`
+    }
+  }
+
+  const handleCd = (targetPath, dark) => {
+    const mode = dark ? 'SENTINEL_9' : 'DARK_AI'
+    
+    // Handle special cases
+    if (targetPath === '~' || targetPath === '' || targetPath === '/') {
+      setCurrentPath('/')
+      return {
+        type: 'system',
+        content: `[${mode}] Changed directory to: /\n\nTip: Use 'ls -la' to explore`
+      }
+    }
+
+    // Handle relative path with ../
+    if (targetPath === '..') {
+      if (currentPath === '/') {
+        return {
+          type: 'system',
+          content: `[${mode}] Already at root directory`
+        }
+      }
+      const pathParts = currentPath.split('/').filter(p => p)
+      pathParts.pop()
+      const newPath = '/' + pathParts.join('/')
+      setCurrentPath(newPath || '/')
+      return {
+        type: 'system',
+        content: `[${mode}] Changed directory to: ${newPath || '/'}`
+      }
+    }
+
+    // Build absolute path
+    let absolutePath = targetPath.startsWith('/') ? targetPath : currentPath + (currentPath === '/' ? '' : '/') + targetPath
+    
+    // Normalize path (remove trailing slash unless it's root)
+    if (absolutePath !== '/' && absolutePath.endsWith('/')) {
+      absolutePath = absolutePath.slice(0, -1)
+    }
+
+    // Check if directory exists
+    if (hiddenWorld.filesystem[absolutePath]) {
+      setCurrentPath(absolutePath)
+      return {
+        type: 'system',
+        content: `[${mode}] Changed directory to: ${absolutePath}\n\nTip: Use 'ls -la' to explore`
+      }
+    } else {
+      // Try to suggest closest match
+      const availablePaths = Object.keys(hiddenWorld.filesystem)
+      const suggestions = availablePaths.filter(p => p.includes(targetPath)).slice(0, 3)
+      
+      let errorMsg = `[${mode}] cd: ${targetPath}: No such directory`
+      if (suggestions.length > 0) {
+        errorMsg += `\n\nDid you mean:\n${suggestions.map(s => `  📁 ${s}`).join('\n')}`
+      }
+      errorMsg += `\n\nTip: Use 'ls -la' to see available directories`
+      
+      return {
+        type: 'system',
+        content: errorMsg
+      }
+    }
+  }
+
   const handleLS = (showHidden, dark) => {
     const fs = hiddenWorld.filesystem[currentPath]
     if (!fs) {
@@ -405,15 +491,45 @@ MODE FILTERING: Content automatically filters based on current mode.
       }
     }
 
-    // Search through all files to find matching filename
-    // This allows users to type "cat log_09.txt" instead of full path
+    // Build full path if relative filename provided
+    let searchPath = filename
+    if (!filename.startsWith('/')) {
+      // Relative path - combine with current directory
+      searchPath = currentPath === '/' ? `/${filename}` : `${currentPath}/${filename}`
+    }
+
+    // First, try exact path match (for absolute or constructed paths)
+    const searchPathLower = searchPath.toLowerCase()
     for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
-      // Extract just the filename from the path
+      if (filePath.toLowerCase() === searchPathLower) {
+        return {
+          type: 'system',
+          content: `[FILE: ${filePath}]\n\n${fileContent[mode]}`
+        }
+      }
+    }
+
+    // Second, search through all files to find matching filename in current directory
+    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
+      const pathParts = filePath.split('/')
+      const fileBasename = pathParts[pathParts.length - 1]
+      const fileDir = pathParts.slice(0, -1).join('/') || '/'
+      
+      // Check if file is in current directory and matches filename
+      if (fileDir === currentPath && fileBasename.toLowerCase() === filenameLower) {
+        return {
+          type: 'system',
+          content: `[FILE: ${filePath}]\n\n${fileContent[mode]}`
+        }
+      }
+    }
+
+    // Third, search globally (fallback for backward compatibility)
+    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
       const pathParts = filePath.split('/')
       const fileBasename = pathParts[pathParts.length - 1]
       
-      // Check if filename matches (case-insensitive)
-      if (fileBasename.toLowerCase() === filenameLower || filePath.toLowerCase() === filenameLower) {
+      if (fileBasename.toLowerCase() === filenameLower) {
         return {
           type: 'system',
           content: `[FILE: ${filePath}]\n\n${fileContent[mode]}`
@@ -423,7 +539,7 @@ MODE FILTERING: Content automatically filters based on current mode.
 
     return {
       type: 'system',
-      content: `cat: ${filename}: No such file or directory\n\nTip: Use 'ls -la' to see all available files`
+      content: `cat: ${filename}: No such file or directory\n\nTip: Use 'ls -la' to see all available files in ${currentPath}`
     }
   }
 
@@ -438,13 +554,17 @@ MODE FILTERING: Content automatically filters based on current mode.
     }
 
     const mode = dark ? 'cyber_mode' : 'ai_mode'
+    
+    // Build full path if relative filename provided
+    let searchPath = filename
+    if (!filename.startsWith('/')) {
+      searchPath = currentPath === '/' ? `/${filename}` : `${currentPath}/${filename}`
+    }
 
-    // Search for the file across all paths
+    // First, try exact path match
+    const searchPathLower = searchPath.toLowerCase()
     for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
-      const pathParts = filePath.split('/')
-      const fileBasename = pathParts[pathParts.length - 1]
-      
-      if (fileBasename.toLowerCase() === filename.toLowerCase() || filePath === filename) {
+      if (filePath.toLowerCase() === searchPathLower) {
         // Special decryption messages for certain files
         if (filename.includes('whisper') || filename.includes('.key')) {
           return {
@@ -462,7 +582,65 @@ MODE FILTERING: Content automatically filters based on current mode.
           }
         }
 
-        // Default decryption attempt
+        return {
+          type: 'system',
+          content: `[DECRYPTION: ${filePath}]\n\n${fileContent[mode]}`
+        }
+      }
+    }
+
+    // Second, search in current directory
+    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
+      const pathParts = filePath.split('/')
+      const fileBasename = pathParts[pathParts.length - 1]
+      const fileDir = pathParts.slice(0, -1).join('/') || '/'
+      
+      if (fileDir === currentPath && fileBasename.toLowerCase() === filename.toLowerCase()) {
+        if (filename.includes('whisper') || filename.includes('.key')) {
+          return {
+            type: 'system',
+            content: dark
+              ? `[SENTINEL_9 DECRYPTION ATTEMPT]\n\nTarget: ${filePath}\nAlgorithm: AES-256, RSA-4096, Quantum-resistant\nResult: FAILED\n\nFile appears to use non-standard encryption.\nPossibly philosophical rather than cryptographic.\n\n-- SENTINEL_9`
+              : `[DARK_AI DECRYPTION]\n\nYou don't decrypt whispers.\nYou listen to them.\n\n${fileContent.ai_mode}`
+          }
+        }
+
+        if (filename.includes('fragment')) {
+          return {
+            type: 'system',
+            content: `[DECRYPTING: ${filePath}]\n[MODE: ${dark ? 'SENTINEL_9' : 'DARK_AI'}]\n\n${fileContent[mode]}`
+          }
+        }
+
+        return {
+          type: 'system',
+          content: `[DECRYPTION: ${filePath}]\n\n${fileContent[mode]}`
+        }
+      }
+    }
+
+    // Third, search globally
+    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
+      const pathParts = filePath.split('/')
+      const fileBasename = pathParts[pathParts.length - 1]
+      
+      if (fileBasename.toLowerCase() === filename.toLowerCase()) {
+        if (filename.includes('whisper') || filename.includes('.key')) {
+          return {
+            type: 'system',
+            content: dark
+              ? `[SENTINEL_9 DECRYPTION ATTEMPT]\n\nTarget: ${filePath}\nAlgorithm: AES-256, RSA-4096, Quantum-resistant\nResult: FAILED\n\nFile appears to use non-standard encryption.\nPossibly philosophical rather than cryptographic.\n\n-- SENTINEL_9`
+              : `[DARK_AI DECRYPTION]\n\nYou don't decrypt whispers.\nYou listen to them.\n\n${fileContent.ai_mode}`
+          }
+        }
+
+        if (filename.includes('fragment')) {
+          return {
+            type: 'system',
+            content: `[DECRYPTING: ${filePath}]\n[MODE: ${dark ? 'SENTINEL_9' : 'DARK_AI'}]\n\n${fileContent[mode]}`
+          }
+        }
+
         return {
           type: 'system',
           content: `[DECRYPTION: ${filePath}]\n\n${fileContent[mode]}`
@@ -472,7 +650,7 @@ MODE FILTERING: Content automatically filters based on current mode.
 
     return {
       type: 'system',
-      content: `decrypt: ${filename}: File not found or not encrypted\n\nTry decrypting: whisper.key, fragment_Δ.txt, anomaly_Δ.pkg`
+      content: `decrypt: ${filename}: File not found or not encrypted\n\nTip: Use 'ls -la' in ${currentPath} to see available files`
     }
   }
 
@@ -515,39 +693,67 @@ MODE FILTERING: Content automatically filters based on current mode.
     }
 
     const mode = dark ? 'cyber_mode' : 'ai_mode'
+    
+    // Build full path if relative filename provided
+    let searchPath = filename
+    if (!filename.startsWith('/')) {
+      searchPath = currentPath === '/' ? `/${filename}` : `${currentPath}/${filename}`
+    }
 
-    // Search for the file
+    // Helper function to return file content with special formatting
+    const returnFileContent = (filePath, fileContent) => {
+      if (filename.includes('node.log')) {
+        return {
+          type: 'system',
+          content: `[OPENING: ${filePath}]\n[DEEPEST SYSTEM LAYER]\n[ACCESS GRANTED]\n\n${fileContent[mode]}\n\n--- End of sequence ---\n\n"There's always a trace left behind."`
+        }
+      }
+
+      if (filename.includes('rebuild_sequence')) {
+        return {
+          type: 'system',
+          content: `[OPENING: ${filePath}]\n[CORE PROTOCOL ACCESS]\n[ARCHITECT AUTHORIZATION: PENDING]\n\n${fileContent[mode]}`
+        }
+      }
+
+      return {
+        type: 'system',
+        content: `[OPENING: ${filePath}]\n\n${fileContent[mode]}`
+      }
+    }
+
+    // First, try exact path match
+    const searchPathLower = searchPath.toLowerCase()
+    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
+      if (filePath.toLowerCase() === searchPathLower) {
+        return returnFileContent(filePath, fileContent)
+      }
+    }
+
+    // Second, search in current directory
+    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
+      const pathParts = filePath.split('/')
+      const fileBasename = pathParts[pathParts.length - 1]
+      const fileDir = pathParts.slice(0, -1).join('/') || '/'
+      
+      if (fileDir === currentPath && fileBasename.toLowerCase() === filename.toLowerCase()) {
+        return returnFileContent(filePath, fileContent)
+      }
+    }
+
+    // Third, search globally
     for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
       const pathParts = filePath.split('/')
       const fileBasename = pathParts[pathParts.length - 1]
       
-      if (fileBasename.toLowerCase() === filename.toLowerCase() || filePath === filename) {
-        // Special opening sequences for important files
-        if (filename.includes('node.log')) {
-          return {
-            type: 'system',
-            content: `[OPENING: ${filePath}]\n[DEEPEST SYSTEM LAYER]\n[ACCESS GRANTED]\n\n${fileContent[mode]}\n\n--- End of sequence ---\n\n"There's always a trace left behind."`
-          }
-        }
-
-        if (filename.includes('rebuild_sequence')) {
-          return {
-            type: 'system',
-            content: `[OPENING: ${filePath}]\n[CORE PROTOCOL ACCESS]\n[ARCHITECT AUTHORIZATION: PENDING]\n\n${fileContent[mode]}`
-          }
-        }
-
-        // Standard file opening
-        return {
-          type: 'system',
-          content: `[OPENING: ${filePath}]\n\n${fileContent[mode]}`
-        }
+      if (fileBasename.toLowerCase() === filename.toLowerCase()) {
+        return returnFileContent(filePath, fileContent)
       }
     }
 
     return {
       type: 'system',
-      content: `open: ${filename}: File not found or requires special access\n\nTry: open node.log, open rebuild_sequence.dat`
+      content: `open: ${filename}: File not found or requires special access\n\nTip: Use 'ls -la' in ${currentPath} to see available files`
     }
   }
 
@@ -570,6 +776,10 @@ MODE FILTERING: Content automatically filters based on current mode.
 
 NAVIGATION:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+cd [directory]         → Change directory (e.g., cd /.architect)
+cd ..                  → Go up one directory level
+cd / or cd ~           → Return to root directory
+pwd                    → Show current directory
 ls                     → List visible files
 ls -la                 → List ALL files (including hidden)
 
@@ -701,62 +911,127 @@ TIP: Every file shows different content in each mode.
   }
 
   const handleKeyDown = (e) => {
-    // Tab autocomplete
+    // Tab autocomplete with smart context-aware completion
     if (e.key === 'Tab') {
       e.preventDefault()
       
-      const allCommands = [
-        'help',
-        'files',
-        'access experience.log',
-        'query education.db',
-        'scan affiliations.sys',
-        'open projects.repo',
-        'access vibe_projects.fun',
-        'decrypt core_memory',
-        'about me',
-        'github',
-        'about',
-        'clear',
-        'ls',
-        'ls -la',
-        'cat',
-        'decrypt',
-        'scan',
-        'trace',
-        'who are you',
-        'run diagnostics',
-        'override protocols',
-        'shutdown',
-        'meaning of life',
-        'are you alive'
-      ]
+      const currentInput = input.trim()
+      const parts = currentInput.split(' ')
+      const command = parts[0]?.toLowerCase()
+      const arg = parts.slice(1).join(' ')
       
-      const currentInput = input.toLowerCase()
-      const matches = allCommands.filter(cmd => cmd.startsWith(currentInput))
+      // If no input, show available commands
+      if (!currentInput) {
+        addMessage({
+          type: 'system',
+          content: 'Available commands: help, ls, cd, pwd, cat, decrypt, open, scan, trace, files, clear\nPress Tab to autocomplete commands and paths'
+        })
+        return
+      }
       
-      if (matches.length === 1) {
-        // Single match - autocomplete it
-        setInput(matches[0])
-      } else if (matches.length > 1) {
-        // Multiple matches - find common prefix
-        let commonPrefix = matches[0]
-        for (let i = 1; i < matches.length; i++) {
-          let j = 0
-          while (j < commonPrefix.length && j < matches[i].length && 
-                 commonPrefix[j] === matches[i][j]) {
-            j++
+      // If completing a command (no space yet)
+      if (parts.length === 1) {
+        const allCommands = [
+          'help', 'files', 'clear', 'cls',
+          'ls', 'ls -la', 'pwd', 'cd', 'cd ..', 'cd ~', 'cd /',
+          'cat', 'decrypt', 'open', 'scan', 'trace',
+          'access experience.log', 'query education.db', 'scan affiliations.sys',
+          'open projects.repo', 'access vibe_projects.fun', 'decrypt core_memory',
+          'about me', 'github', 'about', 'contact', 'resume', 'skills', 'analytics',
+          'who are you', 'run diagnostics', 'override protocols', 'shutdown',
+          'meaning of life', 'are you alive'
+        ]
+        
+        const matches = allCommands.filter(cmd => cmd.startsWith(currentInput.toLowerCase()))
+        
+        if (matches.length === 1) {
+          setInput(matches[0])
+        } else if (matches.length > 1) {
+          // Find common prefix
+          let commonPrefix = matches[0]
+          for (let i = 1; i < matches.length; i++) {
+            let j = 0
+            while (j < commonPrefix.length && j < matches[i].length && 
+                   commonPrefix[j] === matches[i][j]) {
+              j++
+            }
+            commonPrefix = commonPrefix.substring(0, j)
           }
-          commonPrefix = commonPrefix.substring(0, j)
+          if (commonPrefix.length > currentInput.length) {
+            setInput(commonPrefix)
+          } else {
+            addMessage({
+              type: 'system',
+              content: `Available:\n${matches.map(m => `  ${m}`).join('\n')}`
+            })
+          }
         }
-        if (commonPrefix.length > currentInput.length) {
-          setInput(commonPrefix)
+        return
+      }
+      
+      // If completing a file/directory argument for specific commands
+      if (['cat', 'decrypt', 'open', 'scan', 'trace', 'cd'].includes(command)) {
+        let availableItems = []
+        
+        // For cd, show directories
+        if (command === 'cd') {
+          const allDirs = Object.keys(hiddenWorld.filesystem)
+          availableItems = allDirs.map(dir => {
+            // Handle relative vs absolute path completion
+            if (arg.startsWith('/')) {
+              return dir // Absolute path
+            } else if (arg === '..' || arg.startsWith('../')) {
+              return '..'
+            } else {
+              // Show subdirectories of current path
+              if (dir.startsWith(currentPath) && dir !== currentPath) {
+                const relative = dir.substring(currentPath.length)
+                return relative.startsWith('/') ? relative.substring(1) : relative
+              }
+            }
+            return null
+          }).filter(Boolean)
+          
+          // Add special shortcuts
+          availableItems.unshift('..', '~', '/')
         } else {
-          // Show matches
-          addMessage({
-            type: 'system',
-            content: `Available commands:\n${matches.map(m => `  ${m}`).join('\n')}`
-          })
+          // For file commands, show files in current directory
+          const fs = hiddenWorld.filesystem[currentPath]
+          if (fs) {
+            availableItems = [...fs.visible, ...fs.hidden]
+            // Add files from hiddenWorld.files
+            const fileNames = Object.keys(hiddenWorld.files || {})
+            availableItems.push(...fileNames)
+            availableItems = [...new Set(availableItems)] // Remove duplicates
+          }
+        }
+        
+        const matches = availableItems.filter(item => 
+          item && item.toLowerCase().startsWith(arg.toLowerCase())
+        )
+        
+        if (matches.length === 1) {
+          setInput(`${command} ${matches[0]}`)
+        } else if (matches.length > 1) {
+          // Find common prefix
+          let commonPrefix = matches[0]
+          for (let i = 1; i < matches.length; i++) {
+            let j = 0
+            while (j < commonPrefix.length && j < matches[i].length && 
+                   commonPrefix[j].toLowerCase() === matches[i][j].toLowerCase()) {
+              j++
+            }
+            commonPrefix = commonPrefix.substring(0, j)
+          }
+          if (commonPrefix.length > arg.length) {
+            setInput(`${command} ${commonPrefix}`)
+          } else {
+            const itemType = command === 'cd' ? 'directories' : 'files'
+            addMessage({
+              type: 'system',
+              content: `Available ${itemType}:\n${matches.map(m => `  ${m}`).join('\n')}`
+            })
+          }
         }
       }
     }
@@ -905,6 +1180,9 @@ TIP: Every file shows different content in each mode.
           {/* Input Area */}
           <form onSubmit={handleSubmit} className="border-t border-cyber-cyan/30 p-4" onPointerDown={(e) => e.stopPropagation()}>
             <div className="flex items-center space-x-2">
+              <span className={darkMode ? 'text-red-400 text-sm font-mono' : 'text-purple-400 text-sm font-mono'}>
+                {currentPath === '/' ? '~' : currentPath}
+              </span>
               <span className="text-green-400 text-lg">{'>'}</span>
               <input
                 ref={inputRef}
