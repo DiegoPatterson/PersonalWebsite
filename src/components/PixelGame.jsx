@@ -221,7 +221,7 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
     <div 
       ref={gameRef}
       className="fixed inset-0 bg-black flex items-center justify-center"
-      style={{ zIndex: zIndex || 2000 }}
+      style={{ zIndex: 9999 }}
       onPointerDown={onBringToFront}
       tabIndex={0}
     >
@@ -700,49 +700,113 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
 
       {/* Mobile Touch Controls */}
       {isMobile && (
-        <div className="absolute bottom-4 left-0 right-0 flex justify-between px-4">
-          {/* D-Pad */}
-          <div className="relative w-32 h-32">
-            {/* Center circle */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-10 h-10 bg-gray-800/50 rounded-full border-2 border-cyan-500/50" />
+        <div className="absolute bottom-4 left-0 right-0 flex justify-between px-4 pointer-events-none">
+          {/* Virtual Joystick */}
+          <div 
+            className="relative w-32 h-32 pointer-events-auto touch-none"
+            onTouchStart={(e) => {
+              e.preventDefault()
+              const rect = e.currentTarget.getBoundingClientRect()
+              const centerX = rect.left + rect.width / 2
+              const centerY = rect.top + rect.height / 2
+              
+              const handleTouchMove = (moveEvent) => {
+                moveEvent.preventDefault()
+                const moveTouch = moveEvent.touches[0]
+                const deltaX = moveTouch.clientX - centerX
+                const deltaY = moveTouch.clientY - centerY
+                
+                // Calculate direction based on angle and distance
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
+                const deadzone = 15
+                
+                if (distance > deadzone) {
+                  const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI
+                  
+                  // Reset all directions first
+                  setKeysPressed(prev => ({
+                    ...prev,
+                    'ArrowUp': false,
+                    'ArrowDown': false,
+                    'ArrowLeft': false,
+                    'ArrowRight': false
+                  }))
+                  
+                  // Set direction based on angle
+                  if (angle >= -45 && angle < 45) {
+                    // Right
+                    setKeysPressed(prev => ({ ...prev, 'ArrowRight': true }))
+                  } else if (angle >= 45 && angle < 135) {
+                    // Down
+                    setKeysPressed(prev => ({ ...prev, 'ArrowDown': true }))
+                  } else if (angle >= -135 && angle < -45) {
+                    // Up
+                    setKeysPressed(prev => ({ ...prev, 'ArrowUp': true }))
+                  } else {
+                    // Left
+                    setKeysPressed(prev => ({ ...prev, 'ArrowLeft': true }))
+                  }
+                } else {
+                  // In deadzone, release all keys
+                  setKeysPressed(prev => ({
+                    ...prev,
+                    'ArrowUp': false,
+                    'ArrowDown': false,
+                    'ArrowLeft': false,
+                    'ArrowRight': false
+                  }))
+                }
+              }
+              
+              const handleTouchEnd = (endEvent) => {
+                endEvent.preventDefault()
+                // Release all direction keys
+                setKeysPressed(prev => ({
+                  ...prev,
+                  'ArrowUp': false,
+                  'ArrowDown': false,
+                  'ArrowLeft': false,
+                  'ArrowRight': false
+                }))
+                document.removeEventListener('touchmove', handleTouchMove)
+                document.removeEventListener('touchend', handleTouchEnd)
+              }
+              
+              document.addEventListener('touchmove', handleTouchMove, { passive: false })
+              document.addEventListener('touchend', handleTouchEnd, { passive: false })
+              
+              // Initial touch position check
+              handleTouchMove(e)
+            }}
+          >
+            {/* Outer circle */}
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/40 to-purple-900/40 rounded-full border-2 border-cyan-500/50 backdrop-blur-sm" />
+            
+            {/* Inner joystick knob */}
+            <motion.div
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-full border-2 border-cyan-300 shadow-lg shadow-cyan-500/50"
+              animate={{
+                scale: keysPressed['ArrowUp'] || keysPressed['ArrowDown'] || keysPressed['ArrowLeft'] || keysPressed['ArrowRight'] ? 0.9 : 1,
+              }}
+            >
+              {/* Directional indicator */}
+              <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold">
+                {keysPressed['ArrowUp'] && '↑'}
+                {keysPressed['ArrowDown'] && '↓'}
+                {keysPressed['ArrowLeft'] && '←'}
+                {keysPressed['ArrowRight'] && '→'}
+              </div>
+            </motion.div>
+            
+            {/* Directional guides */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-30">
+              <div className="text-cyan-400 text-xs font-bold">
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2">↑</div>
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2">↓</div>
+                <div className="absolute -left-1 top-1/2 -translate-y-1/2">←</div>
+                <div className="absolute -right-1 top-1/2 -translate-y-1/2">→</div>
+              </div>
             </div>
-            {/* Up */}
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onTouchStart={() => setKeysPressed(prev => ({ ...prev, 'ArrowUp': true }))}
-              onTouchEnd={() => setKeysPressed(prev => ({ ...prev, 'ArrowUp': false }))}
-              className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-12 bg-cyan-600/70 rounded-lg border-2 border-cyan-400 flex items-center justify-center text-white text-xl font-bold active:bg-cyan-500"
-            >
-              ↑
-            </motion.button>
-            {/* Down */}
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onTouchStart={() => setKeysPressed(prev => ({ ...prev, 'ArrowDown': true }))}
-              onTouchEnd={() => setKeysPressed(prev => ({ ...prev, 'ArrowDown': false }))}
-              className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-12 bg-cyan-600/70 rounded-lg border-2 border-cyan-400 flex items-center justify-center text-white text-xl font-bold active:bg-cyan-500"
-            >
-              ↓
-            </motion.button>
-            {/* Left */}
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onTouchStart={() => setKeysPressed(prev => ({ ...prev, 'ArrowLeft': true }))}
-              onTouchEnd={() => setKeysPressed(prev => ({ ...prev, 'ArrowLeft': false }))}
-              className="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-cyan-600/70 rounded-lg border-2 border-cyan-400 flex items-center justify-center text-white text-xl font-bold active:bg-cyan-500"
-            >
-              ←
-            </motion.button>
-            {/* Right */}
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onTouchStart={() => setKeysPressed(prev => ({ ...prev, 'ArrowRight': true }))}
-              onTouchEnd={() => setKeysPressed(prev => ({ ...prev, 'ArrowRight': false }))}
-              className="absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-cyan-600/70 rounded-lg border-2 border-cyan-400 flex items-center justify-center text-white text-xl font-bold active:bg-cyan-500"
-            >
-              →
-            </motion.button>
           </div>
 
           {/* Action Button */}

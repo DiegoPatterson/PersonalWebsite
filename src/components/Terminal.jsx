@@ -1061,12 +1061,12 @@ TIP: Every file shows different content in each mode.
 
   return (
     <>
-      {/* Game Overlay */}
+      {/* Game Overlay - Should be on top of everything */}
       {showGame && (
         <PixelGame 
           onExit={() => setShowGame(false)} 
           darkMode={darkMode}
-          zIndex={gameZIndex}
+          zIndex={9999}
           onBringToFront={onBringGameToFront}
         />
       )}
@@ -1081,7 +1081,7 @@ TIP: Every file shows different content in each mode.
         />
       )}
 
-      <div className="min-h-screen pt-12 sm:pt-20 pb-4 sm:pb-8 px-2 sm:px-4" style={{ position: 'relative', zIndex: zIndex || 10 }}>
+      <div className="min-h-screen pt-12 sm:pt-20 pb-4 sm:pb-8 px-2 sm:px-4" style={{ position: 'relative', zIndex: showGame ? -1 : (zIndex || 10) }}>
         <div className="max-w-5xl mx-auto">
         <motion.div 
           drag={!isMobile}

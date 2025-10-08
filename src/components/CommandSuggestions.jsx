@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
 const CommandSuggestions = ({ onCommandSelect }) => {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true) // Start expanded on mobile
 
   const suggestions = [
     { cmd: 'about me', desc: 'View creator profile', icon: '👤' },
@@ -17,17 +17,18 @@ const CommandSuggestions = ({ onCommandSelect }) => {
 
   return (
     <motion.div
-      className="border-t border-cyber-cyan/30 bg-cyber-dark/30 px-4 py-2"
+      className="border-t border-cyber-cyan/30 bg-cyber-dark/30 px-4 py-2 max-h-[40vh] overflow-y-auto"
       initial={false}
     >
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between text-cyber-violet text-sm hover:text-cyber-cyan transition-colors"
+        className="w-full flex items-center justify-between text-cyber-violet text-sm hover:text-cyber-cyan transition-colors touch-manipulation py-2"
       >
-        <span>Quick Commands</span>
+        <span className="font-semibold">⚡ Quick Commands</span>
         <motion.span
           animate={{ rotate: isExpanded ? 180 : 0 }}
           transition={{ duration: 0.3 }}
+          className="text-lg"
         >
           ▼
         </motion.span>
@@ -42,7 +43,7 @@ const CommandSuggestions = ({ onCommandSelect }) => {
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
+            <div className="grid grid-cols-1 gap-2 mt-3">
               {suggestions.map((suggestion, idx) => (
                 <motion.button
                   key={idx}
@@ -53,18 +54,20 @@ const CommandSuggestions = ({ onCommandSelect }) => {
                     if (onCommandSelect) {
                       onCommandSelect(suggestion.cmd)
                     }
-                    // Focus the input field
-                    const input = document.querySelector('input[type="text"]')
-                    if (input) {
-                      input.focus()
+                    // Auto-submit on mobile
+                    const form = document.querySelector('form')
+                    if (form) {
+                      setTimeout(() => {
+                        form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }))
+                      }, 100)
                     }
                   }}
-                  className="flex items-center space-x-2 px-3 py-2 bg-cyber-dark/50 border border-cyber-cyan/20 rounded hover:border-cyber-cyan/50 hover:bg-cyber-cyan/5 transition-all text-left"
+                  className="flex items-center space-x-3 px-4 py-3 bg-cyber-dark/50 border border-cyber-cyan/20 rounded-lg hover:border-cyber-cyan/50 hover:bg-cyber-cyan/5 active:bg-cyber-cyan/10 transition-all text-left touch-manipulation"
                 >
-                  <span className="text-lg">{suggestion.icon}</span>
-                  <div className="flex-1">
-                    <div className="text-cyber-cyan text-xs font-mono">{suggestion.cmd}</div>
-                    <div className="text-gray-400 text-xs">{suggestion.desc}</div>
+                  <span className="text-2xl">{suggestion.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-cyber-cyan text-sm font-mono font-semibold truncate">{suggestion.cmd}</div>
+                    <div className="text-gray-400 text-xs truncate">{suggestion.desc}</div>
                   </div>
                 </motion.button>
               ))}
