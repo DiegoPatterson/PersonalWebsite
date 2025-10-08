@@ -140,6 +140,10 @@ const Terminal = ({
         response = handleCertifications(darkMode)
       } else if (command === 'social' || command === 'links' || command === 'social media') {
         response = handleSocial(darkMode)
+      } else if (command === 'skills' || command === 'abilities' || command === 'expertise' || command === 'tech stack') {
+        response = handleSkills(darkMode)
+      } else if (command === 'analytics' || command === 'stats' || command === 'metrics' || command === 'performance') {
+        response = handleAnalytics(darkMode)
       } else if (command === 'about me' || command === 'view profile' || command === 'profile') {
         response = handleProfile(darkMode)
       } else if (command === 'about' || command === 'info') {
@@ -216,6 +220,11 @@ contact form               → 📧 Open contact form
 social                     → View social media links
 resume                     → 📄 Download resume PDF
 certifications             → View certifications & credentials
+
+SKILLS & ANALYTICS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+skills                     → 💪 View skills & tech stack
+analytics                  → 📊 View portfolio metrics & stats
 
 SYSTEM COMMANDS:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -640,6 +649,20 @@ TIP: Every file shows different content in each mode.
     type: 'social',
     title: dark ? 'EXTERNAL NETWORK LINKS' : 'SOCIAL MEDIA & LINKS',
     content: dataVault.contact,
+    darkMode: dark
+  })
+
+  const handleSkills = (dark) => ({
+    type: 'skills',
+    title: dark ? 'CAPABILITY MATRIX' : 'SKILLS & EXPERTISE',
+    content: dataVault.skills,
+    darkMode: dark
+  })
+
+  const handleAnalytics = (dark) => ({
+    type: 'analytics',
+    title: dark ? 'SYSTEM METRICS & PERFORMANCE DATA' : 'PORTFOLIO ANALYTICS',
+    content: dataVault.analytics,
     darkMode: dark
   })
 

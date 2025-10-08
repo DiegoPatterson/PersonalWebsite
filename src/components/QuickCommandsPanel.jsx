@@ -81,6 +81,18 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle, zIndex, o
       category: 'Credentials'
     },
     { 
+      cmd: 'skills', 
+      desc: 'Skills & Tech Stack', 
+      icon: '💪',
+      category: 'Skills & Analytics'
+    },
+    { 
+      cmd: 'analytics', 
+      desc: 'Portfolio Metrics', 
+      icon: '📊',
+      category: 'Skills & Analytics'
+    },
+    { 
       cmd: 'help', 
       desc: 'All Commands', 
       icon: '❓',
@@ -88,7 +100,7 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle, zIndex, o
     },
   ]
 
-  const categories = ['Profile', 'Professional', 'Projects', 'Interactive', 'Contact', 'Credentials', 'System']
+  const categories = ['Profile', 'Professional', 'Projects', 'Interactive', 'Contact', 'Credentials', 'Skills & Analytics', 'System']
 
   return (
     <motion.div

@@ -714,6 +714,452 @@ const Message = ({ message }) => {
           </motion.div>
         )
 
+      case 'skills':
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`font-mono text-sm leading-relaxed ${
+              darkMode ? 'text-green-400' : 'text-cyber-cyan'
+            }`}
+          >
+            <div className={`p-4 rounded-lg mb-4 ${
+              darkMode ? 'bg-gray-800/50' : 'bg-white/10'
+            }`}>
+              <h3 className={`text-lg font-bold mb-4 ${
+                darkMode ? 'text-red-400' : 'text-cyber-pink'
+              }`}>
+                💪 Skills & Expertise
+              </h3>
+              
+              {content && (
+                <div className="space-y-6">
+                  {/* Languages */}
+                  {content.languages && (
+                    <div>
+                      <h4 className={`font-bold mb-3 ${
+                        darkMode ? 'text-violet-400' : 'text-cyan-400'
+                      }`}>
+                        Programming Languages
+                      </h4>
+                      <div className="space-y-2">
+                        {content.languages.map((skill, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.05 }}
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="flex items-center gap-2">
+                                <span className="text-xl">{skill.icon}</span>
+                                <span>{skill.name}</span>
+                              </span>
+                              <span className="text-xs opacity-70">{skill.level}%</span>
+                            </div>
+                            <div className={`w-full h-2 rounded-full overflow-hidden ${
+                              darkMode ? 'bg-gray-700' : 'bg-gray-800/30'
+                            }`}>
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${skill.level}%` }}
+                                transition={{ duration: 1, delay: index * 0.05 }}
+                                className={`h-full ${
+                                  darkMode 
+                                    ? 'bg-gradient-to-r from-red-500 to-violet-500' 
+                                    : 'bg-gradient-to-r from-cyan-500 to-pink-500'
+                                }`}
+                              />
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Frameworks */}
+                  {content.frameworks && (
+                    <div>
+                      <h4 className={`font-bold mb-3 ${
+                        darkMode ? 'text-violet-400' : 'text-cyan-400'
+                      }`}>
+                        Frameworks & Libraries
+                      </h4>
+                      <div className="space-y-2">
+                        {content.frameworks.map((skill, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.3 + index * 0.05 }}
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="flex items-center gap-2">
+                                <span className="text-xl">{skill.icon}</span>
+                                <span>{skill.name}</span>
+                              </span>
+                              <span className="text-xs opacity-70">{skill.level}%</span>
+                            </div>
+                            <div className={`w-full h-2 rounded-full overflow-hidden ${
+                              darkMode ? 'bg-gray-700' : 'bg-gray-800/30'
+                            }`}>
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${skill.level}%` }}
+                                transition={{ duration: 1, delay: 0.3 + index * 0.05 }}
+                                className={`h-full ${
+                                  darkMode 
+                                    ? 'bg-gradient-to-r from-red-500 to-violet-500' 
+                                    : 'bg-gradient-to-r from-cyan-500 to-pink-500'
+                                }`}
+                              />
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Tools */}
+                  {content.tools && (
+                    <div>
+                      <h4 className={`font-bold mb-3 ${
+                        darkMode ? 'text-violet-400' : 'text-cyan-400'
+                      }`}>
+                        Tools & Technologies
+                      </h4>
+                      <div className="space-y-2">
+                        {content.tools.map((skill, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.6 + index * 0.05 }}
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="flex items-center gap-2">
+                                <span className="text-xl">{skill.icon}</span>
+                                <span>{skill.name}</span>
+                              </span>
+                              <span className="text-xs opacity-70">{skill.level}%</span>
+                            </div>
+                            <div className={`w-full h-2 rounded-full overflow-hidden ${
+                              darkMode ? 'bg-gray-700' : 'bg-gray-800/30'
+                            }`}>
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${skill.level}%` }}
+                                transition={{ duration: 1, delay: 0.6 + index * 0.05 }}
+                                className={`h-full ${
+                                  darkMode 
+                                    ? 'bg-gradient-to-r from-red-500 to-violet-500' 
+                                    : 'bg-gradient-to-r from-cyan-500 to-pink-500'
+                                }`}
+                              />
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Specialties */}
+                  {content.specialties && (
+                    <div>
+                      <h4 className={`font-bold mb-3 ${
+                        darkMode ? 'text-violet-400' : 'text-cyan-400'
+                      }`}>
+                        Specializations
+                      </h4>
+                      <div className="space-y-2">
+                        {content.specialties.map((skill, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.9 + index * 0.05 }}
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="flex items-center gap-2">
+                                <span className="text-xl">{skill.icon}</span>
+                                <span>{skill.name}</span>
+                              </span>
+                              <span className="text-xs opacity-70">{skill.level}%</span>
+                            </div>
+                            <div className={`w-full h-2 rounded-full overflow-hidden ${
+                              darkMode ? 'bg-gray-700' : 'bg-gray-800/30'
+                            }`}>
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${skill.level}%` }}
+                                transition={{ duration: 1, delay: 0.9 + index * 0.05 }}
+                                className={`h-full ${
+                                  darkMode 
+                                    ? 'bg-gradient-to-r from-red-500 to-violet-500' 
+                                    : 'bg-gradient-to-r from-cyan-500 to-pink-500'
+                                }`}
+                              />
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )
+
+      case 'analytics':
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`font-mono text-sm leading-relaxed ${
+              darkMode ? 'text-green-400' : 'text-cyber-cyan'
+            }`}
+          >
+            <div className={`p-4 rounded-lg mb-4 ${
+              darkMode ? 'bg-gray-800/50' : 'bg-white/10'
+            }`}>
+              <h3 className={`text-lg font-bold mb-4 ${
+                darkMode ? 'text-red-400' : 'text-cyber-pink'
+              }`}>
+                📊 Portfolio Analytics & Metrics
+              </h3>
+              
+              {content && (
+                <div className="space-y-6">
+                  {/* Portfolio Stats */}
+                  {content.portfolio && (
+                    <div>
+                      <h4 className={`font-bold mb-3 flex items-center gap-2 ${
+                        darkMode ? 'text-violet-400' : 'text-cyan-400'
+                      }`}>
+                        🌐 Portfolio Statistics
+                      </h4>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.portfolio.totalVisitors.toLocaleString()}
+                          </div>
+                          <div className="text-xs opacity-70">Total Visitors</div>
+                        </div>
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.portfolio.uniqueVisitors.toLocaleString()}
+                          </div>
+                          <div className="text-xs opacity-70">Unique Visitors</div>
+                        </div>
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.portfolio.avgSessionDuration}
+                          </div>
+                          <div className="text-xs opacity-70">Avg. Session</div>
+                        </div>
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.portfolio.bounceRate}
+                          </div>
+                          <div className="text-xs opacity-70">Bounce Rate</div>
+                        </div>
+                      </div>
+                      
+                      {content.portfolio.topPages && (
+                        <div className="mt-3">
+                          <div className="text-xs opacity-70 mb-2">Top Pages:</div>
+                          <div className="space-y-1">
+                            {content.portfolio.topPages.map((page, index) => (
+                              <div key={index} className="flex justify-between items-center text-xs">
+                                <span>{page.page}</span>
+                                <span className="opacity-70">{page.views.toLocaleString()} views</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* GitHub Stats */}
+                  {content.github && (
+                    <div>
+                      <h4 className={`font-bold mb-3 flex items-center gap-2 ${
+                        darkMode ? 'text-violet-400' : 'text-cyan-400'
+                      }`}>
+                        💻 GitHub Activity
+                      </h4>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.github.totalRepos}
+                          </div>
+                          <div className="text-xs opacity-70">Repositories</div>
+                        </div>
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.github.totalStars.toLocaleString()}
+                          </div>
+                          <div className="text-xs opacity-70">Total Stars</div>
+                        </div>
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.github.totalCommits.toLocaleString()}
+                          </div>
+                          <div className="text-xs opacity-70">Total Commits</div>
+                        </div>
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.github.contributionStreak}
+                          </div>
+                          <div className="text-xs opacity-70">Streak</div>
+                        </div>
+                      </div>
+                      
+                      {content.github.topLanguages && (
+                        <div className="mt-3">
+                          <div className="text-xs opacity-70 mb-2">Language Distribution:</div>
+                          <div className="space-y-1">
+                            {content.github.topLanguages.map((lang, index) => (
+                              <div key={index}>
+                                <div className="flex justify-between items-center text-xs mb-1">
+                                  <span>{lang.language}</span>
+                                  <span className="opacity-70">{lang.percentage}%</span>
+                                </div>
+                                <div className={`w-full h-1.5 rounded-full overflow-hidden ${
+                                  darkMode ? 'bg-gray-700' : 'bg-gray-800/30'
+                                }`}>
+                                  <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${lang.percentage}%` }}
+                                    transition={{ duration: 1, delay: index * 0.1 }}
+                                    className={`h-full ${
+                                      darkMode 
+                                        ? 'bg-gradient-to-r from-red-500 to-violet-500' 
+                                        : 'bg-gradient-to-r from-cyan-500 to-pink-500'
+                                    }`}
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Project Stats */}
+                  {content.projects && (
+                    <div>
+                      <h4 className={`font-bold mb-3 flex items-center gap-2 ${
+                        darkMode ? 'text-violet-400' : 'text-cyan-400'
+                      }`}>
+                        🚀 Project Metrics
+                      </h4>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.projects.totalProjects}
+                          </div>
+                          <div className="text-xs opacity-70">Total Projects</div>
+                        </div>
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.projects.activeProjects}
+                          </div>
+                          <div className="text-xs opacity-70">Active</div>
+                        </div>
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.projects.totalDownloads.toLocaleString()}
+                          </div>
+                          <div className="text-xs opacity-70">Downloads</div>
+                        </div>
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.projects.totalStars.toLocaleString()}
+                          </div>
+                          <div className="text-xs opacity-70">Stars</div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Engagement Stats */}
+                  {content.engagement && (
+                    <div>
+                      <h4 className={`font-bold mb-3 flex items-center gap-2 ${
+                        darkMode ? 'text-violet-400' : 'text-cyan-400'
+                      }`}>
+                        🤝 Community Engagement
+                      </h4>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.engagement.linkedinConnections.toLocaleString()}
+                          </div>
+                          <div className="text-xs opacity-70">LinkedIn</div>
+                        </div>
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.engagement.twitterFollowers.toLocaleString()}
+                          </div>
+                          <div className="text-xs opacity-70">Twitter</div>
+                        </div>
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.engagement.discordMembers}
+                          </div>
+                          <div className="text-xs opacity-70">Discord</div>
+                        </div>
+                        <div className={`p-3 rounded ${
+                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                        }`}>
+                          <div className="text-2xl font-bold">
+                            {content.engagement.emailSubscribers}
+                          </div>
+                          <div className="text-xs opacity-70">Subscribers</div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )
+
       default:
         return null
     }
