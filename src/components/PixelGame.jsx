@@ -10,10 +10,13 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
   const [keysPressed, setKeysPressed] = useState({})
   const gameRef = useRef(null)
 
-  // Grid size (each tile is 32px)
-  const TILE_SIZE = 32
+  // Grid size (each tile is 40px for better detail)
+  const TILE_SIZE = 40
   const GRID_WIDTH = 20
   const GRID_HEIGHT = 15
+  
+  // Animation frame for idle animations
+  const [animFrame, setAnimFrame] = useState(0)
 
   // Prevent scrolling and lock body when game is active
   useEffect(() => {
@@ -39,6 +42,14 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
       document.body.style.width = ''
       document.body.style.height = ''
     }
+  }, [])
+  
+  // Idle animation loop
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAnimFrame(prev => (prev + 1) % 60)
+    }, 100)
+    return () => clearInterval(interval)
   }, [])
 
   // Convert game design projects to interactables
@@ -69,14 +80,23 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
     }
   ]
 
-  // Walls/boundaries
+  // Walls/boundaries with more detail
   const walls = [
     // Outer walls
-    ...Array.from({ length: GRID_WIDTH }, (_, i) => ({ x: i, y: 0 })),
-    ...Array.from({ length: GRID_WIDTH }, (_, i) => ({ x: i, y: GRID_HEIGHT - 1 })),
-    ...Array.from({ length: GRID_HEIGHT }, (_, i) => ({ x: 0, y: i })),
-    ...Array.from({ length: GRID_HEIGHT }, (_, i) => ({ x: GRID_WIDTH - 1, y: i })),
+    ...Array.from({ length: GRID_WIDTH }, (_, i) => ({ x: i, y: 0, type: 'wall-top' })),
+    ...Array.from({ length: GRID_WIDTH }, (_, i) => ({ x: i, y: GRID_HEIGHT - 1, type: 'wall-bottom' })),
+    ...Array.from({ length: GRID_HEIGHT }, (_, i) => ({ x: 0, y: i, type: 'wall-left' })),
+    ...Array.from({ length: GRID_HEIGHT }, (_, i) => ({ x: GRID_WIDTH - 1, y: i, type: 'wall-right' })),
   ]
+  
+  // Floor tiles for decoration
+  const floorTiles = Array.from({ length: (GRID_WIDTH - 2) * (GRID_HEIGHT - 2) }, (_, i) => {
+    const x = (i % (GRID_WIDTH - 2)) + 1
+    const y = Math.floor(i / (GRID_WIDTH - 2)) + 1
+    // Random floor variations
+    const variant = (x + y) % 3
+    return { x, y, variant }
+  })
 
   // Check if position is valid (not a wall)
   const isValidPosition = (x, y) => {
@@ -196,45 +216,97 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
     >
       {/* Game Canvas */}
       <div 
-        className="relative border-4 border-cyan-500 shadow-2xl"
+        className="relative border-4 shadow-2xl overflow-hidden"
         style={{
           width: `${GRID_WIDTH * TILE_SIZE}px`,
           height: `${GRID_HEIGHT * TILE_SIZE}px`,
-          background: 'linear-gradient(180deg, #0a0a1f 0%, #1a1a3f 100%)',
-          imageRendering: 'pixelated'
+          background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+          imageRendering: 'pixelated',
+          borderImage: 'linear-gradient(45deg, #00ffff, #ff00ff, #00ffff) 1',
+          boxShadow: '0 0 50px rgba(0,255,255,0.5), inset 0 0 100px rgba(0,0,0,0.5)'
         }}
       >
-        {/* Grid overlay */}
-        <div className="absolute inset-0 opacity-10">
-          {Array.from({ length: GRID_HEIGHT }).map((_, y) => (
-            <div key={y} className="flex">
-              {Array.from({ length: GRID_WIDTH }).map((_, x) => (
-                <div
-                  key={x}
-                  className="border border-cyan-500/20"
-                  style={{ width: TILE_SIZE, height: TILE_SIZE }}
-                />
-              ))}
-            </div>
+        {/* Animated background stars */}
+        <div className="absolute inset-0 overflow-hidden">
+          {Array.from({ length: 50 }).map((_, i) => (
+            <motion.div
+              key={`star-${i}`}
+              className="absolute w-1 h-1 bg-white rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                opacity: 0.3 + Math.random() * 0.7
+              }}
+              animate={{
+                opacity: [0.3, 1, 0.3],
+                scale: [1, 1.5, 1]
+              }}
+              transition={{
+                duration: 2 + Math.random() * 3,
+                repeat: Infinity,
+                delay: Math.random() * 2
+              }}
+            />
           ))}
         </div>
 
-        {/* Walls */}
-        {walls.map((wall, idx) => (
+        {/* Floor tiles with pattern */}
+        {floorTiles.map((tile, idx) => (
           <div
+            key={`floor-${idx}`}
+            className="absolute"
+            style={{
+              left: `${tile.x * TILE_SIZE}px`,
+              top: `${tile.y * TILE_SIZE}px`,
+              width: `${TILE_SIZE}px`,
+              height: `${TILE_SIZE}px`,
+              background: tile.variant === 0 
+                ? 'rgba(30, 30, 60, 0.4)' 
+                : tile.variant === 1 
+                ? 'rgba(25, 25, 55, 0.4)' 
+                : 'rgba(35, 35, 65, 0.4)',
+              border: '1px solid rgba(100, 100, 255, 0.1)',
+              boxShadow: 'inset 0 0 5px rgba(0,0,0,0.3)'
+            }}
+          />
+        ))}
+
+        {/* Walls with detailed design */}
+        {walls.map((wall, idx) => (
+          <motion.div
             key={`wall-${idx}`}
-            className="absolute bg-gradient-to-br from-cyan-700 to-cyan-900"
+            className="absolute"
             style={{
               left: `${wall.x * TILE_SIZE}px`,
               top: `${wall.y * TILE_SIZE}px`,
               width: `${TILE_SIZE}px`,
               height: `${TILE_SIZE}px`,
-              boxShadow: 'inset 0 0 10px rgba(0,255,255,0.3)'
+              background: 'linear-gradient(135deg, #0a4d68 0%, #088395 50%, #05bfdb 100%)',
+              border: '2px solid rgba(0, 255, 255, 0.3)',
+              boxShadow: 'inset 0 0 10px rgba(0,255,255,0.5), 0 0 15px rgba(0,255,255,0.3)',
+              position: 'relative'
             }}
-          />
+            animate={{
+              boxShadow: [
+                'inset 0 0 10px rgba(0,255,255,0.5), 0 0 15px rgba(0,255,255,0.3)',
+                'inset 0 0 15px rgba(0,255,255,0.7), 0 0 20px rgba(0,255,255,0.5)',
+                'inset 0 0 10px rgba(0,255,255,0.5), 0 0 15px rgba(0,255,255,0.3)'
+              ]
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              delay: idx * 0.05
+            }}
+          >
+            {/* Wall texture pattern */}
+            <div className="absolute inset-1 bg-gradient-to-br from-cyan-600/20 to-transparent" />
+            <div className="absolute top-1 left-1 w-1 h-1 bg-cyan-400/50 rounded-full" />
+            <div className="absolute bottom-1 right-1 w-1 h-1 bg-cyan-400/50 rounded-full" />
+          </motion.div>
         ))}
 
-        {/* Interactable objects */}
+        {/* Interactable objects with detailed sprites */}
         {interactables.map(obj => (
           <motion.div
             key={obj.id}
@@ -244,108 +316,372 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
               top: `${obj.y * TILE_SIZE}px`,
               width: `${TILE_SIZE}px`,
               height: `${TILE_SIZE}px`,
+              zIndex: 10
             }}
             animate={{
-              scale: nearbyInteractable?.id === obj.id ? [1, 1.2, 1] : 1,
+              scale: nearbyInteractable?.id === obj.id ? [1, 1.15, 1] : 1,
+              y: nearbyInteractable?.id === obj.id ? [0, -5, 0] : 0,
             }}
-            transition={{ duration: 0.5, repeat: nearbyInteractable?.id === obj.id ? Infinity : 0 }}
+            transition={{ duration: 0.6, repeat: nearbyInteractable?.id === obj.id ? Infinity : 0 }}
           >
-            {/* Object sprite */}
-            <div
-              className="w-6 h-6 rounded"
+            {/* Glow effect */}
+            <motion.div
+              className="absolute inset-0 rounded-lg blur-md"
               style={{
-                backgroundColor: obj.color,
-                boxShadow: `0 0 20px ${obj.color}`
+                background: obj.color,
+                opacity: 0.3
               }}
-            >
-              {obj.type === 'terminal' && (
-                <div className="text-[10px] text-black font-bold text-center leading-6">▦</div>
-              )}
-              {obj.type === 'arcade' && (
-                <div className="text-[10px] text-black font-bold text-center leading-6">▣</div>
-              )}
-              {obj.type === 'console' && (
-                <div className="text-[10px] text-black font-bold text-center leading-6">◆</div>
-              )}
-              {obj.type === 'door' && (
-                <div className="text-[10px] text-black font-bold text-center leading-6">◄</div>
-              )}
-            </div>
+              animate={{
+                scale: [1, 1.5, 1],
+                opacity: [0.3, 0.6, 0.3]
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+            
+            {/* Object sprite - Terminal */}
+            {obj.type === 'terminal' && (
+              <div className="relative w-8 h-8 flex flex-col items-center justify-center">
+                <div 
+                  className="w-full h-full rounded border-2 flex flex-col items-center justify-center"
+                  style={{
+                    backgroundColor: `${obj.color}20`,
+                    borderColor: obj.color,
+                    boxShadow: `0 0 15px ${obj.color}, inset 0 0 10px ${obj.color}40`
+                  }}
+                >
+                  <div className="w-5 h-3 border flex flex-col gap-0.5 p-0.5" style={{ borderColor: obj.color }}>
+                    <div className="h-0.5 w-full" style={{ backgroundColor: obj.color }} />
+                    <div className="h-0.5 w-3/4" style={{ backgroundColor: obj.color }} />
+                  </div>
+                  <div className="text-[6px] font-bold mt-0.5" style={{ color: obj.color }}>█</div>
+                </div>
+              </div>
+            )}
+            
+            {/* Object sprite - Arcade Machine */}
+            {obj.type === 'arcade' && (
+              <div className="relative w-8 h-8 flex items-end justify-center">
+                <div className="w-6 h-7 rounded-t relative" style={{
+                  background: `linear-gradient(180deg, ${obj.color} 0%, ${obj.color}80 100%)`,
+                  boxShadow: `0 0 15px ${obj.color}, inset 0 0 10px rgba(0,0,0,0.5)`,
+                  border: '1px solid rgba(255,255,255,0.3)'
+                }}>
+                  <div className="absolute top-1 left-1 right-1 h-2 bg-black/50 rounded flex items-center justify-center">
+                    <motion.div 
+                      className="w-3 h-1 rounded-sm"
+                      style={{ backgroundColor: obj.color }}
+                      animate={{ opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                    />
+                  </div>
+                  <div className="absolute bottom-1 left-1 w-1 h-1 rounded-full bg-red-500" />
+                  <div className="absolute bottom-1 left-3 w-1 h-1 rounded-full bg-blue-500" />
+                </div>
+                <div className="absolute -bottom-0.5 w-7 h-1 rounded-b" style={{ backgroundColor: `${obj.color}40` }} />
+              </div>
+            )}
+            
+            {/* Object sprite - Console */}
+            {obj.type === 'console' && (
+              <div className="relative w-8 h-8 flex items-center justify-center">
+                <div className="w-7 h-5 rounded relative" style={{
+                  background: `linear-gradient(135deg, ${obj.color} 0%, ${obj.color}80 100%)`,
+                  boxShadow: `0 0 15px ${obj.color}, inset 0 0 10px rgba(0,0,0,0.3)`,
+                  border: '1px solid rgba(255,255,255,0.2)'
+                }}>
+                  <div className="absolute top-1 left-1 w-1 h-1 rounded-full bg-green-400" />
+                  <motion.div 
+                    className="absolute top-1 right-1 w-1 h-1 rounded-full bg-yellow-400"
+                    animate={{ opacity: [0.3, 1, 0.3] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  />
+                  <div className="absolute bottom-0.5 left-1.5 right-1.5 h-1 bg-black/30 rounded" />
+                </div>
+              </div>
+            )}
+            
+            {/* Object sprite - Exit Door */}
+            {obj.type === 'door' && (
+              <div className="relative w-8 h-10 flex items-end justify-center">
+                <motion.div 
+                  className="w-6 h-9 rounded border-2 relative"
+                  style={{
+                    background: 'linear-gradient(180deg, #ff0000 0%, #cc0000 100%)',
+                    borderColor: '#ffaa00',
+                    boxShadow: '0 0 20px #ff0000, inset 0 0 10px rgba(0,0,0,0.5)'
+                  }}
+                  animate={{
+                    boxShadow: [
+                      '0 0 20px #ff0000, inset 0 0 10px rgba(0,0,0,0.5)',
+                      '0 0 30px #ff0000, inset 0 0 15px rgba(0,0,0,0.5)',
+                      '0 0 20px #ff0000, inset 0 0 10px rgba(0,0,0,0.5)'
+                    ]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <div className="absolute inset-1 border border-yellow-400/50 rounded" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-yellow-400 text-xs font-bold">
+                    EXIT
+                  </div>
+                  <div className="absolute bottom-1 right-1 w-1 h-2 bg-yellow-300 rounded-sm" />
+                </motion.div>
+              </div>
+            )}
+            
+            {/* Label */}
+            {nearbyInteractable?.id === obj.id && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: -15 }}
+                className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap 
+                          bg-black/90 px-2 py-1 rounded border text-xs font-bold"
+                style={{
+                  borderColor: obj.color,
+                  color: obj.color,
+                  boxShadow: `0 0 10px ${obj.color}`
+                }}
+              >
+                {obj.title}
+              </motion.div>
+            )}
           </motion.div>
         ))}
 
-        {/* Player */}
+        {/* Player with detailed sprite */}
         <motion.div
           className="absolute"
           animate={{
             left: `${playerPos.x * TILE_SIZE}px`,
             top: `${playerPos.y * TILE_SIZE}px`,
           }}
-          transition={{ duration: 0.15 }}
+          transition={{ duration: 0.12, ease: "easeOut" }}
           style={{
             width: `${TILE_SIZE}px`,
             height: `${TILE_SIZE}px`,
+            zIndex: 20
           }}
         >
-          {/* Player sprite - simple character */}
+          {/* Player glow */}
+          <motion.div
+            className="absolute inset-0 rounded-full blur-md"
+            style={{
+              background: 'radial-gradient(circle, rgba(255,255,0,0.6) 0%, transparent 70%)'
+            }}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.4, 0.7, 0.4]
+            }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
+          
+          {/* Player sprite - detailed character */}
           <div className="relative w-full h-full flex items-center justify-center">
-            <div
-              className="w-4 h-6 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-sm"
+            <motion.div
+              className="relative"
               style={{
-                boxShadow: '0 0 15px rgba(255,255,0,0.8)',
                 transform: playerDirection === 'left' ? 'scaleX(-1)' : 'scaleX(1)'
               }}
+              animate={{
+                y: [0, -2, 0]
+              }}
+              transition={{ duration: 0.4, repeat: Infinity }}
             >
-              {/* Simple face */}
-              <div className="w-1 h-1 bg-black rounded-full absolute top-1 left-1" />
-              <div className="w-1 h-1 bg-black rounded-full absolute top-1 right-1" />
-            </div>
+              {/* Head */}
+              <div className="relative w-5 h-5 mx-auto mb-0.5">
+                <div className="w-full h-full rounded-full bg-gradient-to-b from-yellow-300 to-yellow-500 border-2 border-yellow-600"
+                  style={{ boxShadow: '0 0 10px rgba(255,255,0,0.5), inset 0 1px 2px rgba(255,255,255,0.5)' }}
+                >
+                  {/* Eyes */}
+                  <div className="absolute top-1.5 left-1 w-1 h-1 bg-black rounded-full" />
+                  <div className="absolute top-1.5 right-1 w-1 h-1 bg-black rounded-full" />
+                  {/* Smile */}
+                  <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-0.5 bg-black rounded-full" />
+                </div>
+                {/* Hair/antenna */}
+                <motion.div 
+                  className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-yellow-600 rounded-full"
+                  animate={{ rotate: [-10, 10, -10] }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                />
+              </div>
+              
+              {/* Body */}
+              <div className="relative w-4 h-6 mx-auto bg-gradient-to-b from-cyan-400 to-cyan-600 rounded-sm border border-cyan-700"
+                style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.3)' }}
+              >
+                {/* Buttons */}
+                <div className="absolute top-1 left-1/2 -translate-x-1/2 w-0.5 h-0.5 bg-white rounded-full" />
+                <div className="absolute top-2 left-1/2 -translate-x-1/2 w-0.5 h-0.5 bg-white rounded-full" />
+              </div>
+              
+              {/* Legs */}
+              <div className="flex justify-center gap-1 mt-0.5">
+                <motion.div 
+                  className="w-1 h-3 bg-gradient-to-b from-blue-600 to-blue-800 rounded-sm"
+                  animate={{ scaleY: [1, 0.9, 1] }}
+                  transition={{ duration: 0.3, repeat: Infinity }}
+                />
+                <motion.div 
+                  className="w-1 h-3 bg-gradient-to-b from-blue-600 to-blue-800 rounded-sm"
+                  animate={{ scaleY: [1, 0.9, 1] }}
+                  transition={{ duration: 0.3, repeat: Infinity, delay: 0.15 }}
+                />
+              </div>
+              
+              {/* Shadow */}
+              <motion.div
+                className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-6 h-1 rounded-full bg-black/30 blur-sm"
+                animate={{
+                  scale: [1, 0.9, 1],
+                  opacity: [0.3, 0.2, 0.3]
+                }}
+                transition={{ duration: 0.4, repeat: Infinity }}
+              />
+            </motion.div>
           </div>
         </motion.div>
 
-        {/* Interaction prompt */}
+        {/* Enhanced Interaction prompt */}
         <AnimatePresence>
           {nearbyInteractable && !showingProject && (
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              className="absolute bottom-4 left-1/2 transform -translate-x-1/2 
-                         bg-black/90 border-2 border-cyan-500 px-4 py-2 rounded"
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: 20 }}
+              className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-30"
             >
-              <p className="text-cyan-400 text-sm font-mono">
-                Press <span className="text-yellow-400 font-bold">E</span> to interact
-              </p>
-              <p className="text-cyan-300 text-xs text-center mt-1">
-                {nearbyInteractable.title}
-              </p>
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="bg-gradient-to-br from-black/95 to-cyan-900/80 border-2 
+                          px-6 py-3 rounded-lg backdrop-blur-sm text-center"
+                style={{
+                  borderColor: nearbyInteractable.color,
+                  boxShadow: `0 0 30px ${nearbyInteractable.color}60, inset 0 0 20px rgba(0,0,0,0.5)`
+                }}
+              >
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 0.8, repeat: Infinity }}
+                  className="flex items-center justify-center gap-2 mb-1"
+                >
+                  <span className="text-yellow-400 text-xl font-bold animate-pulse">⌨</span>
+                  <span className="text-yellow-400 text-2xl font-bold border-2 border-yellow-400 px-2 rounded">
+                    E
+                  </span>
+                </motion.div>
+                <p className="text-cyan-300 text-xs font-mono mb-1">
+                  PRESS TO INTERACT
+                </p>
+                <p 
+                  className="text-sm font-bold"
+                  style={{ 
+                    color: nearbyInteractable.color,
+                    textShadow: `0 0 10px ${nearbyInteractable.color}`
+                  }}
+                >
+                  {nearbyInteractable.title}
+                </p>
+                {nearbyInteractable.id === 'exit' && (
+                  <p className="text-red-400 text-[10px] mt-1 animate-pulse">
+                    ⚠️ Leave Game World
+                  </p>
+                )}
+              </motion.div>
+              
+              {/* Arrow pointer */}
+              <motion.div
+                animate={{ y: [0, 5, 0] }}
+                transition={{ duration: 1, repeat: Infinity }}
+                className="mx-auto w-0 h-0 border-l-8 border-l-transparent 
+                          border-r-8 border-r-transparent"
+                style={{
+                  borderTop: `12px solid ${nearbyInteractable.color}`,
+                  filter: `drop-shadow(0 0 10px ${nearbyInteractable.color})`
+                }}
+              />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* HUD */}
-      <div className="absolute top-4 left-4 bg-black/80 border-2 border-cyan-500 px-4 py-2 rounded">
-        <p className="text-cyan-400 text-sm font-mono">
-          GAME DESIGN PORTFOLIO v1.0
-        </p>
-        <p className="text-cyan-300 text-xs mt-1">
-          Use Arrow Keys / WASD to move
-        </p>
-        <p className="text-cyan-300 text-xs">
-          Press E to interact with projects
-        </p>
-      </div>
-
-      {/* Exit button */}
-      <button
-        onClick={onExit}
-        className="absolute top-4 right-4 bg-red-600/80 hover:bg-red-500 
-                   border-2 border-red-400 px-4 py-2 rounded text-white 
-                   font-mono text-sm transition-colors"
+      {/* Enhanced HUD */}
+      <motion.div 
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="absolute top-4 left-4 bg-gradient-to-br from-black/90 to-cyan-900/50 
+                   border-2 border-cyan-500 px-6 py-3 rounded-lg backdrop-blur-sm"
+        style={{ boxShadow: '0 0 30px rgba(0,255,255,0.3)' }}
       >
-        ESC - Exit Game
-      </button>
+        <div className="flex items-center gap-2 mb-2">
+          <motion.div
+            className="w-2 h-2 bg-green-400 rounded-full"
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
+          <p className="text-cyan-400 text-base font-bold font-mono tracking-wider">
+            GAME PORTFOLIO v2.0
+          </p>
+        </div>
+        <div className="space-y-1 text-xs font-mono">
+          <p className="text-cyan-300 flex items-center gap-2">
+            <span className="text-yellow-400">↑↓←→</span> or 
+            <span className="text-yellow-400">WASD</span> - Move
+          </p>
+          <p className="text-cyan-300 flex items-center gap-2">
+            <span className="text-yellow-400">E</span> - Interact with projects
+          </p>
+          <p className="text-cyan-300 flex items-center gap-2">
+            <span className="text-yellow-400">ESC</span> - Exit
+          </p>
+        </div>
+        <div className="mt-2 pt-2 border-t border-cyan-500/30">
+          <p className="text-cyan-400/70 text-[10px]">
+            Projects Found: {gameProjects.length}/5
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Styled Exit button */}
+      <motion.button
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        onClick={onExit}
+        className="absolute top-4 right-4 bg-gradient-to-br from-red-600 to-red-800 
+                   hover:from-red-500 hover:to-red-700 border-2 border-red-400 
+                   px-6 py-3 rounded-lg text-white font-bold text-sm 
+                   transition-all duration-300 backdrop-blur-sm"
+        style={{ boxShadow: '0 0 30px rgba(255,0,0,0.4)' }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <span className="flex items-center gap-2">
+          <span className="text-yellow-300">⎋</span> EXIT GAME
+        </span>
+      </motion.button>
+      
+      {/* Score/Info bar at bottom */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 
+                   bg-gradient-to-r from-purple-900/80 via-black/90 to-purple-900/80 
+                   border-2 border-purple-500 px-8 py-2 rounded-full backdrop-blur-sm
+                   flex items-center gap-6"
+        style={{ boxShadow: '0 0 30px rgba(168,85,247,0.4)' }}
+      >
+        <div className="text-center">
+          <p className="text-purple-400 text-[10px] font-mono">POSITION</p>
+          <p className="text-purple-300 text-xs font-bold">{playerPos.x}, {playerPos.y}</p>
+        </div>
+        <div className="w-px h-6 bg-purple-500/30" />
+        <div className="text-center">
+          <p className="text-cyan-400 text-[10px] font-mono">STATUS</p>
+          <p className="text-cyan-300 text-xs font-bold">
+            {nearbyInteractable ? '📍 Near Object' : '🎮 Exploring'}
+          </p>
+        </div>
+      </motion.div>
 
       {/* Project Display Modal */}
       <AnimatePresence>
