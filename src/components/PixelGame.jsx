@@ -8,12 +8,23 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
   const [nearbyInteractable, setNearbyInteractable] = useState(null)
   const [showingProject, setShowingProject] = useState(null)
   const [keysPressed, setKeysPressed] = useState({})
+  const [isMobile, setIsMobile] = useState(false)
   const gameRef = useRef(null)
 
-  // Grid size (each tile is 40px for better detail)
-  const TILE_SIZE = 40
-  const GRID_WIDTH = 20
-  const GRID_HEIGHT = 15
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Grid size (responsive for mobile)
+  const TILE_SIZE = isMobile ? 25 : 40
+  const GRID_WIDTH = isMobile ? 15 : 20
+  const GRID_HEIGHT = isMobile ? 12 : 15
   
   // Animation frame for idle animations
   const [animFrame, setAnimFrame] = useState(0)
@@ -605,83 +616,155 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
         </AnimatePresence>
       </div>
 
-      {/* Enhanced HUD */}
+      {/* Enhanced HUD - Responsive */}
       <motion.div 
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
-        className="absolute top-4 left-4 bg-gradient-to-br from-black/90 to-cyan-900/50 
-                   border-2 border-cyan-500 px-6 py-3 rounded-lg backdrop-blur-sm"
+        className="absolute top-2 sm:top-4 left-2 sm:left-4 bg-gradient-to-br from-black/90 to-cyan-900/50 
+                   border-2 border-cyan-500 px-2 sm:px-6 py-2 sm:py-3 rounded-lg backdrop-blur-sm text-xs sm:text-base"
         style={{ boxShadow: '0 0 30px rgba(0,255,255,0.3)' }}
       >
-        <div className="flex items-center gap-2 mb-2">
+        <div className="flex items-center gap-1 sm:gap-2 mb-1 sm:mb-2">
           <motion.div
-            className="w-2 h-2 bg-green-400 rounded-full"
+            className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full"
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           />
-          <p className="text-cyan-400 text-base font-bold font-mono tracking-wider">
-            GAME PORTFOLIO v2.0
+          <p className="text-cyan-400 text-xs sm:text-base font-bold font-mono tracking-wider">
+            {isMobile ? 'PORTFOLIO' : 'GAME PORTFOLIO v2.0'}
           </p>
         </div>
-        <div className="space-y-1 text-xs font-mono">
-          <p className="text-cyan-300 flex items-center gap-2">
-            <span className="text-yellow-400">↑↓←→</span> or 
-            <span className="text-yellow-400">WASD</span> - Move
-          </p>
-          <p className="text-cyan-300 flex items-center gap-2">
-            <span className="text-yellow-400">E</span> - Interact with projects
-          </p>
-          <p className="text-cyan-300 flex items-center gap-2">
-            <span className="text-yellow-400">ESC</span> - Exit
-          </p>
-        </div>
-        <div className="mt-2 pt-2 border-t border-cyan-500/30">
-          <p className="text-cyan-400/70 text-[10px]">
-            Projects Found: {gameProjects.length}/5
+        {!isMobile && (
+          <div className="space-y-1 text-xs font-mono">
+            <p className="text-cyan-300 flex items-center gap-2">
+              <span className="text-yellow-400">↑↓←→</span> or 
+              <span className="text-yellow-400">WASD</span> - Move
+            </p>
+            <p className="text-cyan-300 flex items-center gap-2">
+              <span className="text-yellow-400">E</span> - Interact with projects
+            </p>
+            <p className="text-cyan-300 flex items-center gap-2">
+              <span className="text-yellow-400">ESC</span> - Exit
+            </p>
+          </div>
+        )}
+        <div className="mt-1 sm:mt-2 pt-1 sm:pt-2 border-t border-cyan-500/30">
+          <p className="text-cyan-400/70 text-[8px] sm:text-[10px]">
+            Projects: {gameProjects.length}/5
           </p>
         </div>
       </motion.div>
 
-      {/* Styled Exit button */}
+      {/* Styled Exit button - Responsive */}
       <motion.button
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         onClick={onExit}
-        className="absolute top-4 right-4 bg-gradient-to-br from-red-600 to-red-800 
+        className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-gradient-to-br from-red-600 to-red-800 
                    hover:from-red-500 hover:to-red-700 border-2 border-red-400 
-                   px-6 py-3 rounded-lg text-white font-bold text-sm 
+                   px-3 sm:px-6 py-2 sm:py-3 rounded-lg text-white font-bold text-xs sm:text-sm 
                    transition-all duration-300 backdrop-blur-sm"
         style={{ boxShadow: '0 0 30px rgba(255,0,0,0.4)' }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <span className="flex items-center gap-2">
-          <span className="text-yellow-300">⎋</span> EXIT GAME
+        <span className="flex items-center gap-1 sm:gap-2">
+          <span className="text-yellow-300">⎋</span> {isMobile ? 'EXIT' : 'EXIT GAME'}
         </span>
       </motion.button>
       
-      {/* Score/Info bar at bottom */}
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 
-                   bg-gradient-to-r from-purple-900/80 via-black/90 to-purple-900/80 
-                   border-2 border-purple-500 px-8 py-2 rounded-full backdrop-blur-sm
-                   flex items-center gap-6"
-        style={{ boxShadow: '0 0 30px rgba(168,85,247,0.4)' }}
-      >
-        <div className="text-center">
-          <p className="text-purple-400 text-[10px] font-mono">POSITION</p>
-          <p className="text-purple-300 text-xs font-bold">{playerPos.x}, {playerPos.y}</p>
+      {/* Score/Info bar at bottom - Hidden on mobile when controls are visible */}
+      {!isMobile && (
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 
+                     bg-gradient-to-r from-purple-900/80 via-black/90 to-purple-900/80 
+                     border-2 border-purple-500 px-8 py-2 rounded-full backdrop-blur-sm
+                     flex items-center gap-6"
+          style={{ boxShadow: '0 0 30px rgba(168,85,247,0.4)' }}
+        >
+          <div className="text-center">
+            <p className="text-purple-400 text-[10px] font-mono">POSITION</p>
+            <p className="text-purple-300 text-xs font-bold">{playerPos.x}, {playerPos.y}</p>
+          </div>
+          <div className="w-px h-6 bg-purple-500/30" />
+          <div className="text-center">
+            <p className="text-cyan-400 text-[10px] font-mono">STATUS</p>
+            <p className="text-cyan-300 text-xs font-bold">
+              {nearbyInteractable ? '📍 Near Object' : '🎮 Exploring'}
+            </p>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Mobile Touch Controls */}
+      {isMobile && (
+        <div className="absolute bottom-4 left-0 right-0 flex justify-between px-4">
+          {/* D-Pad */}
+          <div className="relative w-32 h-32">
+            {/* Center circle */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-10 h-10 bg-gray-800/50 rounded-full border-2 border-cyan-500/50" />
+            </div>
+            {/* Up */}
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onTouchStart={() => setKeysPressed(prev => ({ ...prev, 'ArrowUp': true }))}
+              onTouchEnd={() => setKeysPressed(prev => ({ ...prev, 'ArrowUp': false }))}
+              className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-12 bg-cyan-600/70 rounded-lg border-2 border-cyan-400 flex items-center justify-center text-white text-xl font-bold active:bg-cyan-500"
+            >
+              ↑
+            </motion.button>
+            {/* Down */}
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onTouchStart={() => setKeysPressed(prev => ({ ...prev, 'ArrowDown': true }))}
+              onTouchEnd={() => setKeysPressed(prev => ({ ...prev, 'ArrowDown': false }))}
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-12 bg-cyan-600/70 rounded-lg border-2 border-cyan-400 flex items-center justify-center text-white text-xl font-bold active:bg-cyan-500"
+            >
+              ↓
+            </motion.button>
+            {/* Left */}
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onTouchStart={() => setKeysPressed(prev => ({ ...prev, 'ArrowLeft': true }))}
+              onTouchEnd={() => setKeysPressed(prev => ({ ...prev, 'ArrowLeft': false }))}
+              className="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-cyan-600/70 rounded-lg border-2 border-cyan-400 flex items-center justify-center text-white text-xl font-bold active:bg-cyan-500"
+            >
+              ←
+            </motion.button>
+            {/* Right */}
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onTouchStart={() => setKeysPressed(prev => ({ ...prev, 'ArrowRight': true }))}
+              onTouchEnd={() => setKeysPressed(prev => ({ ...prev, 'ArrowRight': false }))}
+              className="absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-cyan-600/70 rounded-lg border-2 border-cyan-400 flex items-center justify-center text-white text-xl font-bold active:bg-cyan-500"
+            >
+              →
+            </motion.button>
+          </div>
+
+          {/* Action Button */}
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={() => {
+              if (nearbyInteractable) {
+                if (nearbyInteractable.id === 'exit') {
+                  onExit()
+                } else {
+                  setShowingProject(nearbyInteractable)
+                }
+              }
+            }}
+            className="w-20 h-20 bg-gradient-to-br from-yellow-500 to-yellow-700 rounded-full border-4 border-yellow-300 flex items-center justify-center text-white text-2xl font-bold shadow-lg active:from-yellow-400 active:to-yellow-600"
+            style={{ boxShadow: '0 0 20px rgba(255,255,0,0.5)' }}
+            disabled={!nearbyInteractable}
+          >
+            E
+          </motion.button>
         </div>
-        <div className="w-px h-6 bg-purple-500/30" />
-        <div className="text-center">
-          <p className="text-cyan-400 text-[10px] font-mono">STATUS</p>
-          <p className="text-cyan-300 text-xs font-bold">
-            {nearbyInteractable ? '📍 Near Object' : '🎮 Exploring'}
-          </p>
-        </div>
-      </motion.div>
+      )}
 
       {/* Project Display Modal */}
       <AnimatePresence>
@@ -690,7 +773,7 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/95 flex items-center justify-center z-50"
+            className="absolute inset-0 bg-black/95 flex items-center justify-center z-50 p-2 sm:p-4"
             onClick={() => setShowingProject(null)}
           >
             <motion.div
@@ -698,25 +781,25 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-gradient-to-br from-gray-900 to-black border-4 rounded-lg p-8 max-w-2xl"
+              className="bg-gradient-to-br from-gray-900 to-black border-4 rounded-lg p-4 sm:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
               style={{ borderColor: showingProject.color }}
             >
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
                 <h2 
-                  className="text-3xl font-bold"
+                  className="text-xl sm:text-3xl font-bold"
                   style={{ color: showingProject.color, textShadow: `0 0 20px ${showingProject.color}` }}
                 >
                   {showingProject.title}
                 </h2>
                 <button
                   onClick={() => setShowingProject(null)}
-                  className="text-white hover:text-red-400 text-2xl"
+                  className="text-white hover:text-red-400 text-xl sm:text-2xl"
                 >
                   ✕
                 </button>
               </div>
 
-              <p className="text-cyan-200 text-lg mb-4">
+              <p className="text-cyan-200 text-sm sm:text-lg mb-3 sm:mb-4">
                 {showingProject.description}
               </p>
 
@@ -771,10 +854,10 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
                 </div>
               )}
 
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                 {showingProject.project?.playable && (
                   <button 
-                    className="flex-1 bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded font-bold transition-colors"
+                    className="flex-1 bg-green-600 hover:bg-green-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded font-bold text-sm sm:text-base transition-colors"
                     onClick={() => {
                       if (showingProject.project?.itchLink) {
                         window.open(showingProject.project.itchLink, '_blank')
@@ -786,7 +869,7 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
                 )}
                 {showingProject.project?.githubRepo && (
                   <button 
-                    className="flex-1 bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded font-bold transition-colors"
+                    className="flex-1 bg-purple-600 hover:bg-purple-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded font-bold text-sm sm:text-base transition-colors"
                     onClick={() => window.open(showingProject.project.githubRepo, '_blank')}
                   >
                     📁 GitHub Repo
@@ -794,8 +877,8 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
                 )}
               </div>
 
-              <p className="text-center text-gray-400 text-sm mt-4">
-                Press ESC or click outside to close
+              <p className="text-center text-gray-400 text-xs sm:text-sm mt-3 sm:mt-4">
+                {isMobile ? 'Tap outside to close' : 'Press ESC or click outside to close'}
               </p>
             </motion.div>
           </motion.div>

@@ -14,6 +14,7 @@ function App() {
   const [bootSequence, setBootSequence] = useState([])
   const [darkMode, setDarkMode] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const [windowZIndexes, setWindowZIndexes] = useState({
     terminal: 10,
     quickCommands: 10,
@@ -21,6 +22,17 @@ function App() {
     game: 2000
   })
   const [highestZIndex, setHighestZIndex] = useState(2000)
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024) // lg breakpoint
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const bringToFront = (windowName) => {
     const newZIndex = highestZIndex + 1
@@ -92,20 +104,20 @@ function App() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 flex items-center justify-center z-50 bg-cyber-darker"
           >
-            <div className="max-w-2xl w-full px-8">
+            <div className="max-w-2xl w-full px-4 sm:px-8">
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className="mb-8 text-center"
+                className="mb-6 sm:mb-8 text-center"
               >
-                <h1 className="text-6xl font-bold glow-text mb-4 glitch" data-text="RezuMe">
+                <h1 className="text-4xl sm:text-6xl font-bold glow-text mb-3 sm:mb-4 glitch" data-text="RezuMe">
                   RezuMe
                 </h1>
-                <p className="text-cyber-violet text-sm">Resume Execution and Understanding Matrix Engine</p>
+                <p className="text-cyber-violet text-xs sm:text-sm">Resume Execution and Understanding Matrix Engine</p>
               </motion.div>
 
-              <div className="space-y-2 font-mono text-sm">
+              <div className="space-y-1 sm:space-y-2 font-mono text-xs sm:text-sm">
                 {bootSequence.map((message, index) => (
                   <motion.div
                     key={index}
@@ -157,12 +169,13 @@ function App() {
             <StatusBar darkMode={darkMode} onModeToggle={handleModeToggle} />
             
             {/* Two Column Layout: Terminal + Quick Commands */}
-            <div className="container mx-auto px-4 py-8">
-              <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-start">
+            <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+              <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4 lg:gap-6 items-start">
                 {/* Main Terminal */}
                 <div>
                   <Terminal 
                     darkMode={darkMode}
+                    isMobile={isMobile}
                     zIndex={windowZIndexes.terminal}
                     onBringToFront={() => bringToFront('terminal')}
                     contactFormZIndex={windowZIndexes.contactForm}

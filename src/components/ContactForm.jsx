@@ -130,7 +130,7 @@ const ContactForm = ({ darkMode, onClose, onBringToFront, zIndex }) => {
 
   return (
     <div 
-      className="fixed inset-0 flex items-center justify-center p-4"
+      className="fixed inset-0 flex items-center justify-center p-2 sm:p-4"
       style={{ zIndex: zIndex || 2000, pointerEvents: 'none' }}
     >
       {/* Backdrop */}
@@ -143,30 +143,26 @@ const ContactForm = ({ darkMode, onClose, onBringToFront, zIndex }) => {
         style={{ pointerEvents: 'auto' }}
       />
       
-      {/* Draggable Form Modal */}
+      {/* Draggable Form Modal - Disabled drag on mobile */}
       <motion.div
-        drag
-        dragMomentum={false}
-        dragConstraints={{ top: -200, left: -400, right: 400, bottom: 200 }}
-        dragElastic={0.1}
-        whileDrag={{ scale: 1.02, cursor: 'grabbing' }}
+        drag="false"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
         onClick={(e) => e.stopPropagation()}
         onPointerDown={onBringToFront}
-        className={`relative rounded-lg border-2 w-full max-w-2xl overflow-hidden ${
+        className={`relative rounded-lg border-2 w-full max-w-2xl max-h-[95vh] overflow-hidden ${
           darkMode
             ? 'bg-black/95 border-red-500/50'
             : 'bg-cyber-dark/95 border-cyber-cyan/50'
         }`}
         style={{ pointerEvents: 'auto' }}
       >
-      {/* Draggable Header */}
-      <div className={`flex items-center justify-between px-6 py-4 border-b cursor-grab active:cursor-grabbing ${
+      {/* Header */}
+      <div className={`flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4 border-b ${
         darkMode ? 'bg-black/60 border-red-500/30' : 'bg-cyber-dark/80 border-cyber-cyan/30'
       }`}>
-        <h2 className={`text-2xl font-bold ${
+        <h2 className={`text-lg sm:text-2xl font-bold ${
           darkMode ? 'text-red-400' : 'text-cyber-cyan'
         }`}>
           📧 Contact Form
@@ -182,8 +178,8 @@ const ContactForm = ({ darkMode, onClose, onBringToFront, zIndex }) => {
         </button>
       </div>
       
-      {/* Form Content - Not draggable */}
-      <div className="p-6" onPointerDown={(e) => e.stopPropagation()}>
+      {/* Form Content - Scrollable on mobile */}
+      <div className="p-3 sm:p-6 overflow-y-auto max-h-[calc(95vh-80px)]" onPointerDown={(e) => e.stopPropagation()}>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Name */}
@@ -305,11 +301,11 @@ const ContactForm = ({ darkMode, onClose, onBringToFront, zIndex }) => {
         </AnimatePresence>
 
         {/* Submit Button */}
-        <div className="flex gap-3 pt-2">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`flex-1 px-6 py-3 rounded-lg font-bold transition-all ${
+            className={`flex-1 px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-bold text-sm sm:text-base transition-all ${
               darkMode
                 ? 'bg-red-900/50 hover:bg-red-900/70 text-red-400 border-2 border-red-500/50 hover:border-red-400'
                 : 'bg-cyber-cyan/20 hover:bg-cyber-cyan/30 text-cyber-cyan border-2 border-cyber-cyan/50 hover:border-cyber-cyan'
@@ -320,7 +316,7 @@ const ContactForm = ({ darkMode, onClose, onBringToFront, zIndex }) => {
           <button
             type="button"
             onClick={onClose}
-            className={`px-6 py-3 rounded-lg font-bold transition-all ${
+            className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-bold text-sm sm:text-base transition-all ${
               darkMode
                 ? 'bg-gray-800 hover:bg-gray-700 text-gray-400 border-2 border-gray-700'
                 : 'bg-gray-800 hover:bg-gray-700 text-gray-400 border-2 border-gray-700'

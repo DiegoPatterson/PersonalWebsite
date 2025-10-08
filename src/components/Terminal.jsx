@@ -8,7 +8,8 @@ import PixelGame from './PixelGame'
 import ContactForm from './ContactForm'
 
 const Terminal = ({ 
-  darkMode, 
+  darkMode,
+  isMobile,
   zIndex, 
   onBringToFront,
   contactFormZIndex,
@@ -1080,14 +1081,14 @@ TIP: Every file shows different content in each mode.
         />
       )}
 
-      <div className="min-h-screen pt-20 pb-8 px-4" style={{ position: 'relative', zIndex: zIndex || 10 }}>
+      <div className="min-h-screen pt-12 sm:pt-20 pb-4 sm:pb-8 px-2 sm:px-4" style={{ position: 'relative', zIndex: zIndex || 10 }}>
         <div className="max-w-5xl mx-auto">
         <motion.div 
-          drag
+          drag={!isMobile}
           dragMomentum={false}
-          dragConstraints={{ top: -100, left: -300, right: 300, bottom: 100 }}
+          dragConstraints={isMobile ? {} : { top: -100, left: -300, right: 300, bottom: 100 }}
           dragElastic={0.1}
-          whileDrag={{ scale: 1.02, cursor: 'grabbing' }}
+          whileDrag={!isMobile ? { scale: 1.02, cursor: 'grabbing' } : {}}
           onPointerDown={onBringToFront}
           animate={{
             boxShadow: darkMode ? [
@@ -1101,14 +1102,18 @@ TIP: Every file shows different content in each mode.
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className={`backdrop-blur-md rounded-lg shadow-2xl overflow-hidden cursor-grab ${
+          className={`backdrop-blur-md rounded-lg shadow-2xl overflow-hidden ${
+            isMobile ? 'cursor-default' : 'cursor-grab'
+          } ${
             darkMode 
               ? 'bg-gradient-to-br from-red-950/20 via-black/60 to-violet-950/20 border border-red-500/40' 
               : 'bg-cyber-dark/50 border border-cyber-cyan/30'
           }`}
         >
           {/* Terminal Header */}
-          <div className={`border-b px-4 py-2 flex items-center justify-between cursor-grab active:cursor-grabbing ${
+          <div className={`border-b px-2 sm:px-4 py-2 flex items-center justify-between ${
+            isMobile ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'
+          } ${
             darkMode
               ? 'bg-black/60 border-red-500/30'
               : 'bg-cyber-dark/80 border-cyber-cyan/30'
@@ -1125,20 +1130,20 @@ TIP: Every file shows different content in each mode.
                     ]
                   } : {}}
                   transition={{ duration: 2, repeat: Infinity }}
-                  className="w-3 h-3 rounded-full bg-red-500" 
+                  className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-red-500" 
                 />
-                <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                <div className="w-3 h-3 rounded-full bg-green-500" />
+                <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-yellow-500" />
+                <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-green-500" />
               </div>
-              <span className={`text-sm ml-4 ${
+              <span className={`text-xs sm:text-sm ml-2 sm:ml-4 truncate ${
                 darkMode 
                   ? 'text-red-400 font-bold glitch-dark' 
                   : 'text-cyber-cyan'
               }`}>
-                RezuMe Terminal {darkMode && '// DARK PROTOCOLS ACTIVE'}
+                RezuMe Terminal {!isMobile && darkMode && '// DARK PROTOCOLS ACTIVE'}
               </span>
             </div>
-            <span className={`text-xs ${
+            <span className={`text-xs hidden sm:inline ${
               darkMode ? 'text-violet-400' : 'text-cyber-violet'
             }`}>
               Session ID: {Math.random().toString(36).substring(7).toUpperCase()}
@@ -1146,7 +1151,7 @@ TIP: Every file shows different content in each mode.
           </div>
 
           {/* Messages Area */}
-          <div className="p-6 h-[600px] overflow-y-auto custom-scrollbar" onPointerDown={(e) => e.stopPropagation()}>
+          <div className="p-3 sm:p-6 h-[400px] sm:h-[500px] lg:h-[600px] overflow-y-auto custom-scrollbar text-sm sm:text-base" onPointerDown={(e) => e.stopPropagation()}>
             <AnimatePresence mode="popLayout">
               {messages.map((message) => (
                 <Message key={message.id} message={message} />
@@ -1178,12 +1183,12 @@ TIP: Every file shows different content in each mode.
           </div>
 
           {/* Input Area */}
-          <form onSubmit={handleSubmit} className="border-t border-cyber-cyan/30 p-4" onPointerDown={(e) => e.stopPropagation()}>
-            <div className="flex items-center space-x-2">
-              <span className={darkMode ? 'text-red-400 text-sm font-mono' : 'text-purple-400 text-sm font-mono'}>
+          <form onSubmit={handleSubmit} className="border-t border-cyber-cyan/30 p-2 sm:p-4" onPointerDown={(e) => e.stopPropagation()}>
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              <span className={`${darkMode ? 'text-red-400' : 'text-purple-400'} text-xs sm:text-sm font-mono truncate max-w-[80px] sm:max-w-none`}>
                 {currentPath === '/' ? '~' : currentPath}
               </span>
-              <span className="text-green-400 text-lg">{'>'}</span>
+              <span className="text-green-400 text-sm sm:text-lg">{'>'}</span>
               <input
                 ref={inputRef}
                 type="text"
@@ -1191,14 +1196,14 @@ TIP: Every file shows different content in each mode.
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Enter command..."
-                className="flex-1 bg-transparent border-none outline-none text-cyber-cyan font-mono placeholder-cyber-cyan/30 cursor-text"
+                className="flex-1 bg-transparent border-none outline-none text-cyber-cyan font-mono placeholder-cyber-cyan/30 cursor-text text-xs sm:text-base"
                 disabled={isProcessing}
                 autoFocus
               />
               <motion.span
                 animate={{ opacity: [1, 0, 1] }}
                 transition={{ duration: 1, repeat: Infinity }}
-                className={darkMode ? 'text-red-400 text-lg' : 'text-cyber-cyan text-lg'}
+                className={`${darkMode ? 'text-red-400' : 'text-cyber-cyan'} text-sm sm:text-lg`}
               >
                 ▊
               </motion.span>
