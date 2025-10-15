@@ -689,121 +689,92 @@ const PixelGame = ({ onExit, onBringToFront }) => {
         </motion.div>
       )}
 
-      {/* Mobile Touch Controls */}
+      {/* Mobile Touch Controls - Simple D-Pad */}
       {isMobile && (
-        <div className="absolute bottom-4 left-0 right-0 flex justify-between px-4 pointer-events-none">
-          {/* Virtual Joystick */}
-          <div 
-            className="relative w-32 h-32 pointer-events-auto touch-none"
-            onTouchStart={(e) => {
-              e.preventDefault()
-              const rect = e.currentTarget.getBoundingClientRect()
-              const centerX = rect.left + rect.width / 2
-              const centerY = rect.top + rect.height / 2
-              
-              const handleTouchMove = (moveEvent) => {
-                moveEvent.preventDefault()
-                const moveTouch = moveEvent.touches[0]
-                const deltaX = moveTouch.clientX - centerX
-                const deltaY = moveTouch.clientY - centerY
-                
-                // Calculate direction based on angle and distance
-                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
-                const deadzone = 15
-                
-                if (distance > deadzone) {
-                  const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI
-                  
-                  // Reset all directions first
-                  setKeysPressed(prev => ({
-                    ...prev,
-                    'ArrowUp': false,
-                    'ArrowDown': false,
-                    'ArrowLeft': false,
-                    'ArrowRight': false
-                  }))
-                  
-                  // Set direction based on angle
-                  if (angle >= -45 && angle < 45) {
-                    // Right
-                    setKeysPressed(prev => ({ ...prev, 'ArrowRight': true }))
-                  } else if (angle >= 45 && angle < 135) {
-                    // Down
-                    setKeysPressed(prev => ({ ...prev, 'ArrowDown': true }))
-                  } else if (angle >= -135 && angle < -45) {
-                    // Up
-                    setKeysPressed(prev => ({ ...prev, 'ArrowUp': true }))
-                  } else {
-                    // Left
-                    setKeysPressed(prev => ({ ...prev, 'ArrowLeft': true }))
-                  }
-                } else {
-                  // In deadzone, release all keys
-                  setKeysPressed(prev => ({
-                    ...prev,
-                    'ArrowUp': false,
-                    'ArrowDown': false,
-                    'ArrowLeft': false,
-                    'ArrowRight': false
-                  }))
-                }
-              }
-              
-              const handleTouchEnd = (endEvent) => {
-                endEvent.preventDefault()
-                // Release all direction keys
-                setKeysPressed(prev => ({
-                  ...prev,
-                  'ArrowUp': false,
-                  'ArrowDown': false,
-                  'ArrowLeft': false,
-                  'ArrowRight': false
-                }))
-                document.removeEventListener('touchmove', handleTouchMove)
-                document.removeEventListener('touchend', handleTouchEnd)
-              }
-              
-              document.addEventListener('touchmove', handleTouchMove, { passive: false })
-              document.addEventListener('touchend', handleTouchEnd, { passive: false })
-              
-              // Initial touch position check
-              handleTouchMove(e)
-            }}
-          >
-            {/* Outer circle */}
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/40 to-purple-900/40 rounded-full border-2 border-cyan-500/50 backdrop-blur-sm" />
-            
-            {/* Inner joystick knob */}
-            <motion.div
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-full border-2 border-cyan-300 shadow-lg shadow-cyan-500/50"
-              animate={{
-                scale: keysPressed['ArrowUp'] || keysPressed['ArrowDown'] || keysPressed['ArrowLeft'] || keysPressed['ArrowRight'] ? 0.9 : 1,
+        <div className="absolute bottom-20 left-0 right-0 flex justify-between items-end px-4 pointer-events-none">
+          {/* D-Pad Controls */}
+          <div className="relative w-32 h-32 pointer-events-auto" style={{ touchAction: 'none' }}>
+            {/* Up Button */}
+            <button
+              onTouchStart={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setKeysPressed(prev => ({ ...prev, 'ArrowUp': true }))
               }}
+              onTouchEnd={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setKeysPressed(prev => ({ ...prev, 'ArrowUp': false }))
+              }}
+              className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-700 rounded-lg border-2 border-cyan-300 flex items-center justify-center text-white text-xl font-bold shadow-lg active:from-cyan-400 active:to-cyan-600 active:scale-90 transition-transform"
+              style={{ touchAction: 'none' }}
             >
-              {/* Directional indicator */}
-              <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold">
-                {keysPressed['ArrowUp'] && '↑'}
-                {keysPressed['ArrowDown'] && '↓'}
-                {keysPressed['ArrowLeft'] && '←'}
-                {keysPressed['ArrowRight'] && '→'}
-              </div>
-            </motion.div>
+              ↑
+            </button>
             
-            {/* Directional guides */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-30">
-              <div className="text-cyan-400 text-xs font-bold">
-                <div className="absolute -top-1 left-1/2 -translate-x-1/2">↑</div>
-                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2">↓</div>
-                <div className="absolute -left-1 top-1/2 -translate-y-1/2">←</div>
-                <div className="absolute -right-1 top-1/2 -translate-y-1/2">→</div>
-              </div>
-            </div>
+            {/* Down Button */}
+            <button
+              onTouchStart={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setKeysPressed(prev => ({ ...prev, 'ArrowDown': true }))
+              }}
+              onTouchEnd={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setKeysPressed(prev => ({ ...prev, 'ArrowDown': false }))
+              }}
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-700 rounded-lg border-2 border-cyan-300 flex items-center justify-center text-white text-xl font-bold shadow-lg active:from-cyan-400 active:to-cyan-600 active:scale-90 transition-transform"
+              style={{ touchAction: 'none' }}
+            >
+              ↓
+            </button>
+            
+            {/* Left Button */}
+            <button
+              onTouchStart={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setKeysPressed(prev => ({ ...prev, 'ArrowLeft': true }))
+              }}
+              onTouchEnd={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setKeysPressed(prev => ({ ...prev, 'ArrowLeft': false }))
+              }}
+              className="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-700 rounded-lg border-2 border-cyan-300 flex items-center justify-center text-white text-xl font-bold shadow-lg active:from-cyan-400 active:to-cyan-600 active:scale-90 transition-transform"
+              style={{ touchAction: 'none' }}
+            >
+              ←
+            </button>
+            
+            {/* Right Button */}
+            <button
+              onTouchStart={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setKeysPressed(prev => ({ ...prev, 'ArrowRight': true }))
+              }}
+              onTouchEnd={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setKeysPressed(prev => ({ ...prev, 'ArrowRight': false }))
+              }}
+              className="absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-700 rounded-lg border-2 border-cyan-300 flex items-center justify-center text-white text-xl font-bold shadow-lg active:from-cyan-400 active:to-cyan-600 active:scale-90 transition-transform"
+              style={{ touchAction: 'none' }}
+            >
+              →
+            </button>
+            
+            {/* Center indicator */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-cyan-900/50 rounded-full border border-cyan-500/30 pointer-events-none" />
           </div>
 
           {/* Action Button */}
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            onClick={() => {
+          <button
+            onTouchStart={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
               if (nearbyInteractable) {
                 if (nearbyInteractable.id === 'exit') {
                   onExit()
@@ -812,12 +783,20 @@ const PixelGame = ({ onExit, onBringToFront }) => {
                 }
               }
             }}
-            className="w-20 h-20 bg-gradient-to-br from-yellow-500 to-yellow-700 rounded-full border-4 border-yellow-300 flex items-center justify-center text-white text-2xl font-bold shadow-lg active:from-yellow-400 active:to-yellow-600"
-            style={{ boxShadow: '0 0 20px rgba(255,255,0,0.5)' }}
+            className={`w-20 h-20 rounded-full border-4 flex items-center justify-center text-white text-2xl font-bold shadow-lg transition-all active:scale-90 ${
+              nearbyInteractable 
+                ? 'bg-gradient-to-br from-yellow-500 to-yellow-700 border-yellow-300 active:from-yellow-400 active:to-yellow-600' 
+                : 'bg-gradient-to-br from-gray-600 to-gray-800 border-gray-500 opacity-50'
+            }`}
+            style={{ 
+              boxShadow: nearbyInteractable ? '0 0 20px rgba(255,255,0,0.5)' : 'none',
+              touchAction: 'none',
+              pointerEvents: 'auto'
+            }}
             disabled={!nearbyInteractable}
           >
             E
-          </motion.button>
+          </button>
         </div>
       )}
 

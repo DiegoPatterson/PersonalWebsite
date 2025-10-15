@@ -178,7 +178,16 @@ const Terminal = ({
       } else if (command === 'play game' || command === 'boot game' || command === 'game' || command === 'game.exe') {
         response = { 
           type: 'system', 
-          content: `┌─────────────────────────────────────────┐
+          content: isMobile 
+            ? `🎮 INITIALIZING GAME WORLD...
+
+Loading pixel renderer...    [OK]
+Initializing player sprite... [OK]
+Building game world...       [OK]
+Loading projects...          [OK]
+
+GAME READY. Launching...`
+            : `┌─────────────────────────────────────────┐
 │  🎮 INITIALIZING GAME WORLD...         │
 │                                         │
 │  Loading pixel renderer...       [OK]   │
