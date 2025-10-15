@@ -5,17 +5,14 @@ import hiddenWorld from '../data/hidden_world.json'
 import Message from './Message'
 import CommandSuggestions from './CommandSuggestions'
 import PixelGame from './PixelGame'
-import ContactForm from './ContactForm'
 
 const Terminal = ({ 
   darkMode,
   isMobile,
   zIndex, 
   onBringToFront,
-  contactFormZIndex,
-  onBringContactFormToFront,
-  gameZIndex,
-  onBringGameToFront
+  onBringGameToFront,
+  onOpenContactForm
 }) => {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
@@ -25,7 +22,6 @@ const Terminal = ({
   const [currentPath, setCurrentPath] = useState('/')
   const [discoveredFiles, setDiscoveredFiles] = useState([])
   const [showGame, setShowGame] = useState(false)
-  const [showContactForm, setShowContactForm] = useState(false)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -834,7 +830,7 @@ TIP: Every file shows different content in each mode.
   })
 
   const handleContactForm = (dark) => {
-    setShowContactForm(true)
+    onOpenContactForm?.()
     return {
       type: 'ai',
       content: dark
@@ -1071,15 +1067,7 @@ TIP: Every file shows different content in each mode.
         />
       )}
 
-      {/* Contact Form Modal */}
-      {showContactForm && (
-        <ContactForm
-          onClose={() => setShowContactForm(false)}
-          darkMode={darkMode}
-          zIndex={contactFormZIndex}
-          onBringToFront={onBringContactFormToFront}
-        />
-      )}
+
 
       <div className="min-h-screen pt-12 sm:pt-20 pb-4 sm:pb-8 px-2 sm:px-4" style={{ position: 'relative', zIndex: showGame ? -1 : (zIndex || 10) }}>
         <div className="max-w-5xl mx-auto">

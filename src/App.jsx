@@ -8,6 +8,7 @@ import Scanline from './components/Scanline'
 import AudioController from './components/AudioController'
 import ModeTransition from './components/ModeTransition'
 import QuickCommandsPanel from './components/QuickCommandsPanel'
+import ContactForm from './components/ContactForm'
 
 function App() {
   const [isBooting, setIsBooting] = useState(true)
@@ -15,13 +16,14 @@ function App() {
   const [darkMode, setDarkMode] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [showContactForm, setShowContactForm] = useState(false)
   const [windowZIndexes, setWindowZIndexes] = useState({
     terminal: 10,
     quickCommands: 10,
-    contactForm: 2000,  // Modals start much higher
-    game: 2000
+    contactForm: 10000,  // Modals need to be much higher to appear above terminal
+    game: 9999
   })
-  const [highestZIndex, setHighestZIndex] = useState(2000)
+  const [highestZIndex, setHighestZIndex] = useState(10000)
 
   // Mobile detection
   useEffect(() => {
@@ -178,10 +180,11 @@ function App() {
                     isMobile={isMobile}
                     zIndex={windowZIndexes.terminal}
                     onBringToFront={() => bringToFront('terminal')}
-                    contactFormZIndex={windowZIndexes.contactForm}
-                    onBringContactFormToFront={() => bringToFront('contactForm')}
-                    gameZIndex={windowZIndexes.game}
                     onBringGameToFront={() => bringToFront('game')}
+                    onOpenContactForm={() => {
+                      setShowContactForm(true)
+                      bringToFront('contactForm')
+                    }}
                   />
                 </div>
                 
@@ -202,6 +205,18 @@ function App() {
               </div>
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Contact Form Modal - Rendered at App level for proper z-index */}
+      <AnimatePresence>
+        {showContactForm && (
+          <ContactForm
+            onClose={() => setShowContactForm(false)}
+            darkMode={darkMode}
+            zIndex={windowZIndexes.contactForm}
+            onBringToFront={() => bringToFront('contactForm')}
+          />
         )}
       </AnimatePresence>
     </div>

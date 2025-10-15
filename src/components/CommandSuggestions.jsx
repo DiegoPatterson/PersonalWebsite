@@ -13,6 +13,10 @@ const CommandSuggestions = ({ onCommandSelect }) => {
     { cmd: 'play game', desc: 'Launch game portfolio', icon: '🎮' },
     { cmd: 'scan affiliations.sys', desc: 'View affiliations', icon: '🤝' },
     { cmd: 'decrypt core_memory', desc: 'View philosophy', icon: '💭' },
+    { cmd: 'contact form', desc: 'Send me a message', icon: '📧' },
+    { cmd: 'contact', desc: 'Contact information', icon: '📞' },
+    { cmd: 'resume', desc: 'Download resume', icon: '📄' },
+    { cmd: 'social', desc: 'Social media links', icon: '🔗' },
   ]
 
   return (

@@ -71,7 +71,16 @@ const ContactForm = ({ darkMode, onClose, onBringToFront, zIndex }) => {
     return (
       <div 
         className="fixed inset-0 flex items-center justify-center p-4"
-        style={{ zIndex: zIndex || 2000, pointerEvents: 'none' }}
+        style={{ 
+          zIndex: zIndex || 9999, 
+          pointerEvents: 'none',
+          isolation: 'isolate',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0
+        }}
       >
         {/* Backdrop */}
         <motion.div
@@ -131,7 +140,16 @@ const ContactForm = ({ darkMode, onClose, onBringToFront, zIndex }) => {
   return (
     <div 
       className="fixed inset-0 flex items-center justify-center p-2 sm:p-4"
-      style={{ zIndex: zIndex || 2000, pointerEvents: 'none' }}
+      style={{ 
+        zIndex: zIndex || 9999, 
+        pointerEvents: 'none',
+        isolation: 'isolate',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0
+      }}
     >
       {/* Backdrop */}
       <motion.div

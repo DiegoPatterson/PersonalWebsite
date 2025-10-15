@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import dataVault from '../data/vault.json'
 
-const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
+const PixelGame = ({ onExit, onBringToFront }) => {
   const [playerPos, setPlayerPos] = useState({ x: 5, y: 5 })
   const [playerDirection, setPlayerDirection] = useState('down')
   const [nearbyInteractable, setNearbyInteractable] = useState(null)
@@ -25,9 +25,6 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
   const TILE_SIZE = isMobile ? 25 : 40
   const GRID_WIDTH = isMobile ? 15 : 20
   const GRID_HEIGHT = isMobile ? 12 : 15
-  
-  // Animation frame for idle animations
-  const [animFrame, setAnimFrame] = useState(0)
 
   // Prevent scrolling and lock body when game is active
   useEffect(() => {
@@ -53,14 +50,6 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
       document.body.style.width = ''
       document.body.style.height = ''
     }
-  }, [])
-  
-  // Idle animation loop
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setAnimFrame(prev => (prev + 1) % 60)
-    }, 100)
-    return () => clearInterval(interval)
   }, [])
 
   // Convert game design projects to interactables
@@ -121,6 +110,7 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
       Math.abs(obj.y - playerPos.y) <= 1
     )
     setNearbyInteractable(nearby || null)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playerPos])
 
   // Keyboard controls
@@ -215,6 +205,7 @@ const PixelGame = ({ onExit, zIndex, onBringToFront }) => {
     }, 16) // Check more frequently (~60fps) but only move based on moveDelay
 
     return () => clearInterval(moveInterval)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keysPressed, playerDirection])
 
   return (
