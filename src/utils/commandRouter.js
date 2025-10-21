@@ -39,8 +39,8 @@ export class CommandRouter {
       return this.handlers.handleAffiliations(darkMode);
     }
     
-    if (cmd.includes('vibe') || cmd === 'access vibe_projects.fun' || cmd === 'vibes') {
-      return this.handlers.handleVibeProjects(darkMode);
+    if (cmd.includes('prompt') || cmd === 'access prompt_projects.exp' || cmd === 'prompts') {
+      return this.handlers.handlePromptProjects(darkMode);
     }
     
     if (cmd.includes('project') || cmd === 'open projects.repo') {
@@ -151,7 +151,7 @@ export class CommandRouter {
       'query education.db',
       'scan affiliations.sys',
       'open projects.repo',
-      'access vibe_projects.fun',
+      'access prompt_projects.exp',
       'decrypt core_memory',
       'about me',
       'github',
@@ -179,7 +179,7 @@ export class CommandRouter {
 /**
  * Handle unknown commands with AI-like responses
  */
-export function createUnknownHandler(darkMode) {
+export function createUnknownHandler() {
   const suggestions = [
     "Perhaps you meant `help`?",
     "Try `access experience.log` or `open projects.repo`.",

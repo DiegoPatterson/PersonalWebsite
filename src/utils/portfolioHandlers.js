@@ -47,12 +47,12 @@ export const createPortfolioHandlers = (dataVault) => {
       };
     },
 
-    handleVibeProjects: (dark) => {
-      const filtered = filterByCategory(dataVault.vibeProjects, dark);
+    handlePromptProjects: (dark) => {
+      const filtered = filterByCategory(dataVault.promptProjects, dark);
       return {
-        type: 'vibe',
-        title: dark ? 'EXPERIMENTAL CYBER TOOLS' : 'EXPERIMENTAL AI PROJECTS',
-        content: filtered.length > 0 ? filtered : dataVault.vibeProjects,
+        type: 'prompt',
+        title: dark ? 'CYBER_EXPERIMENTS.CHAOS' : 'AI_PROMPTS.EXP',
+        content: filtered.length > 0 ? filtered : dataVault.promptProjects,
         darkMode: dark
       };
     },
