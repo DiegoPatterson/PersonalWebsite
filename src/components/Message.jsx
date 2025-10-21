@@ -483,23 +483,60 @@ const Message = ({ message }) => {
                     Download my complete resume in PDF format:
                   </p>
                   
-                  <a
-                    href={content.pdfUrl}
-                    download
-                    className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold transition-all ${
-                      darkMode
-                        ? 'bg-red-500 hover:bg-red-600 text-white'
-                        : 'bg-cyber-pink hover:bg-pink-600 text-white'
-                    }`}
-                  >
-                    📥 Download Resume
-                  </a>
+                  <div className="flex gap-3 flex-wrap">
+                    <a
+                      href={content.pdfUrl}
+                      download
+                      className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold transition-all ${
+                        darkMode
+                          ? 'bg-red-500 hover:bg-red-600 text-white'
+                          : 'bg-cyber-pink hover:bg-pink-600 text-white'
+                      }`}
+                    >
+                      Download Resume
+                    </a>
+                    
+                    <a
+                      href={content.pdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold transition-all ${
+                        darkMode
+                          ? 'bg-violet-500 hover:bg-violet-600 text-white'
+                          : 'bg-cyber-cyan hover:bg-cyan-600 text-white'
+                      }`}
+                    >
+                      Open in New Tab
+                    </a>
+                  </div>
                   
                   {content.lastUpdated && (
-                    <p className="text-xs opacity-50 mt-2">
+                    <p className="text-xs opacity-50">
                       Last updated: {content.lastUpdated}
                     </p>
                   )}
+                  
+                  {/* PDF Preview */}
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    transition={{ delay: 0.3 }}
+                    className={`mt-6 border rounded-lg overflow-hidden ${
+                      darkMode ? 'border-red-500/30' : 'border-cyber-cyan/30'
+                    }`}
+                  >
+                    <div className={`p-2 text-xs opacity-70 ${
+                      darkMode ? 'bg-red-950/20' : 'bg-cyber-cyan/5'
+                    }`}>
+                      Resume Preview (scroll to view full document)
+                    </div>
+                    <iframe
+                      src={content.pdfUrl}
+                      className="w-full bg-white"
+                      style={{ height: '600px' }}
+                      title="Resume Preview"
+                    />
+                  </motion.div>
                 </div>
               )}
             </div>
