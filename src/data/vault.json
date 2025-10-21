@@ -248,7 +248,7 @@
   "contact": {
     "email": "diegochrispatterson@gmail.com",
     "github": "https://github.com/diegopatterson",
-    "linkedin": "www.linkedin.com/in/dcpat",
+    "linkedin": "https://www.linkedin.com/in/dcpat",
     "twitter": "N/A",
     "portfolio": "N/A",
     "discord": "N/A"
@@ -263,7 +263,6 @@
       "name": "ABET",
       "issuer": "California Baptist University",
       "date": "2026 (Expected)",
-      "credentialUrl": "N/A",
       "icon": "<>"
     }
   ],
@@ -311,31 +310,15 @@
       ]
     },
     "github": {
-      "totalRepos": 0,
-      "totalStars": 0,
-      "totalForks": 0,
-      "totalCommits": 0,
-      "topLanguages": [
-        { "language": "Python", "percentage": 0 },
-        { "language": "JavaScript", "percentage": 0 },
-        { "language": "TypeScript", "percentage": 0 },
-        { "language": "Java", "percentage": 0 },
-        { "language": "Other", "percentage": 0 }
-      ],
-      "contributionStreak": "N/A"
+      "totalRepos": 25
     },
     "projects": {
-      "totalProjects": 0,
-      "activeProjects": 0,
-      "completedProjects": 0,
-      "totalDownloads": 0,
-      "totalStars": 0
+      "totalProjects": 25,
+      "activeProjects": 6,
+      "completedProjects": 19
     },
     "engagement": {
-      "linkedinConnections": 0,
-      "twitterFollowers": 0,
-      "discordMembers": 0,
-      "emailSubscribers": 0
+      "linkedinConnections": 149
     }
   },
   "secretCommands": {

@@ -268,7 +268,14 @@ MODE FILTERING: Content automatically filters based on current mode.
   // Dark Mode = CYBER, Standard Mode = AI
   const filterByCategory = (items, dark) => {
     const targetCategory = dark ? 'CYBER' : 'AI'
-    return items.filter(item => item.category === targetCategory)
+    return items.filter(item => {
+      // Check if category is a string that includes the target (handles comma-separated values)
+      if (typeof item.category === 'string') {
+        return item.category.toUpperCase().includes(targetCategory)
+      }
+      // Fallback to exact match
+      return item.category === targetCategory
+    })
   }
 
   const handleExperience = (dark) => {

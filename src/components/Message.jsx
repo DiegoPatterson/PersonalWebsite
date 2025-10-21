@@ -383,26 +383,26 @@ const Message = ({ message }) => {
                 📬 Contact Information
               </h3>
               
-              {content.contact && (
+              {content && (
                 <div className="space-y-3">
                   <div>
                     <span className="opacity-70">Email:</span>{' '}
                     <a 
-                      href={`mailto:${content.contact.email}`}
+                      href={`mailto:${content.email}`}
                       className={`hover:underline ${
                         darkMode ? 'text-green-300' : 'text-cyan-300'
                       }`}
                     >
-                      {content.contact.email}
+                      {content.email}
                     </a>
                   </div>
                   
                   <div className="mt-4">
                     <span className="opacity-70">Connect with me:</span>
                     <div className="flex gap-4 mt-2 flex-wrap">
-                      {content.contact.github && (
+                      {content.github && (
                         <a
-                          href={content.contact.github}
+                          href={content.github}
                           target="_blank"
                           rel="noopener noreferrer"
                           className={`flex items-center gap-2 px-3 py-2 rounded transition-colors ${
@@ -414,9 +414,9 @@ const Message = ({ message }) => {
                           💻 GitHub
                         </a>
                       )}
-                      {content.contact.linkedin && (
+                      {content.linkedin && (
                         <a
-                          href={content.contact.linkedin}
+                          href={content.linkedin}
                           target="_blank"
                           rel="noopener noreferrer"
                           className={`flex items-center gap-2 px-3 py-2 rounded transition-colors ${
@@ -428,9 +428,9 @@ const Message = ({ message }) => {
                           💼 LinkedIn
                         </a>
                       )}
-                      {content.contact.twitter && (
+                      {content.twitter && content.twitter !== 'N/A' && (
                         <a
-                          href={content.contact.twitter}
+                          href={content.twitter}
                           target="_blank"
                           rel="noopener noreferrer"
                           className={`flex items-center gap-2 px-3 py-2 rounded transition-colors ${
@@ -442,13 +442,13 @@ const Message = ({ message }) => {
                           🐦 Twitter
                         </a>
                       )}
-                      {content.contact.discord && (
+                      {content.discord && content.discord !== 'N/A' && (
                         <div
                           className={`flex items-center gap-2 px-3 py-2 rounded ${
                             darkMode ? 'bg-gray-700 text-green-400' : 'bg-white/10 text-cyan-300'
                           }`}
                         >
-                          💬 {content.contact.discord}
+                          💬 {content.discord}
                         </div>
                       )}
                     </div>
@@ -477,14 +477,14 @@ const Message = ({ message }) => {
                 📄 Resume / CV
               </h3>
               
-              {content.resume && (
+              {content && (
                 <div className="space-y-4">
                   <p className="opacity-70">
                     Download my complete resume in PDF format:
                   </p>
                   
                   <a
-                    href={content.resume.pdfUrl}
+                    href={content.pdfUrl}
                     download
                     className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold transition-all ${
                       darkMode
@@ -495,9 +495,9 @@ const Message = ({ message }) => {
                     📥 Download Resume
                   </a>
                   
-                  {content.resume.lastUpdated && (
+                  {content.lastUpdated && (
                     <p className="text-xs opacity-50 mt-2">
-                      Last updated: {content.resume.lastUpdated}
+                      Last updated: {content.lastUpdated}
                     </p>
                   )}
                 </div>
@@ -524,9 +524,9 @@ const Message = ({ message }) => {
                 🏆 Certifications & Credentials
               </h3>
               
-              {content.certifications && content.certifications.length > 0 && (
+              {content && Array.isArray(content) && content.length > 0 && (
                 <div className="space-y-4">
-                  {content.certifications.map((cert, index) => (
+                  {content.map((cert, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, x: -20 }}
@@ -591,16 +591,16 @@ const Message = ({ message }) => {
                 🌐 Social Media & Links
               </h3>
               
-              {content.contact && (
+              {content && (
                 <div className="space-y-3">
                   <p className="opacity-70 mb-4">
                     Find me on these platforms:
                   </p>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {content.contact.github && (
+                    {content.github && (
                       <a
-                        href={content.contact.github}
+                        href={content.github}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
@@ -621,9 +621,9 @@ const Message = ({ message }) => {
                       </a>
                     )}
                     
-                    {content.contact.linkedin && (
+                    {content.linkedin && (
                       <a
-                        href={content.contact.linkedin}
+                        href={content.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
@@ -644,9 +644,9 @@ const Message = ({ message }) => {
                       </a>
                     )}
                     
-                    {content.contact.twitter && (
+                    {content.twitter && content.twitter !== 'N/A' && (
                       <a
-                        href={content.contact.twitter}
+                        href={content.twitter}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
@@ -667,9 +667,9 @@ const Message = ({ message }) => {
                       </a>
                     )}
                     
-                    {content.contact.portfolio && (
+                    {content.portfolio && content.portfolio !== 'N/A' && (
                       <a
-                        href={content.contact.portfolio}
+                        href={content.portfolio}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
@@ -690,7 +690,7 @@ const Message = ({ message }) => {
                       </a>
                     )}
                     
-                    {content.contact.discord && (
+                    {content.discord && content.discord !== 'N/A' && (
                       <div
                         className={`flex items-center gap-3 p-3 rounded-lg ${
                           darkMode ? 'bg-gray-700' : 'bg-white/10'
@@ -703,7 +703,7 @@ const Message = ({ message }) => {
                           }`}>
                             Discord
                           </div>
-                          <div className="text-xs opacity-70">{content.contact.discord}</div>
+                          <div className="text-xs opacity-70">{content.discord}</div>
                         </div>
                       </div>
                     )}
