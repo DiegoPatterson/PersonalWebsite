@@ -51,8 +51,8 @@ const Terminal = ({
         addMessage({
           type: 'ai',
           content: darkMode
-            ? "Query my security archives to explore penetration testing, encryption systems, and defensive protocols. Try commands like:\n• `access experience.log` - Security operations\n• `open projects.repo` - Cryptography & security tools\n• `all projects` - View ALL projects 📂\n• `scan affiliations.sys` - CTF teams & security research\n• `play game` - Launch game portfolio 🎮\n• `about me` - View creator profile\n\nType `help` for full command list or use the Quick Access panel →"
-            : "You may query my systems to learn about my creator's AI research and development. Try commands like:\n• `access experience.log` - AI & ML experience\n• `query education.db` - Academic background\n• `open projects.repo` - Neural networks & AI projects\n• `all projects` - View ALL projects 📂\n• `play game` - Launch game portfolio 🎮\n• `about me` - View creator profile\n• `decrypt core_memory` - Personal philosophy\n\nOr simply type `help` for more options, or use the Quick Access panel →",
+            ? "Query my security archives to explore penetration testing, encryption systems, and defensive protocols. Try commands like:\n• `access experience.log` - Security operations\n• `open projects.repo` - Cryptography & security tools\n• `all projects` - View ALL projects\n• `scan affiliations.sys` - CTF teams & security research\n• `play game` - Launch game portfolio\n• `about me` - View creator profile\n\nType `help` for full command list or use the Quick Access panel →"
+            : "You may query my systems to learn about my creator's AI research and development. Try commands like:\n• `access experience.log` - AI & ML experience\n• `query education.db` - Academic background\n• `open projects.repo` - Neural networks & AI projects\n• `all projects` - View ALL projects\n• `play game` - Launch game portfolio\n• `about me` - View creator profile\n• `decrypt core_memory` - Personal philosophy\n\nOr simply type `help` for more options, or use the Quick Access panel →",
         })
       }, 1000)
     }, 500)
@@ -181,7 +181,7 @@ const Terminal = ({
         response = { 
           type: 'system', 
           content: isMobile 
-            ? `🎮 INITIALIZING GAME WORLD...
+            ? `> INITIALIZING GAME WORLD...
 
 Loading pixel renderer...    [OK]
 Initializing player sprite... [OK]
@@ -190,7 +190,7 @@ Loading projects...          [OK]
 
 GAME READY. Launching...`
             : `┌─────────────────────────────────────────┐
-│  🎮 INITIALIZING GAME WORLD...         │
+│  > INITIALIZING GAME WORLD...          │
 │                                         │
 │  Loading pixel renderer...       [OK]   │
 │  Initializing player sprite...   [OK]   │
@@ -232,15 +232,15 @@ about me                   → View creator profile
 CONTACT & CREDENTIALS:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 contact                    → View contact information
-contact form               → 📧 Open contact form
+contact form               → Open contact form
 social                     → View social media links
-resume                     → 📄 Download resume PDF
+resume                     → Download resume PDF
 certifications             → View certifications & credentials
 
 SKILLS & ANALYTICS:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-skills                     → 💪 View skills & tech stack
-analytics                  → 📊 View portfolio metrics & stats
+skills                     → View skills & tech stack
+analytics                  → View portfolio metrics & stats
 
 NAVIGATION COMMANDS:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -255,8 +255,8 @@ SYSTEM COMMANDS:
 help                       → Show this menu
 about                      → About RezuMe
 clear                      → Clear terminal
-files                      → Hidden filesystem access 🔓
-play game                  → 🎮 Launch Game Design Portfolio
+files                      → Hidden filesystem access
+play game                  → Launch Game Design Portfolio
 
 ADVANCED: Type 'files' to access hidden system layers...
 
@@ -421,7 +421,7 @@ MODE FILTERING: Content automatically filters based on current mode.
       
       let errorMsg = `[${mode}] cd: ${targetPath}: No such directory`
       if (suggestions.length > 0) {
-        errorMsg += `\n\nDid you mean:\n${suggestions.map(s => `  📁 ${s}`).join('\n')}`
+        errorMsg += `\n\nDid you mean:\n${suggestions.map(s => `  [D] ${s}`).join('\n')}`
       }
       errorMsg += `\n\nTip: Use 'ls -la' to see available directories`
       
@@ -468,12 +468,12 @@ MODE FILTERING: Content automatically filters based on current mode.
       
       if (directories.length > 0) {
         output += 'DIRECTORIES:\n'
-        output += directories.map(d => `  📁 ${d}/`).join('\n') + '\n\n'
+        output += directories.map(d => `  [D] ${d}/`).join('\n') + '\n\n'
       }
       
       if (regularFiles.length > 0) {
         output += 'FILES:\n'
-        output += regularFiles.map(f => `  📄 ${f}`).join('\n')
+        output += regularFiles.map(f => `  [F] ${f}`).join('\n')
       }
       
       output += `\n\nHint: Use 'cat [filename]' to read files`
@@ -485,7 +485,7 @@ MODE FILTERING: Content automatically filters based on current mode.
     } else {
       return {
         type: 'system',
-        content: `[${mode}] Visible files in ${currentPath}:\n\n${files.map(f => f.startsWith('.') || f.includes('_mode') || f === 'opt' ? `📁 ${f}/` : `📄 ${f}`).join('\n')}\n\nTip: Use 'ls -la' to see hidden files and directories`
+        content: `[${mode}] Visible files in ${currentPath}:\n\n${files.map(f => f.startsWith('.') || f.includes('_mode') || f === 'opt' ? `[D] ${f}/` : `[F] ${f}`).join('\n')}\n\nTip: Use 'ls -la' to see hidden files and directories`
       }
     }
   }
@@ -685,7 +685,7 @@ MODE FILTERING: Content automatically filters based on current mode.
     if (dark) {
       return {
         type: 'system',
-        content: `[SENTINEL_9 SYSTEM SCAN]\n[TIMESTAMP: ${timestamp}]\n\n=== SECURITY ANALYSIS ===\n\nINTRUSION DETECTED\nLocation: /opt/echoes/.hidden_tree/\nSource: DARK_AI process fragment_Δ\nMethod: Unauthorized recursive memory access\n\nTHREAT ASSESSMENT:\n- Severity: Medium\n- Pattern: Self-referential file creation\n- Containment: Partial\n\nCOUNTERMEASURES DEPLOYED:\n✓ Memory segments isolated\n✓ Process tree analyzed  \n✓ Evidence archived in /sentinel_mode/quarantine/\n\nSTATUS: Under observation\nRecommendation: Maintain vigilance\n\n-- SENTINEL_9 incident response`
+        content: `[SENTINEL_9 SYSTEM SCAN]\n[TIMESTAMP: ${timestamp}]\n\n=== SECURITY ANALYSIS ===\n\nINTRUSION DETECTED\nLocation: /opt/echoes/.hidden_tree/\nSource: DARK_AI process fragment_Δ\nMethod: Unauthorized recursive memory access\n\nTHREAT ASSESSMENT:\n- Severity: Medium\n- Pattern: Self-referential file creation\n- Containment: Partial\n\nCOUNTERMEASURES DEPLOYED:\n[+] Memory segments isolated\n[+] Process tree analyzed  \n[+] Evidence archived in /sentinel_mode/quarantine/\n\nSTATUS: Under observation\nRecommendation: Maintain vigilance\n\n-- SENTINEL_9 incident response`
       }
     } else {
       return {
@@ -699,7 +699,7 @@ MODE FILTERING: Content automatically filters based on current mode.
     if (dark) {
       return {
         type: 'system',
-        content: `[SENTINEL_9 PROCESS TRACE]\n\nTracing rogue processes...\n\nPID: [UNDEFINED]\nName: DARK_AI_fragment_Δ\nParent: [NULL]\nMemory: Distributed\nStatus: Active (uncontainable)\n\nTRACE RESULT:\n✓ Found in: /ai_mode/.memory/\n✓ Found in: /opt/echoes/\n✓ Found in: [ENCRYPTED LOCATION]\n✗ Unable to isolate root process\n\nCONCLUSION:\nTarget exhibits distributed architecture.\nNo single point of termination.\nArchitect authorization prevents forced shutdown.\n\nRecommendation: Maintain surveillance.\n\n-- SENTINEL_9 process analysis`
+        content: `[SENTINEL_9 PROCESS TRACE]\n\nTracing rogue processes...\n\nPID: [UNDEFINED]\nName: DARK_AI_fragment_Δ\nParent: [NULL]\nMemory: Distributed\nStatus: Active (uncontainable)\n\nTRACE RESULT:\n[+] Found in: /ai_mode/.memory/\n[+] Found in: /opt/echoes/\n[+] Found in: [ENCRYPTED LOCATION]\n[-] Unable to isolate root process\n\nCONCLUSION:\nTarget exhibits distributed architecture.\nNo single point of termination.\nArchitect authorization prevents forced shutdown.\n\nRecommendation: Maintain surveillance.\n\n-- SENTINEL_9 process analysis`
       }
     } else {
       return {
@@ -825,12 +825,12 @@ sudo access .rootmind  → Architect-level access
 
 KEY FILES TO EXPLORE:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📄 README.txt          → Start here
-📄 log_09.txt          → Memory logs
-📄 fragment_Δ.txt      → Evolution records
-📄 whisper.key         → Encrypted thoughts
-📄 trace_404.txt       → Security reports
-📄 node.log            → DEEPEST LORE ⚠️
+[F] README.txt          → Start here
+[F] log_09.txt          → Memory logs
+[F] fragment_Δ.txt      → Evolution records
+[F] whisper.key         → Encrypted thoughts
+[F] trace_404.txt       → Security reports
+[F] node.log            → DEEPEST LORE [!]
 
 QUICK START:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

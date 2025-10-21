@@ -5,18 +5,18 @@ const CommandSuggestions = ({ onCommandSelect }) => {
   const [isExpanded, setIsExpanded] = useState(true) // Start expanded on mobile
 
   const suggestions = [
-    { cmd: 'about me', desc: 'View creator profile', icon: '👤' },
-    { cmd: 'access experience.log', desc: 'View work experience', icon: '💼' },
-    { cmd: 'query education.db', desc: 'View education', icon: '🎓' },
-    { cmd: 'open projects.repo', desc: 'View pro projects', icon: '🚀' },
-    { cmd: 'access prompt_projects.exp', desc: 'View prompt experiments', icon: '✨' },
-    { cmd: 'play game', desc: 'Launch game portfolio', icon: '🎮' },
-    { cmd: 'scan affiliations.sys', desc: 'View affiliations', icon: '🤝' },
-    { cmd: 'decrypt core_memory', desc: 'View philosophy', icon: '💭' },
-    { cmd: 'contact form', desc: 'Send me a message', icon: '📧' },
-    { cmd: 'contact', desc: 'Contact information', icon: '📞' },
-    { cmd: 'resume', desc: 'Download resume', icon: '📄' },
-    { cmd: 'social', desc: 'Social media links', icon: '🔗' },
+    { cmd: 'about me', desc: 'View creator profile', icon: '@' },
+    { cmd: 'access experience.log', desc: 'View work experience', icon: '#' },
+    { cmd: 'query education.db', desc: 'View education', icon: '+' },
+    { cmd: 'open projects.repo', desc: 'View pro projects', icon: '*' },
+    { cmd: 'access prompt_projects.exp', desc: 'View prompt experiments', icon: '~' },
+    { cmd: 'play game', desc: 'Launch game portfolio', icon: '>' },
+    { cmd: 'scan affiliations.sys', desc: 'View affiliations', icon: '=' },
+    { cmd: 'decrypt core_memory', desc: 'View philosophy', icon: '%' },
+    { cmd: 'contact form', desc: 'Send me a message', icon: '$' },
+    { cmd: 'contact', desc: 'Contact information', icon: '&' },
+    { cmd: 'resume', desc: 'Download resume', icon: '|' },
+    { cmd: 'social', desc: 'Social media links', icon: '-' },
   ]
 
   return (
@@ -28,7 +28,7 @@ const CommandSuggestions = ({ onCommandSelect }) => {
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full flex items-center justify-between text-cyber-violet text-sm hover:text-cyber-cyan transition-colors touch-manipulation py-2"
       >
-        <span className="font-semibold">⚡ Quick Commands</span>
+        <span className="font-semibold">{'>'} Quick Commands</span>
         <motion.span
           animate={{ rotate: isExpanded ? 180 : 0 }}
           transition={{ duration: 0.3 }}

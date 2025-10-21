@@ -5,103 +5,103 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle, zIndex, o
     { 
       cmd: 'about me', 
       desc: 'View Creator Profile', 
-      icon: '👤',
+      icon: '@',
       category: 'Profile'
     },
     { 
       cmd: 'access experience.log', 
       desc: 'Work Experience', 
-      icon: '💼',
+      icon: '#',
       category: 'Professional'
     },
     { 
       cmd: 'query education.db', 
       desc: 'Education Background', 
-      icon: '🎓',
+      icon: '+',
       category: 'Professional'
     },
     { 
       cmd: 'open projects.repo', 
       desc: 'Professional Projects', 
-      icon: '🚀',
+      icon: '*',
       category: 'Projects'
     },
     { 
       cmd: 'all projects', 
       desc: 'ALL Projects (Unfiltered)', 
-      icon: '📂',
+      icon: '[]',
       category: 'Projects'
     },
     { 
       cmd: 'access prompt_projects.exp', 
       desc: 'Prompt Engineering Experiments', 
-      icon: '🤖',
+      icon: '~',
       category: 'Projects'
     },
     { 
       cmd: 'play game', 
       desc: 'Game Portfolio', 
-      icon: '🎮',
+      icon: '>',
       category: 'Interactive'
     },
     { 
       cmd: 'scan affiliations.sys', 
       desc: 'Professional Groups', 
-      icon: '🤝',
+      icon: '=',
       category: 'Professional'
     },
     { 
       cmd: 'decrypt core_memory', 
       desc: 'Personal Philosophy', 
-      icon: '💭',
+      icon: '%',
       category: 'Profile'
     },
     { 
       cmd: 'contact', 
       desc: 'Contact Information', 
-      icon: '📬',
+      icon: '&',
       category: 'Contact'
     },
     { 
       cmd: 'contact form', 
       desc: 'Send Message', 
-      icon: '✉️',
+      icon: '$',
       category: 'Contact'
     },
     { 
       cmd: 'social', 
       desc: 'Social Media Links', 
-      icon: '🌐',
+      icon: '-',
       category: 'Contact'
     },
     { 
       cmd: 'resume', 
       desc: 'Download Resume', 
-      icon: '📄',
+      icon: '|',
       category: 'Credentials'
     },
     { 
       cmd: 'certifications', 
       desc: 'View Certifications', 
-      icon: '🏆',
+      icon: '!',
       category: 'Credentials'
     },
     { 
       cmd: 'skills', 
       desc: 'Skills & Tech Stack', 
-      icon: '💪',
+      icon: '++',
       category: 'Skills & Analytics'
     },
     { 
       cmd: 'analytics', 
       desc: 'Portfolio Metrics', 
-      icon: '📊',
+      icon: '::',
       category: 'Skills & Analytics'
     },
     { 
       cmd: 'help', 
       desc: 'All Commands', 
-      icon: '❓',
+      icon: '?',
       category: 'System'
     },
   ]
@@ -163,7 +163,7 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle, zIndex, o
           <div className="flex items-center justify-between relative z-10">
             <div className="flex items-center space-x-3">
               <span className="text-2xl">
-                {darkMode ? '🔓' : '🔒'}
+                {darkMode ? '[X]' : '[O]'}
               </span>
               <div className="text-left">
                 <div className={`text-sm font-bold ${
@@ -212,7 +212,7 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle, zIndex, o
           <div className="flex items-center justify-between relative z-10">
             <div className="flex items-center space-x-3">
               <span className="text-2xl">
-                🎮
+                {'>'}
               </span>
               <div className="text-left">
                 <div className={`text-sm font-bold ${
@@ -309,7 +309,7 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle, zIndex, o
           ? 'bg-black/60 border-red-500/30 text-violet-400/50'
           : 'bg-cyber-dark/80 border-cyber-cyan/30 text-cyber-violet/50'
       }`}>
-        💡 Type freely in the terminal for more commands
+        {'>'} Type freely in the terminal for more commands
       </div>
     </motion.div>
   )

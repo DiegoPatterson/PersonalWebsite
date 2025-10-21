@@ -80,7 +80,7 @@ const StatusBar = ({ darkMode, onModeToggle }) => {
           >
             <span className="text-cyber-violet hidden sm:inline">TOGGLE:</span>
             <span className={darkMode ? 'text-red-400' : 'text-cyan-400'}>
-              {darkMode ? '🔴' : '🔵'}
+              {darkMode ? '[X]' : '[O]'}
             </span>
           </button>
 

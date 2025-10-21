@@ -586,7 +586,7 @@ const PixelGame = ({ onExit, onBringToFront }) => {
                 </p>
                 {nearbyInteractable.id === 'exit' && (
                   <p className="text-red-400 text-[10px] mt-1 animate-pulse">
-                    ⚠️ Leave Game World
+                    [!] Leave Game World
                   </p>
                 )}
               </motion.div>
@@ -683,7 +683,7 @@ const PixelGame = ({ onExit, onBringToFront }) => {
           <div className="text-center">
             <p className="text-cyan-400 text-[10px] font-mono">STATUS</p>
             <p className="text-cyan-300 text-xs font-bold">
-              {nearbyInteractable ? '📍 Near Object' : '🎮 Exploring'}
+              {nearbyInteractable ? '[*] Near Object' : '[>] Exploring'}
             </p>
           </div>
         </motion.div>
@@ -906,7 +906,7 @@ const PixelGame = ({ onExit, onBringToFront }) => {
                     className="flex-1 bg-purple-600 hover:bg-purple-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded font-bold text-sm sm:text-base transition-colors"
                     onClick={() => window.open(showingProject.project.githubRepo, '_blank')}
                   >
-                    📁 GitHub Repo
+                    [+] GitHub Repo
                   </button>
                 )}
               </div>

@@ -2,11 +2,11 @@ import { motion } from 'framer-motion'
 
 const SocialLinks = ({ darkMode, contact }) => {
   const socialPlatforms = [
-    { name: 'GitHub', url: contact.github, icon: '💻', color: darkMode ? 'hover:text-violet-400' : 'hover:text-cyber-cyan' },
-    { name: 'LinkedIn', url: contact.linkedin, icon: '💼', color: darkMode ? 'hover:text-blue-400' : 'hover:text-blue-400' },
-    { name: 'Twitter', url: contact.twitter, icon: '🐦', color: darkMode ? 'hover:text-sky-400' : 'hover:text-sky-400' },
-    { name: 'Portfolio', url: contact.portfolio, icon: '🌐', color: darkMode ? 'hover:text-pink-400' : 'hover:text-pink-400' },
-    { name: 'Discord', url: null, handle: contact.discord, icon: '💬', color: darkMode ? 'hover:text-indigo-400' : 'hover:text-indigo-400' },
+    { name: 'GitHub', url: contact.github, icon: '>>', color: darkMode ? 'hover:text-violet-400' : 'hover:text-cyber-cyan' },
+    { name: 'LinkedIn', url: contact.linkedin, icon: '@', color: darkMode ? 'hover:text-blue-400' : 'hover:text-blue-400' },
+    { name: 'Twitter', url: contact.twitter, icon: '#', color: darkMode ? 'hover:text-sky-400' : 'hover:text-sky-400' },
+    { name: 'Portfolio', url: contact.portfolio, icon: '~', color: darkMode ? 'hover:text-pink-400' : 'hover:text-pink-400' },
+    { name: 'Discord', url: null, handle: contact.discord, icon: '$', color: darkMode ? 'hover:text-indigo-400' : 'hover:text-indigo-400' },
   ]
 
   return (

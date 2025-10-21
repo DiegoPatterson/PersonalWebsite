@@ -149,7 +149,7 @@ const Message = ({ message }) => {
                   transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
                   className="text-2xl"
                 >
-                  ✨
+                  *
                 </motion.div>
                 <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan via-cyber-violet to-pink-500 font-bold text-lg">
                   {title}
@@ -159,7 +159,7 @@ const Message = ({ message }) => {
                   transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
                   className="text-2xl"
                 >
-                  ✨
+                  *
                 </motion.div>
               </div>
             )}
@@ -380,7 +380,7 @@ const Message = ({ message }) => {
               <h3 className={`text-lg font-bold mb-4 ${
                 darkMode ? 'text-red-400' : 'text-cyber-pink'
               }`}>
-                📬 Contact Information
+                & Contact Information
               </h3>
               
               {content && (
@@ -411,7 +411,7 @@ const Message = ({ message }) => {
                               : 'bg-white/10 hover:bg-white/20 text-cyan-300'
                           }`}
                         >
-                          💻 GitHub
+                          {'>'} GitHub
                         </a>
                       )}
                       {content.linkedin && (
@@ -425,7 +425,7 @@ const Message = ({ message }) => {
                               : 'bg-white/10 hover:bg-white/20 text-cyan-300'
                           }`}
                         >
-                          💼 LinkedIn
+                          @ LinkedIn
                         </a>
                       )}
                       {content.twitter && content.twitter !== 'N/A' && (
@@ -439,7 +439,7 @@ const Message = ({ message }) => {
                               : 'bg-white/10 hover:bg-white/20 text-cyan-300'
                           }`}
                         >
-                          🐦 Twitter
+                          # Twitter
                         </a>
                       )}
                       {content.discord && content.discord !== 'N/A' && (
@@ -448,7 +448,7 @@ const Message = ({ message }) => {
                             darkMode ? 'bg-gray-700 text-green-400' : 'bg-white/10 text-cyan-300'
                           }`}
                         >
-                          💬 {content.discord}
+                          $ {content.discord}
                         </div>
                       )}
                     </div>
@@ -474,7 +474,7 @@ const Message = ({ message }) => {
               <h3 className={`text-lg font-bold mb-4 ${
                 darkMode ? 'text-red-400' : 'text-cyber-pink'
               }`}>
-                📄 Resume / CV
+                | Resume / CV
               </h3>
               
               {content && (
@@ -558,7 +558,7 @@ const Message = ({ message }) => {
               <h3 className={`text-lg font-bold mb-4 ${
                 darkMode ? 'text-red-400' : 'text-cyber-pink'
               }`}>
-                🏆 Certifications & Credentials
+                ! Certifications & Credentials
               </h3>
               
               {content && Array.isArray(content) && content.length > 0 && (
@@ -597,7 +597,7 @@ const Message = ({ message }) => {
                                   : 'bg-white/10 hover:bg-white/20'
                               }`}
                             >
-                              🔗 View Credential
+                              {'>'} View Credential
                             </a>
                           )}
                         </div>
@@ -625,7 +625,7 @@ const Message = ({ message }) => {
               <h3 className={`text-lg font-bold mb-4 ${
                 darkMode ? 'text-red-400' : 'text-cyber-pink'
               }`}>
-                🌐 Social Media & Links
+                - Social Media & Links
               </h3>
               
               {content && (
@@ -646,7 +646,7 @@ const Message = ({ message }) => {
                             : 'bg-white/10 hover:bg-white/20 hover:scale-105'
                         }`}
                       >
-                        <span className="text-2xl">💻</span>
+                        <span className="text-2xl">{'>'}</span>
                         <div>
                           <div className={`font-bold ${
                             darkMode ? 'text-green-300' : 'text-cyan-300'
@@ -669,7 +669,7 @@ const Message = ({ message }) => {
                             : 'bg-white/10 hover:bg-white/20 hover:scale-105'
                         }`}
                       >
-                        <span className="text-2xl">💼</span>
+                        <span className="text-2xl">@</span>
                         <div>
                           <div className={`font-bold ${
                             darkMode ? 'text-green-300' : 'text-cyan-300'
@@ -692,7 +692,7 @@ const Message = ({ message }) => {
                             : 'bg-white/10 hover:bg-white/20 hover:scale-105'
                         }`}
                       >
-                        <span className="text-2xl">🐦</span>
+                        <span className="text-2xl">#</span>
                         <div>
                           <div className={`font-bold ${
                             darkMode ? 'text-green-300' : 'text-cyan-300'
@@ -715,7 +715,7 @@ const Message = ({ message }) => {
                             : 'bg-white/10 hover:bg-white/20 hover:scale-105'
                         }`}
                       >
-                        <span className="text-2xl">🌐</span>
+                        <span className="text-2xl">~</span>
                         <div>
                           <div className={`font-bold ${
                             darkMode ? 'text-green-300' : 'text-cyan-300'
@@ -733,7 +733,7 @@ const Message = ({ message }) => {
                           darkMode ? 'bg-gray-700' : 'bg-white/10'
                         }`}
                       >
-                        <span className="text-2xl">💬</span>
+                        <span className="text-2xl">$</span>
                         <div>
                           <div className={`font-bold ${
                             darkMode ? 'text-green-300' : 'text-cyan-300'
@@ -766,7 +766,7 @@ const Message = ({ message }) => {
               <h3 className={`text-lg font-bold mb-4 ${
                 darkMode ? 'text-red-400' : 'text-cyber-pink'
               }`}>
-                💪 Skills & Expertise
+                ++ Skills & Expertise
               </h3>
               
               {content && (
@@ -963,7 +963,7 @@ const Message = ({ message }) => {
               <h3 className={`text-lg font-bold mb-4 ${
                 darkMode ? 'text-red-400' : 'text-cyber-pink'
               }`}>
-                📊 Portfolio Analytics & Metrics
+                :: Portfolio Analytics & Metrics
               </h3>
               
               {content && (
@@ -974,7 +974,7 @@ const Message = ({ message }) => {
                       <h4 className={`font-bold mb-3 flex items-center gap-2 ${
                         darkMode ? 'text-violet-400' : 'text-cyan-400'
                       }`}>
-                        🌐 Portfolio Statistics
+                        ~ Portfolio Statistics
                       </h4>
                       <div className="grid grid-cols-2 gap-3">
                         <div className={`p-3 rounded ${
@@ -1033,41 +1033,47 @@ const Message = ({ message }) => {
                       <h4 className={`font-bold mb-3 flex items-center gap-2 ${
                         darkMode ? 'text-violet-400' : 'text-cyan-400'
                       }`}>
-                        💻 GitHub Activity
+                        {'>'} GitHub Activity
                       </h4>
                       <div className="grid grid-cols-2 gap-3">
                         <div className={`p-3 rounded ${
                           darkMode ? 'bg-gray-900/50' : 'bg-white/5'
                         }`}>
                           <div className="text-2xl font-bold">
-                            {content.github.totalRepos}
+                            {content.github.totalRepos || 0}
                           </div>
                           <div className="text-xs opacity-70">Repositories</div>
                         </div>
-                        <div className={`p-3 rounded ${
-                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
-                        }`}>
-                          <div className="text-2xl font-bold">
-                            {content.github.totalStars.toLocaleString()}
+                        {content.github.totalStars !== undefined && (
+                          <div className={`p-3 rounded ${
+                            darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                          }`}>
+                            <div className="text-2xl font-bold">
+                              {content.github.totalStars.toLocaleString()}
+                            </div>
+                            <div className="text-xs opacity-70">Total Stars</div>
                           </div>
-                          <div className="text-xs opacity-70">Total Stars</div>
-                        </div>
-                        <div className={`p-3 rounded ${
-                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
-                        }`}>
-                          <div className="text-2xl font-bold">
-                            {content.github.totalCommits.toLocaleString()}
+                        )}
+                        {content.github.totalCommits !== undefined && (
+                          <div className={`p-3 rounded ${
+                            darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                          }`}>
+                            <div className="text-2xl font-bold">
+                              {content.github.totalCommits.toLocaleString()}
+                            </div>
+                            <div className="text-xs opacity-70">Total Commits</div>
                           </div>
-                          <div className="text-xs opacity-70">Total Commits</div>
-                        </div>
-                        <div className={`p-3 rounded ${
-                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
-                        }`}>
-                          <div className="text-2xl font-bold">
-                            {content.github.contributionStreak}
+                        )}
+                        {content.github.contributionStreak !== undefined && (
+                          <div className={`p-3 rounded ${
+                            darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                          }`}>
+                            <div className="text-2xl font-bold">
+                              {content.github.contributionStreak}
+                            </div>
+                            <div className="text-xs opacity-70">Streak</div>
                           </div>
-                          <div className="text-xs opacity-70">Streak</div>
-                        </div>
+                        )}
                       </div>
                       
                       {content.github.topLanguages && (
@@ -1108,14 +1114,14 @@ const Message = ({ message }) => {
                       <h4 className={`font-bold mb-3 flex items-center gap-2 ${
                         darkMode ? 'text-violet-400' : 'text-cyan-400'
                       }`}>
-                        🚀 Project Metrics
+                        {'>'} Project Metrics
                       </h4>
                       <div className="grid grid-cols-2 gap-3">
                         <div className={`p-3 rounded ${
                           darkMode ? 'bg-gray-900/50' : 'bg-white/5'
                         }`}>
                           <div className="text-2xl font-bold">
-                            {content.projects.totalProjects}
+                            {content.projects.totalProjects || 0}
                           </div>
                           <div className="text-xs opacity-70">Total Projects</div>
                         </div>
@@ -1123,26 +1129,30 @@ const Message = ({ message }) => {
                           darkMode ? 'bg-gray-900/50' : 'bg-white/5'
                         }`}>
                           <div className="text-2xl font-bold">
-                            {content.projects.activeProjects}
+                            {content.projects.activeProjects || 0}
                           </div>
                           <div className="text-xs opacity-70">Active</div>
                         </div>
-                        <div className={`p-3 rounded ${
-                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
-                        }`}>
-                          <div className="text-2xl font-bold">
-                            {content.projects.totalDownloads.toLocaleString()}
+                        {content.projects.totalDownloads !== undefined && (
+                          <div className={`p-3 rounded ${
+                            darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                          }`}>
+                            <div className="text-2xl font-bold">
+                              {content.projects.totalDownloads.toLocaleString()}
+                            </div>
+                            <div className="text-xs opacity-70">Downloads</div>
                           </div>
-                          <div className="text-xs opacity-70">Downloads</div>
-                        </div>
-                        <div className={`p-3 rounded ${
-                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
-                        }`}>
-                          <div className="text-2xl font-bold">
-                            {content.projects.totalStars.toLocaleString()}
+                        )}
+                        {content.projects.totalStars !== undefined && (
+                          <div className={`p-3 rounded ${
+                            darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                          }`}>
+                            <div className="text-2xl font-bold">
+                              {content.projects.totalStars.toLocaleString()}
+                            </div>
+                            <div className="text-xs opacity-70">Stars</div>
                           </div>
-                          <div className="text-xs opacity-70">Stars</div>
-                        </div>
+                        )}
                       </div>
                     </div>
                   )}
@@ -1153,41 +1163,49 @@ const Message = ({ message }) => {
                       <h4 className={`font-bold mb-3 flex items-center gap-2 ${
                         darkMode ? 'text-violet-400' : 'text-cyan-400'
                       }`}>
-                        🤝 Community Engagement
+                        {'&'} Community Engagement
                       </h4>
                       <div className="grid grid-cols-2 gap-3">
-                        <div className={`p-3 rounded ${
-                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
-                        }`}>
-                          <div className="text-2xl font-bold">
-                            {content.engagement.linkedinConnections.toLocaleString()}
+                        {content.engagement.linkedinConnections !== undefined && (
+                          <div className={`p-3 rounded ${
+                            darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                          }`}>
+                            <div className="text-2xl font-bold">
+                              {content.engagement.linkedinConnections.toLocaleString()}
+                            </div>
+                            <div className="text-xs opacity-70">LinkedIn</div>
                           </div>
-                          <div className="text-xs opacity-70">LinkedIn</div>
-                        </div>
-                        <div className={`p-3 rounded ${
-                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
-                        }`}>
-                          <div className="text-2xl font-bold">
-                            {content.engagement.twitterFollowers.toLocaleString()}
+                        )}
+                        {content.engagement.twitterFollowers !== undefined && (
+                          <div className={`p-3 rounded ${
+                            darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                          }`}>
+                            <div className="text-2xl font-bold">
+                              {content.engagement.twitterFollowers.toLocaleString()}
+                            </div>
+                            <div className="text-xs opacity-70">Twitter</div>
                           </div>
-                          <div className="text-xs opacity-70">Twitter</div>
-                        </div>
-                        <div className={`p-3 rounded ${
-                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
-                        }`}>
-                          <div className="text-2xl font-bold">
-                            {content.engagement.discordMembers}
+                        )}
+                        {content.engagement.discordMembers !== undefined && (
+                          <div className={`p-3 rounded ${
+                            darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                          }`}>
+                            <div className="text-2xl font-bold">
+                              {content.engagement.discordMembers}
+                            </div>
+                            <div className="text-xs opacity-70">Discord</div>
                           </div>
-                          <div className="text-xs opacity-70">Discord</div>
-                        </div>
-                        <div className={`p-3 rounded ${
-                          darkMode ? 'bg-gray-900/50' : 'bg-white/5'
-                        }`}>
-                          <div className="text-2xl font-bold">
-                            {content.engagement.emailSubscribers}
+                        )}
+                        {content.engagement.emailSubscribers !== undefined && (
+                          <div className={`p-3 rounded ${
+                            darkMode ? 'bg-gray-900/50' : 'bg-white/5'
+                          }`}>
+                            <div className="text-2xl font-bold">
+                              {content.engagement.emailSubscribers}
+                            </div>
+                            <div className="text-xs opacity-70">Subscribers</div>
                           </div>
-                          <div className="text-xs opacity-70">Subscribers</div>
-                        </div>
+                        )}
                       </div>
                     </div>
                   )}
@@ -1248,7 +1266,7 @@ const Message = ({ message }) => {
                 <ul className="space-y-1 mt-2">
                   {item.achievements.map((achievement, idx) => (
                     <li key={idx} className="text-gray-300 text-sm flex items-start">
-                      <span className="text-green-400 mr-2">✓</span>
+                      <span className="text-green-400 mr-2">[+]</span>
                       {achievement}
                     </li>
                   ))}

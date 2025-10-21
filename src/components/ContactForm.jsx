@@ -111,7 +111,7 @@ const ContactForm = ({ darkMode, onClose, onBringToFront, zIndex }) => {
           }`}
           style={{ pointerEvents: 'auto' }}
         >
-          <div className="text-6xl mb-4">✅</div>
+          <div className="text-6xl mb-4">[OK]</div>
           <h3 className={`text-xl font-bold mb-2 ${
             darkMode ? 'text-green-400' : 'text-green-400'
           }`}>
@@ -183,7 +183,7 @@ const ContactForm = ({ darkMode, onClose, onBringToFront, zIndex }) => {
         <h2 className={`text-lg sm:text-2xl font-bold ${
           darkMode ? 'text-red-400' : 'text-cyber-cyan'
         }`}>
-          📧 Contact Form
+          $ Contact Form
         </h2>
         <button
           onClick={onClose}
@@ -313,7 +313,7 @@ const ContactForm = ({ darkMode, onClose, onBringToFront, zIndex }) => {
               exit={{ opacity: 0, height: 0 }}
               className="bg-red-500/20 border border-red-500/50 rounded px-4 py-2 text-red-400 text-sm"
             >
-              ⚠️ {error}
+              [!] {error}
             </motion.div>
           )}
         </AnimatePresence>
@@ -329,7 +329,7 @@ const ContactForm = ({ darkMode, onClose, onBringToFront, zIndex }) => {
                 : 'bg-cyber-cyan/20 hover:bg-cyber-cyan/30 text-cyber-cyan border-2 border-cyber-cyan/50 hover:border-cyber-cyan'
             } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            {isSubmitting ? '⏳ Sending...' : '📤 Send Message'}
+            {isSubmitting ? '[...] Sending...' : '[>>] Send Message'}
           </button>
           <button
             type="button"
@@ -348,7 +348,7 @@ const ContactForm = ({ darkMode, onClose, onBringToFront, zIndex }) => {
       <p className={`text-xs mt-4 text-center ${
         darkMode ? 'text-gray-600' : 'text-gray-600'
       }`}>
-        🔒 Your information is secure and will not be shared with third parties.
+        [#] Your information is secure and will not be shared with third parties.
       </p>
       </div>
     </motion.div>
