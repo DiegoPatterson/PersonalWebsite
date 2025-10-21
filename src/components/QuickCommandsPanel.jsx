@@ -27,6 +27,12 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle, zIndex, o
       category: 'Projects'
     },
     { 
+      cmd: 'all projects', 
+      desc: 'ALL Projects (Unfiltered)', 
+      icon: '📂',
+      category: 'Projects'
+    },
+    { 
       cmd: 'access prompt_projects.exp', 
       desc: 'Prompt Engineering Experiments', 
       icon: '🤖',

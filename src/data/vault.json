@@ -90,7 +90,7 @@
       "github": "https://github.com/DiegoPatterson/Predicting-Emerging-Entry-Level-Jobs-in-the-AI-Market/settings",
       "demoVideo": "N/A",
       "status": "DONE",
-      "classification": "Predictive Analysis"
+      "classification": "AI/Machine Learning"
     },
     {
       "id": "proj002",
@@ -102,7 +102,7 @@
       "github": "https://github.com/DiegoPatterson/Final_Fantasy_Tools",
       "demoVideo": "https://youtu.be/qa2uypIFg5A",
       "status": "IN_PROGRESS",
-      "classification": "Web Development"
+      "classification": "Website"
     },
     {
       "id": "proj003",
@@ -112,9 +112,9 @@
       "description": "Streaker is a mobile application designed to help users build and maintain positive habits through streak tracking. The app allows users to set daily goals, track their progress, and receive reminders to stay on track. With a user-friendly interface and engaging design, Streaker aims to make habit formation enjoyable and rewarding.",
       "technologies": ["Flutter", "Dart"],
       "github": "https://github.com/NoahTheLee/CSC322_StreakerApp_Final",
-      "demoVideo": "N/A",
+      "demoVideo": "https://youtu.be/wfNL-3tQhiI?si=YXRpOOx_3lNI-4Gu",
       "status": "DONE",
-      "classification": "Mobile Development"
+      "classification": "Mobile App"
     },
     {
       "id": "proj004",
@@ -126,7 +126,7 @@
       "github": "https://github.com/Joeshmow/GoGoMaintenance",
       "demoVideo": "https://youtu.be/uLjgKUSYXY8?si=UrknnnTfOu649e1v",
       "status": "DONE",
-      "classification": "Mobile Development"
+      "classification": "Mobile App/AI"
     },
     {
       "id": "proj005",

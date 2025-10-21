@@ -51,8 +51,8 @@ const Terminal = ({
         addMessage({
           type: 'ai',
           content: darkMode
-            ? "Query my security archives to explore penetration testing, encryption systems, and defensive protocols. Try commands like:\n• `access experience.log` - Security operations\n• `open projects.repo` - Cryptography & security tools\n• `scan affiliations.sys` - CTF teams & security research\n• `play game` - Launch game portfolio 🎮\n• `about me` - View creator profile\n\nType `help` for full command list or use the Quick Access panel →"
-            : "You may query my systems to learn about my creator's AI research and development. Try commands like:\n• `access experience.log` - AI & ML experience\n• `query education.db` - Academic background\n• `open projects.repo` - Neural networks & AI projects\n• `play game` - Launch game portfolio 🎮\n• `about me` - View creator profile\n• `decrypt core_memory` - Personal philosophy\n\nOr simply type `help` for more options, or use the Quick Access panel →",
+            ? "Query my security archives to explore penetration testing, encryption systems, and defensive protocols. Try commands like:\n• `access experience.log` - Security operations\n• `open projects.repo` - Cryptography & security tools\n• `all projects` - View ALL projects 📂\n• `scan affiliations.sys` - CTF teams & security research\n• `play game` - Launch game portfolio 🎮\n• `about me` - View creator profile\n\nType `help` for full command list or use the Quick Access panel →"
+            : "You may query my systems to learn about my creator's AI research and development. Try commands like:\n• `access experience.log` - AI & ML experience\n• `query education.db` - Academic background\n• `open projects.repo` - Neural networks & AI projects\n• `all projects` - View ALL projects 📂\n• `play game` - Launch game portfolio 🎮\n• `about me` - View creator profile\n• `decrypt core_memory` - Personal philosophy\n\nOr simply type `help` for more options, or use the Quick Access panel →",
         })
       }, 1000)
     }, 500)
@@ -106,6 +106,8 @@ const Terminal = ({
         response = handleAffiliations(darkMode)
       } else if (command.includes('prompt') || command === 'access prompt_projects.exp' || command === 'prompts') {
         response = handlePromptProjects(darkMode)
+      } else if (command === 'all projects' || command === 'view all projects' || command === 'show all projects') {
+        response = handleAllProjects(darkMode)
       } else if (command.includes('project') || command === 'open projects.repo') {
         response = handleProjects(darkMode)
       } else if (command.includes('core_memory') || command === 'decrypt core_memory') {
@@ -221,7 +223,8 @@ PRIMARY COMMANDS:
 access experience.log      → View work experience
 query education.db         → View education history
 scan affiliations.sys      → View clubs & organizations
-open projects.repo         → View professional projects
+open projects.repo         → View AI/Cyber projects (filtered by mode)
+all projects               → View ALL projects (unfiltered)
 access prompt_projects.exp → View experimental projects
 decrypt core_memory        → View personal philosophy
 about me                   → View creator profile
@@ -321,6 +324,15 @@ MODE FILTERING: Content automatically filters based on current mode.
       type: 'data',
       title: dark ? 'SECURITY & CRYPTO PROJECTS' : 'AI & ML PROJECTS',
       content: filtered.length > 0 ? filtered : dataVault.projects,
+      darkMode: dark
+    }
+  }
+
+  const handleAllProjects = (dark) => {
+    return {
+      type: 'data',
+      title: dark ? 'ALL PROJECT ARCHIVES' : 'COMPLETE PROJECT PORTFOLIO',
+      content: dataVault.projects,
       darkMode: dark
     }
   }
