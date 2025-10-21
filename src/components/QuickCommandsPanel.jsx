@@ -27,9 +27,9 @@ const QuickCommandsPanel = ({ darkMode, onCommandSelect, onModeToggle, zIndex, o
       category: 'Projects'
     },
     { 
-      cmd: 'access vibe_projects.fun', 
-      desc: 'Fun Experiments', 
-      icon: '✨',
+      cmd: 'access prompt_projects.exp', 
+      desc: 'Prompt Engineering Experiments', 
+      icon: '🤖',
       category: 'Projects'
     },
     { 

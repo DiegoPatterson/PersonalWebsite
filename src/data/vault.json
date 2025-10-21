@@ -2,7 +2,7 @@
   "creator": {
     "name": "Diego Patterson",
     "title": "Computer Science Student",
-    "specialization": ["Artificial Intelligence", "Cybersecurity"],
+    "specialization": ["Artificial Intelligence", "Cybersecurity", "Game Design"],
     "status": "ACTIVE",
     "clearanceLevel": "ARCHITECT",
     "profileImage": "/images/profile.jpg",
@@ -11,234 +11,188 @@
   "experience": [
     {
       "id": "exp001",
-      "title": "AI Research Intern",
-      "company": "Neural Dynamics Lab",
-      "duration": "Summer 2024",
+      "title": "IT Intern",
+      "company": "Pro IT Specialists",
+      "duration": "Summer 2025",
       "category": "AI",
-      "description": "Developed neural network architectures for real-time threat detection. Implemented adversarial training protocols to improve model robustness.",
-      "technologies": ["Python", "TensorFlow", "PyTorch", "Neural Networks"]
-    },
-    {
-      "id": "exp002",
-      "title": "Cybersecurity Analyst Intern",
-      "company": "SecureNet Solutions",
-      "duration": "Spring 2024",
-      "category": "CYBER",
-      "description": "Conducted penetration testing and vulnerability assessments. Automated security audit processes using custom Python scripts.",
-      "technologies": ["Python", "Kali Linux", "Wireshark", "Metasploit"]
-    },
-    {
-      "id": "exp003",
-      "title": "Software Development Intern",
-      "company": "Tech Innovations Inc",
-      "duration": "Fall 2023",
-      "category": "AI",
-      "description": "Built full-stack web applications with focus on secure authentication systems. Implemented OAuth 2.0 and JWT-based security protocols.",
-      "technologies": ["React", "Node.js", "MongoDB", "AWS"]
+      "description": "We provided both on-site and remote IT support for small businesses, ensuring their systems ran efficiently and securely. Our work involved installing and maintaining essential hardware, including printers, computers, and networking equipment. We also assisted in post-cyberattack recovery efforts by reconfiguring network hardware and VLANs to restore functionality and strengthen security.",
+      "technologies": ["WindowsOS", "TCP/IP", "Hardware Setup", "Remote Tools", "VLAN Configuration", "Network Switches and Routers"]
     }
   ],
   "education": [
     {
       "id": "edu001",
       "degree": "Bachelor of Science in Computer Science",
-      "institution": "University of Technology",
+      "institution": "California Baptist University",
       "duration": "2022 - 2026 (Expected)",
-      "gpa": "3.9/4.0",
+      "gpa": "2.9/4.0",
       "focus": "AI & Machine Learning, Cybersecurity",
       "achievements": [
-        "Dean's List (All Semesters)",
-        "AI Research Grant Recipient",
-        "Cybersecurity Club President"
+        "EGR101 Robots Got Talent 2022 - 1st Place",
+        "Game Design Club President"
       ]
     },
     {
       "id": "edu002",
       "degree": "Relevant Coursework",
       "courses": [
-        "Advanced Machine Learning",
-        "Computer Vision",
-        "Network Security",
-        "Cryptography",
-        "Ethical Hacking",
-        "Deep Learning",
-        "Data Structures & Algorithms",
-        "Operating Systems Security"
+        "Data Structures and Analysis",
+        "Algorithms",
+        "Operating Systems and Networking",
+        "Software Engineering",
+        "Web Application Development",
+        "Mobile Application Development",
+        "InfoSecurityAndComptrForensics",
+        "Artificial Intelligence",
+        "Mathematical Statistics",
+        "Database Systems",
+        "Computer Architecture",
+        "Discrete Structures",
+        "TheoryComputationandCompilers",
+        "Machine and Deep Learning"
       ]
     }
   ],
   "affiliations": [
     {
       "id": "aff001",
-      "name": "Cybersecurity Research Lab",
-      "role": "Lead Researcher",
-      "duration": "2023 - Present",
-      "category": "CYBER",
-      "description": "Leading research on AI-powered intrusion detection systems. Published 2 papers on adversarial machine learning in security contexts."
+      "name": "ACM Game Design",
+      "role": "Branch President",
+      "duration": "2025 - Present",
+      "category": "GAME DESIGN",
+      "description": "Developed and led workshops on game design principles, organized game jams, and collaborated on student game projects."
     },
     {
       "id": "aff002",
-      "name": "University CTF Team",
-      "role": "Captain",
-      "duration": "2023 - Present",
+      "name": "CCDC Cyber Defense Club",
+      "role": "Competing Member",
+      "duration": "2024 - Present",
       "category": "CYBER",
-      "description": "Leading competitive cybersecurity team in Capture The Flag competitions. Ranked Top 10 nationally in 2024."
+      "description": "Competed in competitions, such as CCDC, and focused on defending networks and systems against cyber threats, enhancing practical cybersecurity skills."
     },
     {
       "id": "aff003",
-      "name": "AI Ethics Committee",
-      "role": "Student Representative",
-      "duration": "2024 - Present",
-      "category": "AI",
-      "description": "Advocating for responsible AI development and implementation across campus research projects."
-    },
-    {
-      "id": "aff004",
-      "name": "ACM Student Chapter",
-      "role": "Vice President",
-      "duration": "2023 - Present",
-      "category": "AI",
-      "description": "Organizing technical workshops, hackathons, and guest speaker events for 200+ members."
+      "name": "Association of Computing Machinery (ACM)",
+      "role": "Branch Officer",
+      "duration": "2025 - Present",
+      "category": "GENERAL",
+      "description": "Helped organize overall club events, make big decisions for the club, and collaborated with other officers to promote ACM initiatives."
     }
   ],
   "projects": [
     {
       "id": "proj001",
-      "name": "SENTINEL",
-      "tagline": "AI-Powered Network Intrusion Detection",
-      "category": "CYBER",
-      "description": "Real-time threat detection system using deep learning to identify anomalous network behavior. Achieved 98.7% accuracy with minimal false positives.",
-      "technologies": ["Python", "TensorFlow", "Scikit-learn", "Flask", "Docker"],
-      "github": "https://github.com/diegopatterson/sentinel-ids",
-      "demoVideo": "https://youtube.com/watch?v=example1",
-      "status": "ACTIVE",
-      "classification": "OPEN_SOURCE"
+      "name": "Predicting Emerging Entry Level Jobs In AI Market",
+      "tagline": "Studying the future job market for AI roles",
+      "category": "AI",
+      "description": "In the current Job market, many students and graduates worry about whether they could get a job or not in the field that they studied. Some look at the incoming jobs and just begin to lose hope, others spend time searching and getting denied without even knowing where they are going wrong. With so many resources on finding jobs yet little resources explaining the skill level of each, many are left searching without knowing what they are looking for. This is the problem that I look to solve with my research. I would like to train an AI to predict the direction of the entry level jobs in the job market, hoping to find out what skills and fields you should be focusing on and applying to get a job. Due to needing to predict the forecasted job demand over time, this will likely be a regressing problem, given that I wish to predict growth. To quantify when I have reached a successful point from my model, I will ensure that the regression model achieves at lease a 20% lower forecasting error (MAPE/RMSE) than a simple baseline predictor. This will be paired with a ranked list of entry-level AI roles that align with current industry insights. Finally, the results will be formatted in a way that will highlight what skills and roles are most associated with further growth.",
+      "technologies": ["Machine Learning", "Data Analysis", "Python", "Pandas", "Scikit-Learn"],
+      "github": "https://github.com/DiegoPatterson/Predicting-Emerging-Entry-Level-Jobs-in-the-AI-Market/settings",
+      "demoVideo": "N/A",
+      "status": "DONE",
+      "classification": "Predictive Analysis"
     },
     {
       "id": "proj002",
-      "name": "CipherChat",
-      "tagline": "End-to-End Encrypted Messaging Platform",
-      "category": "CYBER",
-      "description": "Secure messaging application with military-grade encryption. Features include perfect forward secrecy, zero-knowledge architecture, and secure key exchange.",
-      "technologies": ["React", "Node.js", "WebSockets", "AES-256", "RSA"],
-      "github": "https://github.com/diegopatterson/cipherchat",
-      "status": "BETA",
-      "classification": "OPEN_SOURCE"
+      "name": "Final Fantasy Tools",
+      "tagline": "Tools for Final Fantasy XIV Players",
+      "category": "WEBSITE",
+      "description": "Final Fantasy XIV Tools is a comprehensive web resource designed to simplify the often-overwhelming world of Eorzea for players. Recognizing how easy it is to get lost amid the extensive content, this project provides a variety of essential tools and guides, including detailed strategies for class leveling, efficient gathering guides, and comprehensive walkthroughs for all tiers of raid content. My goal was to create the definitive, go-to hub for reliable information, making every user's already grand adventure easier, more efficient, and ultimately more enjoyable.",
+      "technologies": ["HTML", "CSS", "JavaScript"],
+      "github": "https://github.com/DiegoPatterson/Final_Fantasy_Tools",
+      "demoVideo": "https://youtu.be/qa2uypIFg5A",
+      "status": "IN_PROGRESS",
+      "classification": "Web Development"
     },
     {
       "id": "proj003",
-      "name": "DeepFake Detector",
-      "tagline": "CNN-Based Media Authentication System",
-      "category": "AI",
-      "description": "Neural network model for detecting AI-generated faces and deepfake videos. Trained on 100K+ samples with 96% detection accuracy.",
-      "technologies": ["Python", "PyTorch", "OpenCV", "FastAPI"],
-      "github": "https://github.com/diegopatterson/deepfake-detector",
-      "status": "RESEARCH",
-      "classification": "ACADEMIC"
+      "name": "Streaker App",
+      "tagline": "Mobile App Final Exam Project",
+      "category": "MOBILE APP",
+      "description": "Streaker is a mobile application designed to help users build and maintain positive habits through streak tracking. The app allows users to set daily goals, track their progress, and receive reminders to stay on track. With a user-friendly interface and engaging design, Streaker aims to make habit formation enjoyable and rewarding.",
+      "technologies": ["Flutter", "Dart"],
+      "github": "https://github.com/NoahTheLee/CSC322_StreakerApp_Final",
+      "demoVideo": "N/A",
+      "status": "DONE",
+      "classification": "Mobile Development"
     },
     {
       "id": "proj004",
-      "name": "QuantumShield",
-      "tagline": "Post-Quantum Cryptography Library",
-      "category": "CYBER",
-      "description": "Implementation of quantum-resistant encryption algorithms preparing for the post-quantum era. Focus on lattice-based cryptography.",
-      "technologies": ["Rust", "C++", "Cryptography", "Number Theory"],
-      "github": "https://github.com/diegopatterson/quantum-shield",
-      "status": "DEVELOPMENT",
-      "classification": "RESEARCH"
+      "name": "GoGoMaintenance",
+      "tagline": "Mobile Mechanic App",
+      "category": "AI, MOBILE APP, Mechanic",
+      "description": "Gogo Maintenance aimed at creating a mobile application that utilizes AI to assist users in diagnosing and maintaining their vehicles. The app provides features such as scheduling appointments, diagnostic help, and a virtual assistant to answer vehicle-related questions. By leveraging AI technology, Gogo Maintenance seeks to enhance the user experience and promote proactive vehicle care.",
+      "technologies": ["Flutter", "Dart", "Gemini API"],
+      "github": "https://github.com/Joeshmow/GoGoMaintenance",
+      "demoVideo": "https://youtu.be/uLjgKUSYXY8?si=UrknnnTfOu649e1v",
+      "status": "DONE",
+      "classification": "Mobile Development"
     },
     {
       "id": "proj005",
-      "name": "Neural Adversary",
-      "tagline": "Adversarial Attack Framework",
-      "category": "AI",
-      "description": "Research toolkit for testing ML model robustness against adversarial attacks. Includes FGSM, PGD, and novel attack methods.",
-      "technologies": ["Python", "PyTorch", "NumPy", "Jupyter"],
-      "github": "https://github.com/diegopatterson/neural-adversary",
-      "status": "ACTIVE",
-      "classification": "RESEARCH"
+      "name": "Cyber Scripts and Tools",
+      "tagline": "A collection of cybersecurity scripts and tools",
+      "category": "CYBER",
+      "description": "A repository containing scripts and tools developed for both club and class activities.",
+      "technologies": ["Python", "Bash", "PowerShell"],
+      "github": "https://github.com/DiegoPatterson/CyberScriptsAndTools",
+      "demoVideo": "N/A",
+      "status": "Living Archive",
+      "classification": "Cybersecurity"
     }
   ],
-  "vibeProjects": [
+  "promptProjects": [
     {
-      "id": "vibe001",
-      "name": "AI Dreamscape Generator",
-      "vibe": "✨ Surreal & Trippy",
-      "category": "AI",
-      "description": "Late-night experiment where I fed an AI my random thoughts and it generated abstract visual landscapes. No purpose, pure vibes. Sometimes it creates beauty, sometimes chaos.",
-      "builtWith": ["Stable Diffusion", "Python", "Vibes"],
-      "github": "https://github.com/diegopatterson/ai-dreamscape",
-      "mood": "🌈 Experimental"
+      "id": "prompt001",
+      "name": "Personal Website",
+      "vibe": "Business and Professional",
+      "category": "WEBSITE",
+      "description": "A Personal Website to showcase my projects, skills, and experience in a clean and professional manner. Designed with a focus on usability and aesthetics to create a strong online presence.",
+      "builtWith": ["React", "CSS", "JavaScript", "Copilot"],
+      "github": "https://github.com/DiegoPatterson/PersonalWebsite",
+      "mood": "Experimental"
     },
     {
-      "id": "vibe002",
-      "name": "Neural Haiku Bot",
-      "vibe": "🎭 Poetic & Philosophical",
-      "category": "AI",
-      "description": "Trained a small model on thousands of haikus and philosophy texts. It generates surprisingly deep 5-7-5 poems about existence, technology, and the human condition. Accidentally created digital poetry.",
-      "builtWith": ["GPT-2", "Fine-tuning", "Existential Dread"],
-      "github": "https://github.com/diegopatterson/neural-haiku",
-      "mood": "🧘 Contemplative"
+      "id": "prompt002",
+      "name": "Devagotchi",
+      "vibe": "Fun",
+      "category": "VS EXTENSION",
+      "description": "A Digimon/Tamagotchi-inspired VS Code extension that brings a virtual pet companion to your coding environment. Your pet grows, evolves, and reacts to your coding activity!",
+      "builtWith": ["JavaScript", "TypeScript"],
+      "github": "https://github.com/DiegoPatterson/Devagotchi",
+      "mood": "On hold"
     },
     {
-      "id": "vibe003",
-      "name": "Emotion Color Mapper",
-      "vibe": "🎨 Synesthetic",
-      "category": "AI",
-      "description": "An AI that analyzes text sentiment and generates corresponding color palettes. Fed it song lyrics, movie scripts, and diary entries. The results are weirdly accurate and beautiful.",
-      "builtWith": ["Sentiment Analysis", "Color Theory", "Magic"],
-      "github": "https://github.com/diegopatterson/emotion-colors",
-      "mood": "🌊 Flow State"
+      "id": "prompt003",
+      "name": "unga language",
+      "vibe": "Fun",
+      "category": "Coding Language",
+      "description": "A blazingly fast caveman programming language implemented in pure x86-64 assembly for ultimate performance and authentic stone-age computing experience.",
+      "builtWith": ["x86-64 Assembly"],
+      "github": "https://github.com/DiegoPatterson/unga-language",
+      "mood": "In Progress"
     },
     {
-      "id": "vibe004",
-      "name": "Midnight Chatbot Therapist",
-      "vibe": "🌙 3AM Energy",
-      "category": "AI",
-      "description": "A chatbot trained on motivational quotes, stoic philosophy, and wholesome memes. Built during finals week. It's surprisingly good at talking you through procrastination spirals.",
-      "builtWith": ["DialoGPT", "Therapy", "Coffee"],
-      "github": "https://github.com/diegopatterson/midnight-therapist",
-      "mood": "☕ Supportive"
+      "id": "prompt004",
+      "name": "CodeQuest",
+      "vibe": "Fun",
+      "category": "VS EXTENSION",
+      "description": "A VS code Extension aimed at gamifying the coding experience by introducing challenges, rewards, and interactive elements to make coding more engaging and enjoyable. ",
+      "builtWith": ["Python", "GitHub API", "Machine Learning"],
+      "github": "https://github.com/DiegoPatterson/CodeQuest",
+      "mood": "Needs Improvement"
     },
     {
-      "id": "vibe005",
-      "name": "Glitch Art Generator",
-      "vibe": "⚡ Chaotic Digital",
-      "category": "AI",
-      "description": "Corrupts images with controlled randomness using neural style transfer gone wrong. Turns photos into digital artifacts that look like memories from a broken simulation.",
-      "builtWith": ["Neural Style Transfer", "Chaos Theory", "Accidents"],
-      "github": "https://github.com/diegopatterson/glitch-art",
-      "mood": "🌀 Chaotic Good"
-    },
-    {
-      "id": "vibe006",
-      "name": "Lofi Code Generator",
-      "vibe": "🎵 Chill Study Vibes",
-      "category": "AI",
-      "description": "AI that generates ambient background music while you code. Trained on lofi hip-hop beats. Adjusts tempo based on your typing speed. Actually helps me focus.",
-      "builtWith": ["MusicGen", "Audio ML", "Procrastination"],
-      "github": "https://github.com/diegopatterson/lofi-code",
-      "mood": "🎧 Relaxed Focus"
-    },
-    {
-      "id": "vibe007",
-      "name": "Dream Journal Analyzer",
-      "vibe": "🔮 Mystical & Weird",
-      "category": "AI",
-      "description": "Logs your dreams and finds patterns using NLP. Started as a joke, but it actually found recurring themes in my subconscious. Kinda freaky, kinda cool.",
-      "builtWith": ["NLP", "Pattern Recognition", "Sleep Deprivation"],
-      "github": "https://github.com/diegopatterson/dream-analyzer",
-      "mood": "😴 Introspective"
-    },
-    {
-      "id": "vibe008",
-      "name": "Vibe Check AI",
-      "vibe": "✌️ Meta & Self-Aware",
-      "category": "AI",
-      "description": "An AI that rates the 'vibe' of any text, image, or situation on a scale of 'immaculate' to 'off'. Trained on Gen Z slang and internet culture. It's disturbingly accurate.",
-      "builtWith": ["CLIP", "Sentiment Analysis", "Internet Culture"],
-      "github": "https://github.com/diegopatterson/vibe-check",
-      "mood": "😎 Chill"
+      "id": "prompt005",
+      "name": "AI-Testing",
+      "vibe": "Overflow",
+      "category": "Testing",
+      "description": "A overflow repository that contains various smaller experiments run to improve prompting skills and see if projects are worth the persuit.",
+      "builtWith": ["AI"],
+      "github": "https://github.com/DiegoPatterson/AI-Testing",
+      "mood": "Living Archive"
     }
+
   ],
   "coreMemory": {
     "philosophy": "I believe in the convergence of human intelligence and artificial systems—not to replace humanity, but to amplify it. Technology, especially AI, holds immense power, and with that comes profound responsibility.",
@@ -269,244 +223,119 @@
   "gameDesignProjects": [
     {
       "id": "game001",
-      "title": "Neon Heist: Cyber Syndicate",
-      "type": "Stealth Action RPG",
-      "category": "CYBER",
+      "title": "Move or Die",
+      "type": "Bullet Hell",
+      "category": "Nature",
       "color": "#00ffff",
-      "description": "A cyberpunk stealth game where you infiltrate corporate megastructures. Features dynamic AI that adapts to your playstyle and learns from your tactics.",
+      "description": "A bullet hell with set patterns that cycle as you aim to beat your best time with the highest score possible. Set in the woods, you take on the challenge of trying to survive as nature tries to reclaim your body. With a time and health based scoring system, players must train their reactions and skills to achieve the highest score possible.",
       "role": "Game Designer & Lead Developer",
-      "engine": "Unity",
-      "duration": "6 months",
+      "engine": "Godot",
+      "duration": "2 weeks",
       "teamSize": "Solo Project",
       "features": [
-        "Adaptive AI enemies that learn player patterns",
-        "Branching narrative with 5 unique endings",
-        "Hacking mini-games with real programming concepts",
-        "Procedurally generated corporate facilities",
-        "Stealth mechanics inspired by Thief and Dishonored"
+        "Time and health based scoring system",
+        "Smooth character movement",
+        "Attack Patterns for attacks"
       ],
-      "technologies": ["Unity", "C#", "NavMesh AI", "Shader Graph"],
-      "status": "Prototype Complete",
+      "technologies": ["Godot", "GDScript", "2D Art", "Animation"],
+      "status": "In Development",
       "playable": false,
       "githubRepo": "https://github.com/diegopatterson/neon-heist",
       "demoVideo": "",
       "screenshots": []
-    },
-    {
-      "id": "game002",
-      "title": "Quantum Echoes",
-      "type": "Puzzle Platformer",
-      "category": "AI",
-      "color": "#ff00ff",
-      "description": "A mind-bending puzzle platformer where you create clones of yourself from alternate timelines. Each clone mimics your previous actions, creating complex temporal puzzles.",
-      "role": "Game Designer & Solo Developer",
-      "engine": "Godot",
-      "duration": "4 months",
-      "teamSize": "Solo Project",
-      "features": [
-        "Time-loop mechanics with infinite clone recursion",
-        "Physics-based puzzles requiring coordination",
-        "40+ hand-crafted levels increasing in complexity",
-        "Speedrun timer and leaderboard integration",
-        "Minimalist art style with particle effects"
-      ],
-      "technologies": ["Godot", "GDScript", "Physics Engine", "Particle Systems"],
-      "status": "Beta Testing",
-      "playable": true,
-      "githubRepo": "https://github.com/diegopatterson/quantum-echoes",
-      "demoVideo": "",
-      "screenshots": []
-    },
-    {
-      "id": "game003",
-      "title": "Neural Arena",
-      "type": "Competitive Multiplayer",
-      "category": "AI",
-      "color": "#ffff00",
-      "description": "A 4v4 competitive arena shooter where each character has AI-powered abilities that evolve based on team synergies and enemy compositions.",
-      "role": "Game Designer & Systems Designer",
-      "engine": "Unreal Engine 5",
-      "duration": "8 months",
-      "teamSize": "5 developers",
-      "features": [
-        "AI-driven ability evolution system",
-        "Real-time team composition analysis",
-        "Dynamic map events controlled by machine learning",
-        "Character abilities that counter-adapt to enemies",
-        "Ranked matchmaking with ELO system"
-      ],
-      "technologies": ["Unreal Engine 5", "C++", "Python AI", "Mirror Networking"],
-      "status": "In Development",
-      "playable": false,
-      "githubRepo": "https://github.com/diegopatterson/neural-arena",
-      "demoVideo": "",
-      "screenshots": []
-    },
-    {
-      "id": "game004",
-      "title": "Rogue Algorithm",
-      "type": "Roguelike Deckbuilder",
-      "category": "CYBER",
-      "color": "#ff0066",
-      "description": "A roguelike deckbuilder where you're an AI hacking through cyberspace. Build your deck of exploits, firewalls, and malware to defeat increasingly complex security systems.",
-      "role": "Game Designer & Developer",
-      "engine": "Unity",
-      "duration": "5 months",
-      "teamSize": "Solo Project",
-      "features": [
-        "200+ unique cards representing hacking tools",
-        "Procedurally generated cyberspace levels",
-        "Real hacking concepts as game mechanics",
-        "Permadeath with meta-progression unlocks",
-        "Multiple AI opponent archetypes"
-      ],
-      "technologies": ["Unity", "C#", "Procedural Generation", "Card Game Design"],
-      "status": "Published - Itch.io",
-      "playable": true,
-      "githubRepo": "https://github.com/diegopatterson/rogue-algorithm",
-      "demoVideo": "",
-      "itchLink": "https://diegopatterson.itch.io/rogue-algorithm",
-      "screenshots": []
-    },
-    {
-      "id": "game005",
-      "title": "Memory Fragments",
-      "type": "Narrative Adventure",
-      "category": "AI",
-      "color": "#00ffaa",
-      "description": "An emotional narrative game about an AI trying to piece together fragmented memories of its creator. Explore surreal mindscapes and solve puzzles to uncover the truth.",
-      "role": "Game Designer & Narrative Designer",
-      "engine": "Ren'Py / Unity Hybrid",
-      "duration": "3 months",
-      "teamSize": "Solo Project",
-      "features": [
-        "Branching narrative with 8 different endings",
-        "Dialogue system with emotional AI responses",
-        "Puzzle mechanics tied to memory reconstruction",
-        "Hand-painted visual novel art style",
-        "Original soundtrack with dynamic music"
-      ],
-      "technologies": ["Ren'Py", "Python", "Unity", "Dialogue Systems"],
-      "status": "Complete",
-      "playable": true,
-      "githubRepo": "https://github.com/diegopatterson/memory-fragments",
-      "demoVideo": "",
-      "itchLink": "https://diegopatterson.itch.io/memory-fragments",
-      "screenshots": []
     }
   ],
   "contact": {
-    "email": "diego.patterson@example.com",
+    "email": "diegochrispatterson@gmail.com",
     "github": "https://github.com/diegopatterson",
-    "linkedin": "https://linkedin.com/in/diegopatterson",
-    "twitter": "https://twitter.com/diegopatterson",
-    "portfolio": "https://diegopatterson.dev",
-    "discord": "DiegoP#1234"
+    "linkedin": "www.linkedin.com/in/dcpat",
+    "twitter": "N/A",
+    "portfolio": "N/A",
+    "discord": "N/A"
   },
   "resume": {
-    "pdfUrl": "/resume/Diego_Patterson_Resume.pdf",
+    "pdfUrl": "dist/assets/resume/Resume.pdf",
     "lastUpdated": "October 2025"
   },
   "certifications": [
     {
       "id": "cert001",
-      "name": "AWS Certified Solutions Architect",
-      "issuer": "Amazon Web Services",
-      "date": "2024",
-      "credentialUrl": "https://aws.amazon.com/verification",
-      "icon": "☁️"
-    },
-    {
-      "id": "cert002",
-      "name": "CompTIA Security+",
-      "issuer": "CompTIA",
-      "date": "2023",
-      "credentialUrl": "https://comptia.org/verify",
-      "icon": "🔒"
-    },
-    {
-      "id": "cert003",
-      "name": "TensorFlow Developer Certificate",
-      "issuer": "Google",
-      "date": "2024",
-      "credentialUrl": "https://tensorflow.org/certificate",
-      "icon": "🧠"
+      "name": "ABET",
+      "issuer": "California Baptist University",
+      "date": "2026 (Expected)",
+      "credentialUrl": "N/A",
+      "icon": "<>"
     }
   ],
   "skills": {
     "languages": [
-      { "name": "Python", "level": 95, "icon": "🐍" },
-      { "name": "JavaScript/TypeScript", "level": 90, "icon": "📜" },
-      { "name": "Java", "level": 85, "icon": "☕" },
-      { "name": "C++", "level": 80, "icon": "⚙️" },
-      { "name": "SQL", "level": 85, "icon": "🗃️" },
-      { "name": "Bash/Shell", "level": 75, "icon": "💻" }
+      { "name": "Python", "level": 85},
+      { "name": "JavaScript/TypeScript", "level": 10 },
+      { "name": "Java", "level": 80 },
+      { "name": "C++", "level": 80 },
+      { "name": "SQL", "level": 85 },
+      { "name": "Bash/Shell", "level": 85 }
     ],
     "frameworks": [
-      { "name": "React", "level": 90, "icon": "⚛️" },
-      { "name": "Node.js", "level": 85, "icon": "🟢" },
-      { "name": "TensorFlow", "level": 88, "icon": "🧠" },
-      { "name": "PyTorch", "level": 85, "icon": "🔥" },
-      { "name": "Django", "level": 80, "icon": "🎸" },
-      { "name": "Express.js", "level": 85, "icon": "🚂" }
+      { "name": "React", "level": 10},
+      { "name": "Flutter", "level": 85},
+      { "name": "PyTorch", "level": 55}
     ],
     "tools": [
-      { "name": "Git", "level": 92, "icon": "🌿" },
-      { "name": "Docker", "level": 85, "icon": "🐳" },
-      { "name": "AWS", "level": 80, "icon": "☁️" },
-      { "name": "Kubernetes", "level": 75, "icon": "☸️" },
-      { "name": "Metasploit", "level": 82, "icon": "🎯" },
-      { "name": "Wireshark", "level": 88, "icon": "🦈" }
+      { "name": "Git", "level": 92},
+      { "name": "Linux", "level": 90 },
+      { "name": "VS Code", "level": 95 },
+      { "name": "AWS", "level": 60, "icon": "☁️" },
+      { "name": "Wireshark", "level": 60}
     ],
     "specialties": [
-      { "name": "Machine Learning", "level": 92, "icon": "🤖" },
-      { "name": "Cybersecurity", "level": 90, "icon": "🛡️" },
-      { "name": "Neural Networks", "level": 88, "icon": "🧬" },
-      { "name": "Penetration Testing", "level": 85, "icon": "🔓" },
-      { "name": "Cloud Architecture", "level": 82, "icon": "☁️" },
-      { "name": "Computer Vision", "level": 80, "icon": "👁️" }
+      { "name": "Machine Learning", "level": 75},
+      { "name": "Cybersecurity", "level": 80},
+      { "name": "Neural Networks", "level": 80},
+      { "name": "Penetration Testing", "level": 10},
+      { "name": "Cloud Architecture", "level": 85}
     ]
   },
   "analytics": {
     "portfolio": {
-      "totalVisitors": 12547,
-      "uniqueVisitors": 8932,
-      "avgSessionDuration": "4m 32s",
-      "bounceRate": "23.4%",
+      "totalVisitors": 0,
+      "uniqueVisitors": 0,
+      "avgSessionDuration": "N/A",
+      "bounceRate": "N/A",
       "topPages": [
-        { "page": "AI Projects", "views": 4521 },
-        { "page": "Cybersecurity Portfolio", "views": 3892 },
-        { "page": "Contact", "views": 2104 },
-        { "page": "Resume", "views": 1876 },
-        { "page": "Game Portfolio", "views": 1543 }
+        { "page": "AI Projects", "views": 0 },
+        { "page": "Cybersecurity Portfolio", "views": 0 },
+        { "page": "Contact", "views": 0 },
+        { "page": "Resume", "views": 0 },
+        { "page": "Game Portfolio", "views": 0 }
       ]
     },
     "github": {
-      "totalRepos": 47,
-      "totalStars": 892,
-      "totalForks": 156,
-      "totalCommits": 3247,
+      "totalRepos": 0,
+      "totalStars": 0,
+      "totalForks": 0,
+      "totalCommits": 0,
       "topLanguages": [
-        { "language": "Python", "percentage": 42 },
-        { "language": "JavaScript", "percentage": 28 },
-        { "language": "TypeScript", "percentage": 15 },
-        { "language": "Java", "percentage": 10 },
-        { "language": "Other", "percentage": 5 }
+        { "language": "Python", "percentage": 0 },
+        { "language": "JavaScript", "percentage": 0 },
+        { "language": "TypeScript", "percentage": 0 },
+        { "language": "Java", "percentage": 0 },
+        { "language": "Other", "percentage": 0 }
       ],
-      "contributionStreak": "127 days"
+      "contributionStreak": "N/A"
     },
     "projects": {
-      "totalProjects": 23,
-      "activeProjects": 5,
-      "completedProjects": 18,
-      "totalDownloads": 15420,
-      "totalStars": 1248
+      "totalProjects": 0,
+      "activeProjects": 0,
+      "completedProjects": 0,
+      "totalDownloads": 0,
+      "totalStars": 0
     },
     "engagement": {
-      "linkedinConnections": 1247,
-      "twitterFollowers": 532,
-      "discordMembers": 89,
-      "emailSubscribers": 234
+      "linkedinConnections": 0,
+      "twitterFollowers": 0,
+      "discordMembers": 0,
+      "emailSubscribers": 0
     }
   },
   "secretCommands": {

@@ -104,8 +104,8 @@ const Terminal = ({
         response = handleEducation(darkMode)
       } else if (command.includes('affiliation') || command === 'scan affiliations.sys') {
         response = handleAffiliations(darkMode)
-      } else if (command.includes('vibe') || command === 'access vibe_projects.fun' || command === 'vibes') {
-        response = handleVibeProjects(darkMode)
+      } else if (command.includes('prompt') || command === 'access prompt_projects.exp' || command === 'prompts') {
+        response = handlePromptProjects(darkMode)
       } else if (command.includes('project') || command === 'open projects.repo') {
         response = handleProjects(darkMode)
       } else if (command.includes('core_memory') || command === 'decrypt core_memory') {
@@ -222,7 +222,7 @@ access experience.log      → View work experience
 query education.db         → View education history
 scan affiliations.sys      → View clubs & organizations
 open projects.repo         → View professional projects
-access vibe_projects.fun   → View experimental projects
+access prompt_projects.exp → View experimental projects
 decrypt core_memory        → View personal philosophy
 about me                   → View creator profile
 
@@ -298,12 +298,12 @@ MODE FILTERING: Content automatically filters based on current mode.
     }
   }
 
-  const handleVibeProjects = (dark) => {
-    const filtered = filterByCategory(dataVault.vibeProjects, dark)
+  const handlePromptProjects = (dark) => {
+    const filtered = filterByCategory(dataVault.promptProjects, dark)
     return {
-      type: 'vibe',
-      title: dark ? 'CYBER_EXPERIMENTS.CHAOS' : 'AI_VIBES.FUN',
-      content: filtered.length > 0 ? filtered : dataVault.vibeProjects,
+      type: 'prompt',
+      title: dark ? 'CYBER_EXPERIMENTS.CHAOS' : 'AI_PROMPTS.EXP',
+      content: filtered.length > 0 ? filtered : dataVault.promptProjects,
       darkMode: dark
     }
   }
@@ -942,7 +942,7 @@ TIP: Every file shows different content in each mode.
           'ls', 'ls -la', 'pwd', 'cd', 'cd ..', 'cd ~', 'cd /',
           'cat', 'decrypt', 'open', 'scan', 'trace',
           'access experience.log', 'query education.db', 'scan affiliations.sys',
-          'open projects.repo', 'access vibe_projects.fun', 'decrypt core_memory',
+          'open projects.repo', 'access prompt_projects.exp', 'decrypt core_memory',
           'about me', 'github', 'about', 'contact', 'resume', 'skills', 'analytics',
           'who are you', 'run diagnostics', 'override protocols', 'shutdown',
           'meaning of life', 'are you alive'

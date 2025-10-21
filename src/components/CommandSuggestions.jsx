@@ -9,7 +9,7 @@ const CommandSuggestions = ({ onCommandSelect }) => {
     { cmd: 'access experience.log', desc: 'View work experience', icon: '💼' },
     { cmd: 'query education.db', desc: 'View education', icon: '🎓' },
     { cmd: 'open projects.repo', desc: 'View pro projects', icon: '🚀' },
-    { cmd: 'access vibe_projects.fun', desc: 'View vibe experiments', icon: '✨' },
+    { cmd: 'access prompt_projects.exp', desc: 'View prompt experiments', icon: '✨' },
     { cmd: 'play game', desc: 'Launch game portfolio', icon: '🎮' },
     { cmd: 'scan affiliations.sys', desc: 'View affiliations', icon: '🤝' },
     { cmd: 'decrypt core_memory', desc: 'View philosophy', icon: '💭' },
