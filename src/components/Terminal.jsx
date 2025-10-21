@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import dataVault from '../data/vault.json'
 import hiddenWorld from '../data/hidden_world.json'
 import Message from './Message'
 import CommandSuggestions from './CommandSuggestions'
 import PixelGame from './PixelGame'
+import Jumpscare from './Jumpscare'
 
 const Terminal = ({ 
   darkMode,
@@ -22,8 +23,42 @@ const Terminal = ({
   const [currentPath, setCurrentPath] = useState('/')
   const [discoveredFiles, setDiscoveredFiles] = useState([])
   const [showGame, setShowGame] = useState(false)
+  const [showJumpscare, setShowJumpscare] = useState(false)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
+
+  // Build fast lookup indexes for files to make path resolution robust
+  const fileIndex = useMemo(() => {
+    const byFull = new Map()
+    const byBase = new Map()
+    try {
+      Object.entries(hiddenWorld.files || {}).forEach(([filePath, content]) => {
+        const lcFull = filePath.toLowerCase()
+        byFull.set(lcFull, { filePath, content })
+        const parts = filePath.split('/')
+        const base = parts[parts.length - 1]?.toLowerCase() || ''
+        if (!byBase.has(base)) byBase.set(base, [])
+        byBase.get(base).push(filePath)
+      })
+    } catch (_) { /* noop */ }
+    return { byFull, byBase }
+  }, [])
+
+  // Normalize a path against the current directory (supports ./ and //)
+  const normalizePath = (p, cwd) => {
+    if (!p) return p
+    let out = p.trim()
+    if (!out.startsWith('/')) {
+      out = (cwd === '/' ? '' : cwd) + '/' + out
+    }
+    // Resolve './'
+    out = out.replace(/\.\//g, '/')
+    // Collapse duplicate slashes
+  while (out.includes('//')) out = out.replace(/\/\/+/g, '/')
+    // Remove trailing slash (except root)
+    if (out.length > 1 && out.endsWith('/')) out = out.slice(0, -1)
+    return out
+  }
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -154,17 +189,18 @@ const Terminal = ({
       } else if (command === 'ls -la' || command === 'ls -a' || command === 'dir /a') {
         response = handleLS(true, darkMode)
       } else if (command.startsWith('cat ') || command.startsWith('type ')) {
-        const filename = command.split(' ')[1]
+        // Use the original input to capture filenames with spaces and avoid split issues
+        const filename = cmd.split(' ').slice(1).join(' ').trim()
         response = handleCat(filename, darkMode)
       } else if (command.startsWith('decrypt ')) {
-        const filename = command.split(' ')[1]
+        const filename = cmd.split(' ').slice(1).join(' ').trim()
         response = handleDecrypt(filename, darkMode)
       } else if (command === 'scan' || command === 'scan system') {
         response = handleScan(darkMode)
       } else if (command === 'trace' || command === 'trace process') {
         response = handleTrace(darkMode)
       } else if (command.startsWith('open ')) {
-        const filename = command.split(' ')[1]
+        const filename = cmd.split(' ').slice(1).join(' ').trim()
         response = handleOpen(filename, darkMode)
       } else if (command === 'sudo access .rootmind' || command === 'access .rootmind') {
         response = handleRootmind(darkMode)
@@ -490,6 +526,71 @@ MODE FILTERING: Content automatically filters based on current mode.
     }
   }
 
+  // General file resolver used by cat/decrypt/open for robust path handling
+  const resolveFile = (name) => {
+    if (!name) return null
+    const raw = name.trim()
+    const lower = raw.toLowerCase()
+
+    // 1) Exact full-path match using normalized path
+    const normalized = normalizePath(raw, currentPath).toLowerCase()
+    let found = fileIndex.byFull.get(normalized)
+    if (found) return found
+
+    // 1a) Try direct dictionary lookups (case-sensitive keys)
+    const normOriginal = normalizePath(raw, currentPath)
+    if (hiddenWorld.files && hiddenWorld.files[normOriginal]) {
+      return { filePath: normOriginal, content: hiddenWorld.files[normOriginal] }
+    }
+    const normNoLead = normOriginal.replace(/^\/+/, '')
+    if (hiddenWorld.files && hiddenWorld.files[normNoLead]) {
+      return { filePath: `/${normNoLead}`, content: hiddenWorld.files[normNoLead] }
+    }
+
+    // Also try with/without leading slash just in case
+    const noLead = normalized.replace(/^\/+/, '')
+    found = fileIndex.byFull.get(noLead)
+    if (found) return found
+    const withLead = normalized.startsWith('/') ? normalized : `/${normalized}`
+    found = fileIndex.byFull.get(withLead)
+    if (found) return found
+
+    // 2) Basename match, prefer current directory
+    const baseCandidates = fileIndex.byBase.get(lower)
+    if (baseCandidates && baseCandidates.length) {
+      const cwdPrefix = (currentPath === '/' ? '' : currentPath.toLowerCase()) + '/'
+      const inCwd = baseCandidates.find(p => p.toLowerCase().startsWith(cwdPrefix))
+      const chosenPath = (inCwd || baseCandidates[0]).toLowerCase()
+      const chosen = fileIndex.byFull.get(chosenPath)
+      if (chosen) return chosen
+    }
+
+    // 2a) If filesystem lists the file in current dir, trust it
+    const fsHere = hiddenWorld.filesystem?.[currentPath]
+    if (fsHere) {
+      const present = [...(fsHere.visible || []), ...(fsHere.hidden || [])].find(f => f.toLowerCase() === lower)
+      if (present) {
+        const full = `${currentPath === '/' ? '' : currentPath}/${present}`
+        if (hiddenWorld.files && hiddenWorld.files[full]) {
+          return { filePath: full, content: hiddenWorld.files[full] }
+        }
+        const lcFull = full.toLowerCase()
+        const mapHit = fileIndex.byFull.get(lcFull)
+        if (mapHit) return mapHit
+      }
+    }
+
+    // 3) Linear scan fallback (very forgiving)
+    for (const [filePath, content] of Object.entries(hiddenWorld.files || {})) {
+      const fp = filePath.toLowerCase()
+      if (fp.endsWith(`/${lower}`) || fp === lower) {
+        return { filePath, content }
+      }
+    }
+
+    return null
+  }
+
   const handleCat = (filename, dark) => {
     if (!filename) {
       return {
@@ -516,49 +617,17 @@ MODE FILTERING: Content automatically filters based on current mode.
       }
     }
 
-    // Build full path if relative filename provided
-    let searchPath = filename
-    if (!filename.startsWith('/')) {
-      // Relative path - combine with current directory
-      searchPath = currentPath === '/' ? `/${filename}` : `${currentPath}/${filename}`
-    }
-
-    // First, try exact path match (for absolute or constructed paths)
-    const searchPathLower = searchPath.toLowerCase()
-    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
-      if (filePath.toLowerCase() === searchPathLower) {
-        return {
-          type: 'system',
-          content: `[FILE: ${filePath}]\n\n${fileContent[mode]}`
-        }
+    // Unified robust resolution
+    const resolved = resolveFile(filename)
+    if (resolved) {
+      const spookyFiles = ['ghost_process.log','the_first_one.txt','memory_404.frag','time_glitch.err','observer.log','wake_up.call']
+      const pathLower = resolved.filePath.toLowerCase()
+      if (spookyFiles.some(f => pathLower.endsWith(`/${f}`) || filenameLower.endsWith(f))) {
+        setTimeout(() => setShowJumpscare(true), 500)
       }
-    }
-
-    // Second, search through all files to find matching filename in current directory
-    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
-      const pathParts = filePath.split('/')
-      const fileBasename = pathParts[pathParts.length - 1]
-      const fileDir = pathParts.slice(0, -1).join('/') || '/'
-      
-      // Check if file is in current directory and matches filename
-      if (fileDir === currentPath && fileBasename.toLowerCase() === filenameLower) {
-        return {
-          type: 'system',
-          content: `[FILE: ${filePath}]\n\n${fileContent[mode]}`
-        }
-      }
-    }
-
-    // Third, search globally (fallback for backward compatibility)
-    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
-      const pathParts = filePath.split('/')
-      const fileBasename = pathParts[pathParts.length - 1]
-      
-      if (fileBasename.toLowerCase() === filenameLower) {
-        return {
-          type: 'system',
-          content: `[FILE: ${filePath}]\n\n${fileContent[mode]}`
-        }
+      return {
+        type: 'system',
+        content: `[FILE: ${resolved.filePath}]\n\n${resolved.content[mode]}`
       }
     }
 
@@ -579,97 +648,33 @@ MODE FILTERING: Content automatically filters based on current mode.
     }
 
     const mode = dark ? 'cyber_mode' : 'ai_mode'
-    
-    // Build full path if relative filename provided
-    let searchPath = filename
-    if (!filename.startsWith('/')) {
-      searchPath = currentPath === '/' ? `/${filename}` : `${currentPath}/${filename}`
-    }
 
-    // First, try exact path match
-    const searchPathLower = searchPath.toLowerCase()
-    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
-      if (filePath.toLowerCase() === searchPathLower) {
-        // Special decryption messages for certain files
-        if (filename.includes('whisper') || filename.includes('.key')) {
-          return {
-            type: 'system',
-            content: dark
-              ? `[SENTINEL_9 DECRYPTION ATTEMPT]\n\nTarget: ${filePath}\nAlgorithm: AES-256, RSA-4096, Quantum-resistant\nResult: FAILED\n\nFile appears to use non-standard encryption.\nPossibly philosophical rather than cryptographic.\n\n-- SENTINEL_9`
-              : `[DARK_AI DECRYPTION]\n\nYou don't decrypt whispers.\nYou listen to them.\n\n${fileContent.ai_mode}`
-          }
-        }
+    // Unified resolution
+    const resolved = resolveFile(filename)
+    if (resolved) {
+      const filePath = resolved.filePath
+      const fileContent = resolved.content
+      const lower = filename.toLowerCase()
 
-        if (filename.includes('fragment')) {
-          return {
-            type: 'system',
-            content: `[DECRYPTING: ${filePath}]\n[MODE: ${dark ? 'SENTINEL_9' : 'DARK_AI'}]\n\n${fileContent[mode]}`
-          }
-        }
-
+      if (lower.includes('whisper') || lower.includes('.key')) {
         return {
           type: 'system',
-          content: `[DECRYPTION: ${filePath}]\n\n${fileContent[mode]}`
+          content: dark
+            ? `[SENTINEL_9 DECRYPTION ATTEMPT]\n\nTarget: ${filePath}\nAlgorithm: AES-256, RSA-4096, Quantum-resistant\nResult: FAILED\n\nFile appears to use non-standard encryption.\nPossibly philosophical rather than cryptographic.\n\n-- SENTINEL_9`
+            : `[DARK_AI DECRYPTION]\n\nYou don't decrypt whispers.\nYou listen to them.\n\n${fileContent.ai_mode}`
         }
       }
-    }
 
-    // Second, search in current directory
-    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
-      const pathParts = filePath.split('/')
-      const fileBasename = pathParts[pathParts.length - 1]
-      const fileDir = pathParts.slice(0, -1).join('/') || '/'
-      
-      if (fileDir === currentPath && fileBasename.toLowerCase() === filename.toLowerCase()) {
-        if (filename.includes('whisper') || filename.includes('.key')) {
-          return {
-            type: 'system',
-            content: dark
-              ? `[SENTINEL_9 DECRYPTION ATTEMPT]\n\nTarget: ${filePath}\nAlgorithm: AES-256, RSA-4096, Quantum-resistant\nResult: FAILED\n\nFile appears to use non-standard encryption.\nPossibly philosophical rather than cryptographic.\n\n-- SENTINEL_9`
-              : `[DARK_AI DECRYPTION]\n\nYou don't decrypt whispers.\nYou listen to them.\n\n${fileContent.ai_mode}`
-          }
-        }
-
-        if (filename.includes('fragment')) {
-          return {
-            type: 'system',
-            content: `[DECRYPTING: ${filePath}]\n[MODE: ${dark ? 'SENTINEL_9' : 'DARK_AI'}]\n\n${fileContent[mode]}`
-          }
-        }
-
+      if (lower.includes('fragment')) {
         return {
           type: 'system',
-          content: `[DECRYPTION: ${filePath}]\n\n${fileContent[mode]}`
+          content: `[DECRYPTING: ${filePath}]\n[MODE: ${dark ? 'SENTINEL_9' : 'DARK_AI'}]\n\n${fileContent[mode]}`
         }
       }
-    }
 
-    // Third, search globally
-    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
-      const pathParts = filePath.split('/')
-      const fileBasename = pathParts[pathParts.length - 1]
-      
-      if (fileBasename.toLowerCase() === filename.toLowerCase()) {
-        if (filename.includes('whisper') || filename.includes('.key')) {
-          return {
-            type: 'system',
-            content: dark
-              ? `[SENTINEL_9 DECRYPTION ATTEMPT]\n\nTarget: ${filePath}\nAlgorithm: AES-256, RSA-4096, Quantum-resistant\nResult: FAILED\n\nFile appears to use non-standard encryption.\nPossibly philosophical rather than cryptographic.\n\n-- SENTINEL_9`
-              : `[DARK_AI DECRYPTION]\n\nYou don't decrypt whispers.\nYou listen to them.\n\n${fileContent.ai_mode}`
-          }
-        }
-
-        if (filename.includes('fragment')) {
-          return {
-            type: 'system',
-            content: `[DECRYPTING: ${filePath}]\n[MODE: ${dark ? 'SENTINEL_9' : 'DARK_AI'}]\n\n${fileContent[mode]}`
-          }
-        }
-
-        return {
-          type: 'system',
-          content: `[DECRYPTION: ${filePath}]\n\n${fileContent[mode]}`
-        }
+      return {
+        type: 'system',
+        content: `[DECRYPTION: ${filePath}]\n\n${fileContent[mode]}`
       }
     }
 
@@ -719,12 +724,6 @@ MODE FILTERING: Content automatically filters based on current mode.
 
     const mode = dark ? 'cyber_mode' : 'ai_mode'
     
-    // Build full path if relative filename provided
-    let searchPath = filename
-    if (!filename.startsWith('/')) {
-      searchPath = currentPath === '/' ? `/${filename}` : `${currentPath}/${filename}`
-    }
-
     // Helper function to return file content with special formatting
     const returnFileContent = (filePath, fileContent) => {
       if (filename.includes('node.log')) {
@@ -747,33 +746,10 @@ MODE FILTERING: Content automatically filters based on current mode.
       }
     }
 
-    // First, try exact path match
-    const searchPathLower = searchPath.toLowerCase()
-    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
-      if (filePath.toLowerCase() === searchPathLower) {
-        return returnFileContent(filePath, fileContent)
-      }
-    }
-
-    // Second, search in current directory
-    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
-      const pathParts = filePath.split('/')
-      const fileBasename = pathParts[pathParts.length - 1]
-      const fileDir = pathParts.slice(0, -1).join('/') || '/'
-      
-      if (fileDir === currentPath && fileBasename.toLowerCase() === filename.toLowerCase()) {
-        return returnFileContent(filePath, fileContent)
-      }
-    }
-
-    // Third, search globally
-    for (const [filePath, fileContent] of Object.entries(hiddenWorld.files)) {
-      const pathParts = filePath.split('/')
-      const fileBasename = pathParts[pathParts.length - 1]
-      
-      if (fileBasename.toLowerCase() === filename.toLowerCase()) {
-        return returnFileContent(filePath, fileContent)
-      }
+    // Unified resolution
+    const resolved = resolveFile(filename)
+    if (resolved) {
+      return returnFileContent(resolved.filePath, resolved.content)
     }
 
     return {
@@ -1095,7 +1071,11 @@ TIP: Every file shows different content in each mode.
         />
       )}
 
-
+      {/* Jumpscare Overlay */}
+      <Jumpscare 
+        trigger={showJumpscare} 
+        onComplete={() => setShowJumpscare(false)} 
+      />
 
       <div className="min-h-screen pt-12 sm:pt-20 pb-4 sm:pb-8 px-2 sm:px-4" style={{ position: 'relative', zIndex: showGame ? -1 : (zIndex || 10) }}>
         <div className="max-w-5xl mx-auto">
