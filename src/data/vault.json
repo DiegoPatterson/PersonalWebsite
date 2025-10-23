@@ -237,10 +237,10 @@
         "Smooth character movement",
         "Attack Patterns for attacks"
       ],
-      "technologies": ["Godot", "GDScript", "2D Art", "Animation"],
-      "status": "In Development",
+      "technologies": ["Godot", "GDScript", "Animation"],
+      "status": "Shipped",
       "playable": false,
-      "githubRepo": "https://github.com/diegopatterson/neon-heist",
+      "githubRepo": "https://github.com/DiegoPatterson/Roots-of-Fury",      
       "demoVideo": "",
       "screenshots": []
     }
